@@ -10,17 +10,13 @@ import profileRoutes from './routes/profileRoutes.js';
 dotenv.config();
 const app = express();
 
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Routes
 app.use('/api', authRoutes);
 app.use('/api/profile', profileRoutes);
 
 
-
-// DB + Server
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('✅ Підключено до MongoDB');

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { TextInput, Button, Text, useTheme, Surface } from 'react-native-paper';
+import { TextInput, Button, Text, useTheme, Switch } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -9,12 +9,11 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
 const schema = z.object({
-  email: z.string().email({ message: 'Невірний email' }),
-  password: z.string().min(6, 'Мінімум 6 символів'),
+  email: z.string().email({ message: 'Invalid email' }),
+  password: z.string().min(6, 'Minimum 6 characters'),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -22,6 +21,7 @@ type FormData = z.infer<typeof schema>;
 export default function LoginScreen({ navigation }: Props) {
   const { colors } = useTheme();
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   const {
     control,
@@ -38,12 +38,17 @@ export default function LoginScreen({ navigation }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-  
+
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Помилка входу');
-  
+      if (!response.ok) throw new Error(result.message || 'Login failed');
+
       await AsyncStorage.setItem('token', result.token);
-  
+      if (rememberMe) {
+        await AsyncStorage.setItem('rememberMe', 'true');
+      } else {
+        await AsyncStorage.removeItem('rememberMe');
+      }
+
       navigation.reset({
         index: 0,
         routes: [{ name: 'Dashboard' }],
@@ -52,7 +57,6 @@ export default function LoginScreen({ navigation }: Props) {
       alert(error.message);
     }
   };
-  
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -61,7 +65,7 @@ export default function LoginScreen({ navigation }: Props) {
           TaskWave
         </Text>
         <Text variant="titleMedium" style={[styles.subtitle, { color: colors.onBackground }]}>
-          Увійди в свій акаунт
+          Log in to your account
         </Text>
       </Animated.View>
 
@@ -70,7 +74,6 @@ export default function LoginScreen({ navigation }: Props) {
         entering={FadeInDown.delay(200).duration(600).springify()}
       >
         <View style={styles.form}>
-          {/* Email */}
           <Controller
             control={control}
             name="email"
@@ -91,13 +94,12 @@ export default function LoginScreen({ navigation }: Props) {
             <Text style={[styles.error, { color: colors.error }]}>{errors.email.message}</Text>
           )}
 
-          {/* Пароль */}
           <Controller
             control={control}
             name="password"
             render={({ field: { onChange, value } }) => (
               <TextInput
-                label="Пароль"
+                label="Password"
                 mode="outlined"
                 secureTextEntry={!showPassword}
                 value={value}
@@ -117,6 +119,16 @@ export default function LoginScreen({ navigation }: Props) {
             <Text style={[styles.error, { color: colors.error }]}>{errors.password.message}</Text>
           )}
 
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 8 }}>
+            <Switch
+              value={rememberMe}
+              onValueChange={setRememberMe}
+              thumbColor={rememberMe ? '#00b894' : '#f4f3f4'}
+              trackColor={{ false: '#ccc', true: '#00b894' }}
+            />
+            <Text style={{ marginLeft: 8, fontWeight: '600' }}>Remember me</Text>
+          </View>
+
           <Button
             mode="contained"
             onPress={handleSubmit(onSubmit)}
@@ -125,20 +137,22 @@ export default function LoginScreen({ navigation }: Props) {
             contentStyle={styles.buttonContent}
             labelStyle={styles.buttonLabel}
           >
-            Увійти
+            Log In
           </Button>
+
           <Text
-  style={[styles.loginText, { color: colors.outline }]}
-  onPress={() => navigation.navigate('ResetPassword')}
->
-  Забули пароль? <Text style={{ color: '#00b894' }}>Скинути</Text>
-</Text>
+            style={[styles.loginText, { color: colors.outline }]}
+            onPress={() => navigation.navigate('ResetPassword')}
+          >
+            Forgot your password? <Text style={{ color: '#00b894' }}>Reset</Text>
+          </Text>
+
           <Text
             style={[styles.loginText, { color: colors.outline }]}
             onPress={() => navigation.navigate('Register')}
           >
-            Немає акаунту?{' '}
-            <Text style={[styles.loginLink, { color: '#00b894' }]}>Зареєструватись</Text>
+            Don't have an account?{' '}
+            <Text style={[styles.loginLink, { color: '#00b894' }]}>Sign Up</Text>
           </Text>
         </View>
       </Animated.View>

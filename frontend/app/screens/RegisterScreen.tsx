@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { TextInput, Button, Text, useTheme, Surface } from 'react-native-paper';
+import { TextInput, Button, Text, useTheme } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -12,12 +12,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
 
 const schema = z.object({
-  name: z.string().min(2, 'Введи ім’я'),
-  email: z.string().email({ message: 'Невірний email' }),
-  phone: z.string().regex(/^\+?[0-9]{10,14}$/, 'Невірний номер телефону'),
+  name: z.string().min(2, 'Enter your name'),
+  email: z.string().email({ message: 'Invalid email' }),
+  phone: z.string().regex(/^\+?[0-9]{10,14}$/, 'Invalid phone number'),
   password: z.string()
-    .min(6, 'Мінімум 6 символів')
-    .regex(/\d/, 'Пароль має містити хоча б одну цифру'),
+    .min(6, 'Minimum 6 characters')
+    .regex(/\d/, 'Password must contain at least one digit'),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -41,11 +41,11 @@ export default function RegisterScreen({ navigation }: Props) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-  
+
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Помилка реєстрації');
+      if (!response.ok) throw new Error(result.message || 'Registration error');
       await AsyncStorage.setItem('token', result.token);
-  
+
       navigation.reset({
         index: 0,
         routes: [{ name: 'Dashboard' }],
@@ -54,7 +54,6 @@ export default function RegisterScreen({ navigation }: Props) {
       alert(error.message);
     }
   };
-  
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -63,7 +62,7 @@ export default function RegisterScreen({ navigation }: Props) {
           TaskWave
         </Text>
         <Text variant="titleMedium" style={[styles.subtitle, { color: colors.onBackground }]}>
-          Створи акаунт, щоб розпочати
+          Create an account to get started
         </Text>
       </Animated.View>
 
@@ -77,7 +76,7 @@ export default function RegisterScreen({ navigation }: Props) {
             name="name"
             render={({ field: { onChange, value } }) => (
               <TextInput
-                label="Ім’я"
+                label="Name"
                 mode="outlined"
                 value={value}
                 onChangeText={onChange}
@@ -109,7 +108,7 @@ export default function RegisterScreen({ navigation }: Props) {
             name="phone"
             render={({ field: { onChange, value } }) => (
               <TextInput
-                label="Телефон"
+                label="Phone"
                 mode="outlined"
                 value={value}
                 onChangeText={onChange}
@@ -125,7 +124,7 @@ export default function RegisterScreen({ navigation }: Props) {
             name="password"
             render={({ field: { onChange, value } }) => (
               <TextInput
-                label="Пароль"
+                label="Password"
                 mode="outlined"
                 secureTextEntry={!showPassword}
                 value={value}
@@ -153,15 +152,15 @@ export default function RegisterScreen({ navigation }: Props) {
             contentStyle={styles.buttonContent}
             labelStyle={styles.buttonLabel}
           >
-            Зареєструватись
+            Sign Up
           </Button>
 
           <Text
             style={[styles.loginText, { color: colors.outline }]}
             onPress={() => navigation.navigate('Login')}
           >
-            Вже маєш акаунт?{' '}
-            <Text style={[styles.loginLink, { color: '#00b894' }]}>Увійди</Text>
+            Already have an account?{' '}
+            <Text style={[styles.loginLink, { color: '#00b894' }]}>Log In</Text>
           </Text>
         </View>
       </Animated.View>

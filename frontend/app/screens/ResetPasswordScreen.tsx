@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { TextInput, Button, Text, useTheme, Surface } from 'react-native-paper';
+import { TextInput, Button, Text, useTheme } from 'react-native-paper';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 
 const schema = z.object({
-  email: z.string().email({ message: 'Невірний email' }),
+  email: z.string().email({ message: 'Invalid email' }),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -36,7 +36,7 @@ export default function ResetPasswordScreen() {
           TaskWave
         </Text>
         <Text variant="titleMedium" style={[styles.subtitle, { color: colors.onBackground }]}>
-          Скидання паролю
+          Password Reset
         </Text>
       </Animated.View>
 
@@ -74,16 +74,16 @@ export default function ResetPasswordScreen() {
               contentStyle={styles.buttonContent}
               labelStyle={styles.buttonLabel}
             >
-              Скинути пароль
+              Reset Password
             </Button>
           </View>
         ) : (
           <Animated.View entering={FadeInDown.delay(100).duration(400)}>
             <Text variant="titleMedium" style={{ textAlign: 'center', marginBottom: 8, color: colors.primary }}>
-              Лист надіслано!
+              Email Sent!
             </Text>
             <Text style={{ textAlign: 'center', color: colors.onBackground }}>
-              Якщо email існує, ми надішлемо посилання для скидання паролю.
+              If the email exists, we’ll send you a password reset link.
             </Text>
           </Animated.View>
         )}

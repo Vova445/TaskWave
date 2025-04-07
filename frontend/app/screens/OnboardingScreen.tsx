@@ -11,20 +11,20 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Onboarding'>;
 const slides = [
   {
     key: 'one',
-    title: 'Ласкаво просимо в TaskWave',
-    text: 'Керуйте особистими та професійними завданнями зручно',
+    title: 'Welcome to TaskWave',
+    text: 'Manage personal and professional tasks with ease',
     image: require('../assets/onboarding1.png'),
   },
   {
     key: 'two',
-    title: 'Календар + Список',
-    text: 'Переглядайте задачі у вигляді часової сітки або списку',
+    title: 'Calendar + List',
+    text: 'View tasks in a timeline or a list format',
     image: require('../assets/onboarding2.png'),
   },
   {
     key: 'three',
-    title: 'Офлайн + Синхронізація',
-    text: 'Працюйте навіть без інтернету — все синхронізується пізніше',
+    title: 'Offline + Sync',
+    text: 'Work without internet — everything syncs later',
     image: require('../assets/onboarding3.png'),
   },
 ];
@@ -33,7 +33,7 @@ export default function OnboardingScreen({ navigation }: Props) {
   const { colors } = useTheme();
   const sliderRef = useRef<AppIntroSlider>(null);
 
-  const renderItem = ({ item, index }: any) => (
+  const renderItem = ({ item }: any) => (
     <Animated.View
       entering={FadeInDown.duration(600).springify()}
       style={[styles.slide, { backgroundColor: colors.background }]}
@@ -50,25 +50,25 @@ export default function OnboardingScreen({ navigation }: Props) {
 
   const renderNextButton = () => (
     <Button mode="contained-tonal" style={styles.button}>
-      Далі
+      Next
     </Button>
   );
 
   const renderSkipButton = () => (
     <Button mode="text" style={styles.button}>
-      Пропустити
+      Skip
     </Button>
   );
 
   const renderDoneButton = () => (
     <Button mode="contained" style={[styles.button, { backgroundColor: '#00b894' }]}>
-      Почати
+      Get Started
     </Button>
   );
 
   const renderPrevButton = () => (
     <Button mode="outlined" style={styles.button}>
-      Назад
+      Back
     </Button>
   );
 

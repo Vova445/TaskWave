@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useColorScheme } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
+
 import RegisterScreen from './app/screens/RegisterScreen';
 import LoginScreen from './app/screens/LoginScreen';
-import {
-  PaperProvider,
-  MD3LightTheme,
-  MD3DarkTheme,
-} from 'react-native-paper';
-import ResetPasswordScreen from '@screens/ResetPasswordScreen';
+import ResetPasswordScreen from './app/screens/ResetPasswordScreen';
 import OnboardingScreen from './app/screens/OnboardingScreen';
 import BottomTabs from './app/navigation/BottomTabs';
+import { ThemeProvider, useThemeContext } from './app/context/ThemeContext';
+import { DefaultTheme, Provider } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -22,22 +22,50 @@ export type RootStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
+const lightScreens = ['Onboarding', 'Register', 'Login', 'ResetPassword'];
 
-export default function App() {
-  const scheme = useColorScheme();
-  const theme = scheme === 'dark' ? MD3DarkTheme : MD3LightTheme;
-
+function MainApp() {
+  const { theme } = useThemeContext();
+  const [currentRoute, setCurrentRoute] = React.useState('Onboarding');
+  const [initialRoute, setInitialRoute] = React.useState<'Login' | 'Dashboard' | 'Onboarding'>('Onboarding');
+  useEffect(() => {
+    const checkSession = async () => {
+      const token = await AsyncStorage.getItem('token');
+      const remember = await AsyncStorage.getItem('rememberMe');
+  
+      if (token && remember === 'true') {
+        setInitialRoute('Dashboard');
+      } else {
+        setInitialRoute('Login');
+      }
+    };
+    checkSession();
+  }, []);
   return (
-    <PaperProvider theme={theme}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Onboarding" screenOptions={{ headerShown: false }}>
+    <NavigationContainer
+      onStateChange={(state) => {
+        const route = state?.routes[state.index]?.name;
+        if (route) setCurrentRoute(route);
+      }}
+    >
+      <PaperProvider theme={lightScreens.includes(currentRoute) ? DefaultTheme : theme}>
+      <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
           <Stack.Screen name="Dashboard" component={BottomTabs} />
         </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+      </PaperProvider>
+    </NavigationContainer>
+  );
+}
+
+
+export default function App() {
+  return (
+    <ThemeProvider>
+      <MainApp />
+    </ThemeProvider>
   );
 }

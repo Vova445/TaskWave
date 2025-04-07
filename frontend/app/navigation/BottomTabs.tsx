@@ -23,7 +23,15 @@ export default function BottomTabs() {
           borderTopLeftRadius: 20,
           borderTopRightRadius: 20,
           height: 60,
+          overflow: 'hidden',
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          borderTopWidth: 0,
+          elevation: 5,
         },
+        
         tabBarIcon: ({ color, size }) => {
           let icon = '';
           switch (route.name) {
