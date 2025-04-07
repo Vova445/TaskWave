@@ -1,0 +1,66 @@
+{
+    "profile": "Mój Profil",
+    "change_password": "Zmień Hasło",
+    "phone_number": "Numer Telefonu",
+    "email": "Adres Email",
+    "language": "Język",
+    "sync": "Synchronizuj z serwerem",
+    "dark_mode": "Tryb ciemny",
+    "notifications": "Powiadomienia",
+    "logout_title": "Wyloguj się",
+    "logout_message": "Czy na pewno chcesz się wylogować?",
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+    "select_language": "Wybierz język",
+    "close": "Zamknij",
+    "logout": {
+      "title": "Wylogować się z konta?",
+      "description": "Czy na pewno chcesz zakończyć sesję? Twoje dane zostaną zapisane."
+    },
+    "buttons": {
+      "cancel": "Anuluj",
+      "logout": "Wyloguj się"
+    },
+    "errors": {
+      "logoutTitle": "Błąd",
+      "logoutFail": "Nie udało się wylogować"
+    },
+    "changePassword": {
+      "title": "Zmień hasło",
+      "oldPassword": "Stare hasło",
+      "newPassword": "Nowe hasło",
+      "cancel": "Anuluj",
+      "change": "Zmień"
+    },
+    "passwordSuccess": {
+      "title": "Hasło zmienione!",
+      "message": "Hasło zostało pomyślnie zmienione. Użyj nowego przy następnym logowaniu.",
+      "ok": "OK"
+    },
+    "avatarSuccess": {
+      "title": "Zaktualizowano avatar!",
+      "message": "Twój avatar został pomyślnie zaktualizowany.",
+      "ok": "OK"
+    },
+    "imageSizeError": {
+      "title": "Obraz za duży",
+      "message": "Maksymalny rozmiar obrazu to 2MB. Wybierz inne zdjęcie.",
+      "ok": "OK"
+    },
+    "genericError": {
+      "title": "Błąd",
+      "message": "Coś poszło nie tak. Spróbuj ponownie lub sprawdź połączenie z internetem.",
+      "ok": "OK"
+    },
+    "deleteAvatar": {
+      "title": "Usunąć avatar?",
+      "message": "Czy na pewno chcesz usunąć avatar? Tej operacji nie można cofnąć.",
+      "cancel": "Anuluj",
+      "delete": "Usuń"
+    },
+    "languageDialog": {
+      "title": "Wybierz język",
+      "close": "Zamknij"
+    }
+  }
+  

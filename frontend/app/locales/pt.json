@@ -1,0 +1,66 @@
+{
+    "profile": "Meu Perfil",
+    "change_password": "Alterar Senha",
+    "phone_number": "Número de Telefone",
+    "email": "Endereço de Email",
+    "language": "Idioma",
+    "sync": "Sincronizar com o Servidor",
+    "dark_mode": "Modo Escuro",
+    "notifications": "Notificações",
+    "logout_title": "Sair",
+    "logout_message": "Tem certeza de que deseja sair?",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "select_language": "Selecionar Idioma",
+    "close": "Fechar",
+    "logout": {
+      "title": "Sair da sua conta?",
+      "description": "Tem certeza de que deseja encerrar sua sessão? Seus dados permanecerão salvos."
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "logout": "Sair"
+    },
+    "errors": {
+      "logoutTitle": "Erro",
+      "logoutFail": "Falha ao sair"
+    },
+    "changePassword": {
+      "title": "Alterar Senha",
+      "oldPassword": "Senha Antiga",
+      "newPassword": "Nova Senha",
+      "cancel": "Cancelar",
+      "change": "Alterar"
+    },
+    "passwordSuccess": {
+      "title": "Senha Alterada!",
+      "message": "Você alterou sua senha com sucesso. Use a nova na próxima vez que fizer login.",
+      "ok": "OK"
+    },
+    "avatarSuccess": {
+      "title": "Avatar Atualizado!",
+      "message": "Seu avatar foi atualizado com sucesso.",
+      "ok": "OK"
+    },
+    "imageSizeError": {
+      "title": "Imagem Muito Grande",
+      "message": "O tamanho máximo da imagem é 2MB. Por favor, escolha outra foto.",
+      "ok": "OK"
+    },
+    "genericError": {
+      "title": "Erro",
+      "message": "Algo deu errado. Por favor, tente novamente ou verifique sua conexão com a internet.",
+      "ok": "OK"
+    },
+    "deleteAvatar": {
+      "title": "Excluir avatar?",
+      "message": "Tem certeza de que deseja excluir seu avatar? Esta ação não pode ser desfeita.",
+      "cancel": "Cancelar",
+      "delete": "Excluir"
+    },
+    "languageDialog": {
+      "title": "Selecionar Idioma",
+      "close": "Fechar"
+    }
+  }
+  

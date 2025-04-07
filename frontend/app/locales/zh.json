@@ -1,0 +1,66 @@
+{
+    "profile": "我的资料",
+    "change_password": "更改密码",
+    "phone_number": "电话号码",
+    "email": "电子邮件地址",
+    "language": "语言",
+    "sync": "与服务器同步",
+    "dark_mode": "深色模式",
+    "notifications": "通知",
+    "logout_title": "退出登录",
+    "logout_message": "您确定要退出登录吗？",
+    "cancel": "取消",
+    "confirm": "确认",
+    "select_language": "选择语言",
+    "close": "关闭",
+    "logout": {
+      "title": "要退出您的帐户吗？",
+      "description": "您确定要结束会话吗？您的数据将保持保存状态。"
+    },
+    "buttons": {
+      "cancel": "取消",
+      "logout": "退出登录"
+    },
+    "errors": {
+      "logoutTitle": "错误",
+      "logoutFail": "退出失败"
+    },
+    "changePassword": {
+      "title": "更改密码",
+      "oldPassword": "旧密码",
+      "newPassword": "新密码",
+      "cancel": "取消",
+      "change": "更改"
+    },
+    "passwordSuccess": {
+      "title": "密码已更改！",
+      "message": "您已成功更改密码。下次登录时请使用新密码。",
+      "ok": "确定"
+    },
+    "avatarSuccess": {
+      "title": "头像已更新！",
+      "message": "您的头像已成功更新。",
+      "ok": "确定"
+    },
+    "imageSizeError": {
+      "title": "图片太大",
+      "message": "最大图片大小为2MB。请选择其他照片。",
+      "ok": "确定"
+    },
+    "genericError": {
+      "title": "错误",
+      "message": "出现问题。请重试或检查您的网络连接。",
+      "ok": "确定"
+    },
+    "deleteAvatar": {
+      "title": "删除头像？",
+      "message": "您确定要删除头像吗？此操作无法撤销。",
+      "cancel": "取消",
+      "delete": "删除"
+    },
+    "languageDialog": {
+      "title": "选择语言",
+      "close": "关闭"
+    }
+  }
+  

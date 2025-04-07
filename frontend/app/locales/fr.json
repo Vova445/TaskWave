@@ -1,0 +1,66 @@
+{
+    "profile": "Mon profil",
+    "change_password": "Changer le mot de passe",
+    "phone_number": "Numéro de téléphone",
+    "email": "Adresse e-mail",
+    "language": "Langue",
+    "sync": "Synchroniser avec le serveur",
+    "dark_mode": "Mode sombre",
+    "notifications": "Notifications",
+    "logout_title": "Déconnexion",
+    "logout_message": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "select_language": "Choisir la langue",
+    "close": "Fermer",
+    "logout": {
+      "title": "Se déconnecter de votre compte ?",
+      "description": "Êtes-vous sûr de vouloir mettre fin à votre session ? Vos données resteront enregistrées."
+    },
+    "buttons": {
+      "cancel": "Annuler",
+      "logout": "Se déconnecter"
+    },
+    "errors": {
+      "logoutTitle": "Erreur",
+      "logoutFail": "Échec de la déconnexion"
+    },
+    "changePassword": {
+      "title": "Changer le mot de passe",
+      "oldPassword": "Ancien mot de passe",
+      "newPassword": "Nouveau mot de passe",
+      "cancel": "Annuler",
+      "change": "Changer"
+    },
+    "passwordSuccess": {
+      "title": "Mot de passe modifié !",
+      "message": "Vous avez modifié votre mot de passe avec succès. Utilisez-le lors de votre prochaine connexion.",
+      "ok": "OK"
+    },
+    "avatarSuccess": {
+      "title": "Avatar mis à jour !",
+      "message": "Votre avatar a été mis à jour avec succès.",
+      "ok": "OK"
+    },
+    "imageSizeError": {
+      "title": "Image trop grande",
+      "message": "La taille maximale autorisée est de 2 Mo. Veuillez choisir une autre photo.",
+      "ok": "OK"
+    },
+    "genericError": {
+      "title": "Erreur",
+      "message": "Une erreur s'est produite. Veuillez réessayer ou vérifier votre connexion Internet.",
+      "ok": "OK"
+    },
+    "deleteAvatar": {
+      "title": "Supprimer l'avatar ?",
+      "message": "Êtes-vous sûr de vouloir supprimer votre avatar ? Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer"
+    },
+    "languageDialog": {
+      "title": "Choisir la langue",
+      "close": "Fermer"
+    }
+  }
+  

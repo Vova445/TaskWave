@@ -1,0 +1,66 @@
+{
+    "profile": "Il mio profilo",
+    "change_password": "Cambia password",
+    "phone_number": "Numero di telefono",
+    "email": "Indirizzo email",
+    "language": "Lingua",
+    "sync": "Sincronizza con il server",
+    "dark_mode": "Modalità scura",
+    "notifications": "Notifiche",
+    "logout_title": "Disconnettersi",
+    "logout_message": "Sei sicuro di voler uscire?",
+    "cancel": "Annulla",
+    "confirm": "Conferma",
+    "select_language": "Seleziona la lingua",
+    "close": "Chiudi",
+    "logout": {
+      "title": "Disconnettersi dal tuo account?",
+      "description": "Sei sicuro di voler terminare la sessione? I tuoi dati resteranno salvati."
+    },
+    "buttons": {
+      "cancel": "Annulla",
+      "logout": "Esci"
+    },
+    "errors": {
+      "logoutTitle": "Errore",
+      "logoutFail": "Errore durante la disconnessione"
+    },
+    "changePassword": {
+      "title": "Cambia password",
+      "oldPassword": "Vecchia password",
+      "newPassword": "Nuova password",
+      "cancel": "Annulla",
+      "change": "Cambia"
+    },
+    "passwordSuccess": {
+      "title": "Password cambiata!",
+      "message": "Hai cambiato correttamente la password. Usala per il prossimo accesso.",
+      "ok": "OK"
+    },
+    "avatarSuccess": {
+      "title": "Avatar aggiornato!",
+      "message": "Il tuo avatar è stato aggiornato con successo.",
+      "ok": "OK"
+    },
+    "imageSizeError": {
+      "title": "Immagine troppo grande",
+      "message": "La dimensione massima dell'immagine è di 2MB. Scegli un'altra foto.",
+      "ok": "OK"
+    },
+    "genericError": {
+      "title": "Errore",
+      "message": "Qualcosa è andato storto. Riprova o controlla la connessione Internet.",
+      "ok": "OK"
+    },
+    "deleteAvatar": {
+      "title": "Eliminare l'avatar?",
+      "message": "Sei sicuro di voler eliminare il tuo avatar? Questa azione non può essere annullata.",
+      "cancel": "Annulla",
+      "delete": "Elimina"
+    },
+    "languageDialog": {
+      "title": "Seleziona la lingua",
+      "close": "Chiudi"
+    }
+  }
+  

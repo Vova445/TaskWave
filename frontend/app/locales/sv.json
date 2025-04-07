@@ -1,0 +1,66 @@
+{
+    "profile": "Min profil",
+    "change_password": "Byt lösenord",
+    "phone_number": "Telefonnummer",
+    "email": "E-postadress",
+    "language": "Språk",
+    "sync": "Synkronisera med servern",
+    "dark_mode": "Mörkt läge",
+    "notifications": "Aviseringar",
+    "logout_title": "Logga ut",
+    "logout_message": "Är du säker på att du vill logga ut?",
+    "cancel": "Avbryt",
+    "confirm": "Bekräfta",
+    "select_language": "Välj språk",
+    "close": "Stäng",
+    "logout": {
+      "title": "Logga ut från ditt konto?",
+      "description": "Är du säker på att du vill avsluta sessionen? Dina data kommer att sparas."
+    },
+    "buttons": {
+      "cancel": "Avbryt",
+      "logout": "Logga ut"
+    },
+    "errors": {
+      "logoutTitle": "Fel",
+      "logoutFail": "Det gick inte att logga ut"
+    },
+    "changePassword": {
+      "title": "Byt lösenord",
+      "oldPassword": "Nuvarande lösenord",
+      "newPassword": "Nytt lösenord",
+      "cancel": "Avbryt",
+      "change": "Ändra"
+    },
+    "passwordSuccess": {
+      "title": "Lösenord ändrat!",
+      "message": "Ditt lösenord har ändrats. Använd det nya nästa gång du loggar in.",
+      "ok": "OK"
+    },
+    "avatarSuccess": {
+      "title": "Avatar uppdaterad!",
+      "message": "Din avatar har uppdaterats.",
+      "ok": "OK"
+    },
+    "imageSizeError": {
+      "title": "Bild för stor",
+      "message": "Maximal bildstorlek är 2 MB. Välj en annan bild.",
+      "ok": "OK"
+    },
+    "genericError": {
+      "title": "Fel",
+      "message": "Något gick fel. Försök igen eller kontrollera din internetanslutning.",
+      "ok": "OK"
+    },
+    "deleteAvatar": {
+      "title": "Ta bort avatar?",
+      "message": "Är du säker på att du vill ta bort din avatar? Det går inte att ångra detta.",
+      "cancel": "Avbryt",
+      "delete": "Ta bort"
+    },
+    "languageDialog": {
+      "title": "Välj språk",
+      "close": "Stäng"
+    }
+  }
+  

@@ -1,0 +1,66 @@
+{
+    "profile": "マイプロフィール",
+    "change_password": "パスワードを変更",
+    "phone_number": "電話番号",
+    "email": "メールアドレス",
+    "language": "言語",
+    "sync": "サーバーと同期",
+    "dark_mode": "ダークモード",
+    "notifications": "通知",
+    "logout_title": "ログアウト",
+    "logout_message": "本当にログアウトしますか？",
+    "cancel": "キャンセル",
+    "confirm": "確認",
+    "select_language": "言語を選択",
+    "close": "閉じる",
+    "logout": {
+      "title": "アカウントからログアウトしますか？",
+      "description": "セッションを終了してもよろしいですか？データは保存されます。"
+    },
+    "buttons": {
+      "cancel": "キャンセル",
+      "logout": "ログアウト"
+    },
+    "errors": {
+      "logoutTitle": "エラー",
+      "logoutFail": "ログアウトに失敗しました"
+    },
+    "changePassword": {
+      "title": "パスワードを変更",
+      "oldPassword": "現在のパスワード",
+      "newPassword": "新しいパスワード",
+      "cancel": "キャンセル",
+      "change": "変更"
+    },
+    "passwordSuccess": {
+      "title": "パスワードが変更されました！",
+      "message": "パスワードが正常に変更されました。次回のログイン時に新しいパスワードを使用してください。",
+      "ok": "OK"
+    },
+    "avatarSuccess": {
+      "title": "アバターが更新されました！",
+      "message": "アバターが正常に更新されました。",
+      "ok": "OK"
+    },
+    "imageSizeError": {
+      "title": "画像が大きすぎます",
+      "message": "画像の最大サイズは2MBです。別の画像を選択してください。",
+      "ok": "OK"
+    },
+    "genericError": {
+      "title": "エラー",
+      "message": "問題が発生しました。もう一度お試しいただくか、インターネット接続を確認してください。",
+      "ok": "OK"
+    },
+    "deleteAvatar": {
+      "title": "アバターを削除しますか？",
+      "message": "アバターを削除してもよろしいですか？この操作は元に戻せません。",
+      "cancel": "キャンセル",
+      "delete": "削除"
+    },
+    "languageDialog": {
+      "title": "言語を選択",
+      "close": "閉じる"
+    }
+  }
+  

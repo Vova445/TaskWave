@@ -1,0 +1,65 @@
+{
+    "profile": "My Profile",
+    "change_password": "Change Password",
+    "phone_number": "Phone Number",
+    "email": "Email Address",
+    "language": "Language",
+    "sync": "Sync with Server",
+    "dark_mode": "Dark Mode",
+    "notifications": "Notifications",
+    "logout_title": "Logout",
+    "logout_message": "Are you sure you want to log out?",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "select_language": "Select Language",
+    "close": "Close",
+    "logout": {
+        "title": "Log out of your account?",
+        "description": "Are you sure you want to end your session? Your data will remain saved."
+    },
+    "buttons": {
+        "cancel": "Cancel",
+        "logout": "Log Out"
+    },
+    "errors": {
+        "logoutTitle": "Error",
+        "logoutFail": "Failed to log out"
+    },
+    "changePassword": {
+    "title": "Change Password",
+    "oldPassword": "Old Password",
+    "newPassword": "New Password",
+    "cancel": "Cancel",
+    "change": "Change"
+  },
+  "passwordSuccess": {
+    "title": "Password Changed!",
+    "message": "You have successfully changed your password. Use the new one next time you log in.",
+    "ok": "OK"
+  },
+  "avatarSuccess": {
+    "title": "Avatar Updated!",
+    "message": "Your avatar has been successfully updated.",
+    "ok": "OK"
+  },
+  "imageSizeError": {
+    "title": "Image Too Large",
+    "message": "Maximum image size is 2MB. Please choose another photo.",
+    "ok": "OK"
+  },
+  "genericError": {
+    "title": "Error",
+    "message": "Something went wrong. Please try again or check your internet connection.",
+    "ok": "OK"
+  },
+  "deleteAvatar": {
+    "title": "Delete avatar?",
+    "message": "Are you sure you want to delete your avatar? This action cannot be undone.",
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
+  "languageDialog": {
+    "title": "Select Language",
+    "close": "Close"
+  }
+}

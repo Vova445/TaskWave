@@ -1,0 +1,66 @@
+{
+    "profile": "Profilim",
+    "change_password": "Şifreyi Değiştir",
+    "phone_number": "Telefon Numarası",
+    "email": "E-posta Adresi",
+    "language": "Dil",
+    "sync": "Sunucuyla Senkronize Et",
+    "dark_mode": "Karanlık Mod",
+    "notifications": "Bildirimler",
+    "logout_title": "Çıkış Yap",
+    "logout_message": "Çıkış yapmak istediğinizden emin misiniz?",
+    "cancel": "İptal",
+    "confirm": "Onayla",
+    "select_language": "Dil Seç",
+    "close": "Kapat",
+    "logout": {
+      "title": "Hesabınızdan çıkmak istiyor musunuz?",
+      "description": "Oturumunuzu sonlandırmak istediğinizden emin misiniz? Verileriniz kaydedilmiş olarak kalacaktır."
+    },
+    "buttons": {
+      "cancel": "İptal",
+      "logout": "Çıkış Yap"
+    },
+    "errors": {
+      "logoutTitle": "Hata",
+      "logoutFail": "Çıkış yapılamadı"
+    },
+    "changePassword": {
+      "title": "Şifreyi Değiştir",
+      "oldPassword": "Eski Şifre",
+      "newPassword": "Yeni Şifre",
+      "cancel": "İptal",
+      "change": "Değiştir"
+    },
+    "passwordSuccess": {
+      "title": "Şifre Değiştirildi!",
+      "message": "Şifrenizi başarıyla değiştirdiniz. Bir sonraki girişinizde yeni şifrenizi kullanın.",
+      "ok": "Tamam"
+    },
+    "avatarSuccess": {
+      "title": "Avatar Güncellendi!",
+      "message": "Avatarınız başarıyla güncellendi.",
+      "ok": "Tamam"
+    },
+    "imageSizeError": {
+      "title": "Resim Çok Büyük",
+      "message": "Maksimum resim boyutu 2MB'dir. Lütfen başka bir fotoğraf seçin.",
+      "ok": "Tamam"
+    },
+    "genericError": {
+      "title": "Hata",
+      "message": "Bir şeyler ters gitti. Lütfen tekrar deneyin veya internet bağlantınızı kontrol edin.",
+      "ok": "Tamam"
+    },
+    "deleteAvatar": {
+      "title": "Avatar silinsin mi?",
+      "message": "Avatarınızı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.",
+      "cancel": "İptal",
+      "delete": "Sil"
+    },
+    "languageDialog": {
+      "title": "Dil Seç",
+      "close": "Kapat"
+    }
+  }
+  

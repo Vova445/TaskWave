@@ -1,0 +1,66 @@
+{
+    "profile": "내 프로필",
+    "change_password": "비밀번호 변경",
+    "phone_number": "전화번호",
+    "email": "이메일 주소",
+    "language": "언어",
+    "sync": "서버와 동기화",
+    "dark_mode": "다크 모드",
+    "notifications": "알림",
+    "logout_title": "로그아웃",
+    "logout_message": "정말 로그아웃하시겠습니까?",
+    "cancel": "취소",
+    "confirm": "확인",
+    "select_language": "언어 선택",
+    "close": "닫기",
+    "logout": {
+      "title": "계정에서 로그아웃하시겠습니까?",
+      "description": "세션을 종료하시겠습니까? 데이터는 저장됩니다."
+    },
+    "buttons": {
+      "cancel": "취소",
+      "logout": "로그아웃"
+    },
+    "errors": {
+      "logoutTitle": "오류",
+      "logoutFail": "로그아웃에 실패했습니다"
+    },
+    "changePassword": {
+      "title": "비밀번호 변경",
+      "oldPassword": "현재 비밀번호",
+      "newPassword": "새 비밀번호",
+      "cancel": "취소",
+      "change": "변경"
+    },
+    "passwordSuccess": {
+      "title": "비밀번호 변경 완료!",
+      "message": "비밀번호가 성공적으로 변경되었습니다. 다음 로그인 시 새 비밀번호를 사용하세요.",
+      "ok": "확인"
+    },
+    "avatarSuccess": {
+      "title": "아바타 업데이트 완료!",
+      "message": "아바타가 성공적으로 업데이트되었습니다.",
+      "ok": "확인"
+    },
+    "imageSizeError": {
+      "title": "이미지가 너무 큽니다",
+      "message": "최대 이미지 크기는 2MB입니다. 다른 이미지를 선택하세요.",
+      "ok": "확인"
+    },
+    "genericError": {
+      "title": "오류",
+      "message": "문제가 발생했습니다. 다시 시도하거나 인터넷 연결을 확인하세요.",
+      "ok": "확인"
+    },
+    "deleteAvatar": {
+      "title": "아바타를 삭제하시겠습니까?",
+      "message": "아바타를 정말로 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+      "cancel": "취소",
+      "delete": "삭제"
+    },
+    "languageDialog": {
+      "title": "언어 선택",
+      "close": "닫기"
+    }
+  }
+  

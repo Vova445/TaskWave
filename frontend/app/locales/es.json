@@ -1,0 +1,66 @@
+{
+    "profile": "Mi Perfil",
+    "change_password": "Cambiar contraseña",
+    "phone_number": "Número de teléfono",
+    "email": "Correo electrónico",
+    "language": "Idioma",
+    "sync": "Sincronizar con el servidor",
+    "dark_mode": "Modo oscuro",
+    "notifications": "Notificaciones",
+    "logout_title": "Cerrar sesión",
+    "logout_message": "¿Estás seguro de que deseas cerrar sesión?",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "select_language": "Seleccionar idioma",
+    "close": "Cerrar",
+    "logout": {
+      "title": "¿Cerrar sesión?",
+      "description": "¿Seguro que deseas cerrar sesión? Tus datos se conservarán."
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "logout": "Cerrar sesión"
+    },
+    "errors": {
+      "logoutTitle": "Error",
+      "logoutFail": "No se pudo cerrar sesión"
+    },
+    "changePassword": {
+      "title": "Cambiar contraseña",
+      "oldPassword": "Contraseña anterior",
+      "newPassword": "Nueva contraseña",
+      "cancel": "Cancelar",
+      "change": "Cambiar"
+    },
+    "passwordSuccess": {
+      "title": "¡Contraseña cambiada!",
+      "message": "Has cambiado tu contraseña correctamente. Usa la nueva para tu próximo acceso.",
+      "ok": "OK"
+    },
+    "avatarSuccess": {
+      "title": "¡Avatar actualizado!",
+      "message": "Tu avatar se ha actualizado correctamente.",
+      "ok": "OK"
+    },
+    "imageSizeError": {
+      "title": "Imagen demasiado grande",
+      "message": "El tamaño máximo de la imagen es de 2MB. Elige otra foto.",
+      "ok": "OK"
+    },
+    "genericError": {
+      "title": "Error",
+      "message": "Algo salió mal. Inténtalo de nuevo o revisa tu conexión.",
+      "ok": "OK"
+    },
+    "deleteAvatar": {
+      "title": "¿Eliminar avatar?",
+      "message": "¿Estás seguro de que deseas eliminar tu avatar? Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar"
+    },
+    "languageDialog": {
+      "title": "Seleccionar idioma",
+      "close": "Cerrar"
+    }
+  }
+  
