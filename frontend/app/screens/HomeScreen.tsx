@@ -185,6 +185,45 @@ export default function HomeScreen() {
     }
   }, [modalVisible]);
 
+  // Add new state to track active dropdown
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  // Add function to handle dropdown toggling
+  const handleDropdownToggle = (dropdownName: string) => {
+    // If clicking the same dropdown that's already open, close it
+    if (activeDropdown === dropdownName) {
+      setActiveDropdown(null);
+    } else {
+      // Close previous dropdown and open the new one
+      setActiveDropdown(dropdownName);
+    }
+
+    // Set specific dropdown states
+    setShowCategoryDropdown(dropdownName === 'category');
+    setShowDatePicker(dropdownName === 'date');
+    setShowTimePicker(dropdownName === 'time');
+    setShowColorPicker(dropdownName === 'color');
+    setShowIconPicker(dropdownName === 'icon');
+    setAndroidPickerShow(dropdownName === 'date' && Platform.OS === 'android');
+    setShowReminderDropdown(dropdownName === 'reminder');
+  };
+
+  // Add new state for reminder dropdown
+  const [showReminderDropdown, setShowReminderDropdown] = useState(false);
+
+  // Add reminder options
+  const reminderOptions = [
+    { value: '0', label: 'В момент дедлайну' },
+    { value: '5', label: 'За 5 хвилин' },
+    { value: '15', label: 'За 15 хвилин' },
+    { value: '30', label: 'За 30 хвилин' },
+    { value: '60', label: 'За 1 годину' },
+    { value: '120', label: 'За 2 години' },
+    { value: '1440', label: 'За 1 день' },
+    { value: '2880', label: 'За 2 дні' },
+    { value: '10080', label: 'За 1 тиждень' },
+  ];
+
   // Функція створення завдання – здійснює базову валідацію для обов’язкових полів
   const handleAddTask = async () => {
     try {
@@ -244,18 +283,12 @@ export default function HomeScreen() {
     }
   };
 
-  // Оновіть функцію handlePageChange
+  // Update handlePageChange to use new function
   const handlePageChange = (newPage: number) => {
-    // Знімаємо фокус з усіх полів
     Object.values(inputRefs).forEach(ref => {
       ref.current?.blur();
     });
-    setShowCategoryDropdown(false);
-    setShowPriorityDropdown(false); // Add this line
-    setShowDatePicker(false);
-    setShowTimePicker(false); // Add this line
-    setShowColorPicker(false); // Add this line
-    setShowIconPicker(false);
+    handleDropdownToggle(''); // Close all dropdowns
     setCurrentPage(newPage);
   };
 
@@ -563,6 +596,7 @@ export default function HomeScreen() {
     },
     iconPickerContainer: {
       marginBottom: 16,
+    
     },
     iconPreview: {
       width: 40,
@@ -572,6 +606,8 @@ export default function HomeScreen() {
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: 12,
+      
+      
     },
     iconPickerHeader: {
       flexDirection: 'row',
@@ -581,19 +617,23 @@ export default function HomeScreen() {
       borderRadius: 8,
       backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
       marginBottom: 16,
+      
     },
     iconPickerTabs: {
       flexDirection: 'row',
       marginBottom: 12,
+     
       backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
       borderRadius: 8,
       padding: 4,
+      
     },
     iconPickerTab: {
       flex: 1,
       paddingVertical: 8,
       alignItems: 'center',
       borderRadius: 6,
+      
     },
     iconPickerTabActive: {
       backgroundColor: '#00b894',
@@ -610,6 +650,7 @@ export default function HomeScreen() {
       flexWrap: 'wrap',
       gap: 8,
       justifyContent: 'space-between',
+      
     },
     iconOption: {
       width: '20%',
@@ -618,6 +659,7 @@ export default function HomeScreen() {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+      
       // marginBottom: 8,
     },
     iconOptionSelected: {
@@ -632,6 +674,22 @@ export default function HomeScreen() {
       marginBottom: 4,
       color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
       textAlign: 'center',
+    },
+    reminderOption: {
+      paddingVertical: 12,
+      paddingHorizontal: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    },
+    reminderOptionSelected: {
+      backgroundColor: '#00b894',
+    },
+    reminderOptionText: {
+      fontSize: 12,
+      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
+    },
+    reminderOptionTextSelected: {
+      color: '#ffffff',
     },
   });
 
@@ -688,11 +746,11 @@ export default function HomeScreen() {
                 right={
                   <TextInput.Icon 
                     icon={showCategoryDropdown ? "chevron-up" : "chevron-down"}
-                    onPress={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                    onPress={() => handleDropdownToggle('category')}
                     color={isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'}
                   />
                 }
-                onFocus={() => setShowCategoryDropdown(true)}
+                onFocus={() => handleDropdownToggle('category')}
               />
               
               {showCategoryDropdown && (
@@ -795,13 +853,7 @@ export default function HomeScreen() {
               </View>
             </View>
             <TouchableOpacity
-              onPress={() => {
-                if (Platform.OS === 'android') {
-                  setAndroidPickerShow(true);
-                } else {
-                  setShowDatePicker(true);
-                }
-              }}
+              onPress={() => handleDropdownToggle('date')}
             >
               <TextInput
                 ref={inputRefs.deadline}
@@ -820,13 +872,7 @@ export default function HomeScreen() {
                 right={
                   <TextInput.Icon 
                     icon="calendar" 
-                    onPress={() => {
-                      if (Platform.OS === 'android') {
-                        setAndroidPickerShow(true);
-                      } else {
-                        setShowDatePicker(true);
-                      }
-                    }}
+                    onPress={() => handleDropdownToggle('date')}
                   />
                 }
               />
@@ -862,7 +908,7 @@ export default function HomeScreen() {
               />
             )}
             <TouchableOpacity
-              onPress={() => setShowTimePicker(true)}
+              onPress={() => handleDropdownToggle('time')}
             >
               <TextInput
                 ref={inputRefs.executionTime}
@@ -881,7 +927,7 @@ export default function HomeScreen() {
                 right={
                   <TextInput.Icon 
                     icon="clock-outline"
-                    onPress={() => setShowTimePicker(true)}
+                    onPress={() => handleDropdownToggle('time')}
                   />
                 }
               />
@@ -910,7 +956,7 @@ export default function HomeScreen() {
         return (
           <>
             <View style={{ marginBottom: 16 }}>
-              <TouchableOpacity onPress={() => setShowColorPicker(!showColorPicker)}>
+              <TouchableOpacity onPress={() => handleDropdownToggle('color')}>
                 <TextInput
                   ref={inputRefs.colorMarking}
                   label="Кольорове маркування"
@@ -928,7 +974,7 @@ export default function HomeScreen() {
                   right={
                     <TextInput.Icon 
                       icon="palette"
-                      onPress={() => setShowColorPicker(!showColorPicker)}
+                      onPress={() => handleDropdownToggle('color')}
                     />
                   }
                   left={colorMarking ? 
@@ -937,7 +983,7 @@ export default function HomeScreen() {
                       style={[styles.selectedColorPreview, { backgroundColor: colorMarking }]} 
                       color={colorMarking} 
                       size={16} 
-                      onPress={() => setShowColorPicker(!showColorPicker)}
+                      onPress={() => handleDropdownToggle('color')}
                     /> : undefined
                   }
                 />
@@ -983,7 +1029,7 @@ export default function HomeScreen() {
             </View>
             <View style={styles.iconPickerContainer}>
               <TouchableOpacity
-                onPress={() => setShowIconPicker(!showIconPicker)}
+                onPress={() => handleDropdownToggle('icon')}
                 style={styles.iconPickerHeader}
               >
                 <View style={styles.iconPreview}>
@@ -1005,7 +1051,7 @@ export default function HomeScreen() {
                 </Text>
                 <IconButton 
                   icon={showIconPicker ? 'chevron-up' : 'chevron-down'}
-                  onPress={() => setShowIconPicker(!showIconPicker)}
+                  onPress={() => handleDropdownToggle('icon')}
                 />
               </TouchableOpacity>
 
@@ -1063,32 +1109,62 @@ export default function HomeScreen() {
                 </View>
               )}
             </View>
-            <TextInput
-              ref={inputRefs.reminder}
-              label="Нагадування"
-              value={reminder}
-              onChangeText={setReminder}
-              placeholder="Час до дедлайну для нагадування"
-              mode="flat" // Change mode to flat
-              style={[styles.input, styles.inputUnderline]}
-              theme={{
-                ...styles.inputTheme,
-                colors: {
-                  ...styles.inputTheme.colors,
-                  background: 'transparent',
-                },
-              }}
-              contentStyle={{ 
-                paddingHorizontal: 0,
-                paddingVertical: 8,
-                fontSize: 15,
-              }}
-              labelStyle={styles.inputLabel}
-              placeholderTextColor={isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              activeUnderlineColor="#00b894" // Add this to control active underline color
-              underlineColor={isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} // Add this to control inactive underline color
-              textColor={isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)'}
-            />
+            <View style={{ marginBottom: 16 }}>
+              <TouchableOpacity onPress={() => handleDropdownToggle('reminder')}>
+                <TextInput
+                  ref={inputRefs.reminder}
+                  label="Нагадування"
+                  value={reminder ? reminderOptions.find(opt => opt.value === reminder)?.label : ''}
+                  mode="flat"
+                  style={[styles.input, styles.inputUnderline]}
+                  theme={{
+                    ...styles.inputTheme,
+                    colors: {
+                      ...styles.inputTheme.colors,
+                      background: 'transparent',
+                    },
+                  }}
+                  editable={false}
+                  right={
+                    <TextInput.Icon 
+                      icon="bell-outline"
+                      onPress={() => handleDropdownToggle('reminder')}
+                    />
+                  }
+                />
+              </TouchableOpacity>
+
+              {showReminderDropdown && (
+                <View style={[styles.colorPickerContainer, {
+                  backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
+                  borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                  maxHeight: 300,
+                }]}>
+                  <ScrollView>
+                    {reminderOptions.map((option) => (
+                      <TouchableOpacity
+                        key={option.value}
+                        style={[
+                          styles.reminderOption,
+                          reminder === option.value && styles.reminderOptionSelected,
+                        ]}
+                        onPress={() => {
+                          setReminder(option.value);
+                          setShowReminderDropdown(false);
+                        }}
+                      >
+                        <Text style={[
+                          styles.reminderOptionText,
+                          reminder === option.value && styles.reminderOptionTextSelected,
+                        ]}>
+                          {option.label}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </ScrollView>
+                </View>
+              )}
+            </View>
             <Button 
               mode="outlined" 
               onPress={() => Alert.alert('Вкладення', 'Функція вкладення доступна для преміум-користувачів')}
