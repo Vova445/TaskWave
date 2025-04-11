@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList, Modal, TouchableOpacity, Alert, Animated, Dimensions, ScrollView } from 'react-native';
+import { View, StyleSheet, FlatList, Modal, TouchableOpacity, Alert, Animated, Dimensions, ScrollView, Platform } from 'react-native';
 import { Text, useTheme, FAB, TextInput, Button, IconButton, Portal, ProgressBar } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useThemeContext } from '../context/ThemeContext';
@@ -7,6 +7,7 @@ import { useThemeContext } from '../context/ThemeContext';
 import { BlurView } from 'expo-blur';
 // Якщо ви не в Expo, замініть рядок імпорту на:
 // import { BlurView } from '@react-native-community/blur';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function HomeScreen() {
   const { colors } = useTheme();
@@ -44,6 +45,93 @@ export default function HomeScreen() {
   const [categories, setCategories] = useState<string[]>(['Робота', 'Навчання', 'Особисте', 'Покупки', 'Здоров\'я']);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [newCategoryInput, setNewCategoryInput] = useState('');
+
+  // Додайте новий state для зберігання посилань на TextInput
+  const [inputRefs] = useState({
+    title: React.createRef<any>(),
+    category: React.createRef<any>(),
+    description: React.createRef<any>(),
+    priority: React.createRef<any>(),
+    deadline: React.createRef<any>(),
+    executionTime: React.createRef<any>(),
+    repetition: React.createRef<any>(),
+    colorMarking: React.createRef<any>(),
+    icon: React.createRef<any>(),
+    reminder: React.createRef<any>(),
+  });
+
+  // First add a new state for priority dropdown
+  const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
+  const priorityOptions = ['Низький', 'Середній', 'Високий'];
+
+  // Додайте нові стани
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [androidPickerShow, setAndroidPickerShow] = useState(false);
+
+  // Add new states for time picker
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
+  // Add new states and constants
+  const [showColorPicker, setShowColorPicker] = useState(false);
+
+  // Додайте нові стани
+  const [showIconPicker, setShowIconPicker] = useState(false);
+  const [selectedIconTab, setSelectedIconTab] = useState('emoji');
+
+  // Додайте константи для іконок
+  const iconCategories = {
+    emoji: [
+      { icon: '📅', label: 'Календар' },
+      { icon: '📚', label: 'Книга' },
+      { icon: '💻', label: 'Комп\'ютер' },
+      { icon: '📝', label: 'Нотатки' },
+      { icon: '🎯', label: 'Ціль' },
+      { icon: '⭐', label: 'Зірка' },
+      { icon: '🏃', label: 'Біг' },
+      { icon: '🎨', label: 'Мистецтво' },
+      { icon: '🛒', label: 'Покупки' },
+      { icon: '🏠', label: 'Дім' },
+      { icon: '💪', label: 'Спорт' },
+      { icon: '🎵', label: 'Музика' },
+    ],
+    material: [
+      { icon: 'home', label: 'Дім' },
+      { icon: 'book', label: 'Книга' },
+      { icon: 'shopping-cart', label: 'Покупки' },
+      { icon: 'alarm', label: 'Будильник' },
+      { icon: 'star', label: 'Зірка' },
+      { icon: 'calendar', label: 'Календар' },
+      { icon: 'pencil', label: 'Олівець' },
+      { icon: 'heart', label: 'Серце' },
+      { icon: 'check', label: 'Галочка' },
+      { icon: 'bell', label: 'Дзвінок' },
+      { icon: 'briefcase', label: 'Портфель' },
+      { icon: 'flag', label: 'Прапор' },
+    ],
+  };
+
+  // Update color palette with better colors and add labels
+  const colorPalette = [
+    { color: '#FF6B6B', label: 'Червоний' },
+    { color: '#4ECDC4', label: 'Бірюзовий' },
+    { color: '#45B7D1', label: 'Голубий' },
+    { color: '#96CEB4', label: 'М\'ятний' },
+    { color: '#FFD93D', label: 'Жовтий' },
+    { color: '#FF9F9F', label: 'Рожевий' },
+    { color: '#9B59B6', label: 'Фіолетовий' },
+    { color: '#3498DB', label: 'Синій' },
+    { color: '#FF9F43', label: 'Оранжевий' },
+    { color: '#1ABC9C', label: 'Смарагдовий' },
+    { color: '#2ECC71', label: 'Зелений' },
+    { color: '#74B9FF', label: 'Небесний' },
+  ];
+
+  // Add helper function for time formatting
+  const formatTime = (timeString: string) => {
+    if (!timeString) return '';
+    const [hours, minutes] = timeString.split(':');
+    return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+  };
 
   // Завантаження профілю користувача
   useEffect(() => {
@@ -154,6 +242,31 @@ export default function HomeScreen() {
       setNewCategoryInput('');
       setShowCategoryDropdown(false);
     }
+  };
+
+  // Оновіть функцію handlePageChange
+  const handlePageChange = (newPage: number) => {
+    // Знімаємо фокус з усіх полів
+    Object.values(inputRefs).forEach(ref => {
+      ref.current?.blur();
+    });
+    setShowCategoryDropdown(false);
+    setShowPriorityDropdown(false); // Add this line
+    setShowDatePicker(false);
+    setShowTimePicker(false); // Add this line
+    setShowColorPicker(false); // Add this line
+    setShowIconPicker(false);
+    setCurrentPage(newPage);
+  };
+
+  // Додайте функцію для форматування дати
+  const formatDate = (date: Date | null) => {
+    if (!date) return '';
+    return date.toLocaleDateString('uk-UA', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
 
   /** СТИЛІ **/
@@ -345,6 +458,181 @@ export default function HomeScreen() {
       borderTopWidth: 1,
       borderTopColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
     },
+    prioritySelector: {
+      marginBottom: 16,
+    },
+    priorityLabel: {
+      fontSize: 12,
+      marginBottom: 8,
+      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
+    },
+    priorityOptions: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      gap: 8,
+    },
+    priorityOption: {
+      flex: 1,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      borderRadius: 8,
+      borderWidth: 1,
+      alignItems: 'center',
+      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    },
+    priorityOptionSelected: {
+      backgroundColor: '#00b894',
+      borderColor: '#00b894',
+    },
+    priorityText: {
+      fontSize: 14,
+      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
+    },
+    priorityTextSelected: {
+      color: '#ffffff',
+    },
+    colorPickerContainer: {
+      position: 'absolute',
+      top: '100%',
+      left: 0,
+      right: 0,
+      borderWidth: 1,
+      borderRadius: 12,
+      marginTop: 4,
+      marginBottom: 16,
+      padding: 12,
+      zIndex: 1000,
+      elevation: 3,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      maxHeight: 280, 
+    },
+    colorGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-between',
+      gap: 8,
+    },
+    colorOption: {
+      width: '48%',
+      height: 44, // Fixed height instead of aspectRatio
+      borderRadius: 8,
+      marginBottom: 12,
+      
+      borderWidth: 2,
+      borderColor: 'transparent',
+      overflow: 'hidden',
+    },
+    colorOptionInner: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+    },
+    colorOptionSelected: {
+      borderColor: isDarkMode ? '#ffffff' : '#000000',
+      
+    },
+    colorPreview: {
+      width: 16,
+      height: 16,
+      borderRadius: 8,
+      marginRight: 8,
+      borderWidth: 1,
+      borderColor: 'rgba(255,255,255,0.3)',
+      
+    },
+    colorLabel: {
+      flex: 1,
+      fontSize: 13,
+      color: '#ffffff',
+      textShadowColor: 'rgba(0,0,0,0.3)',
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: 2,
+    },
+    selectedColorPreview: {
+      width: 15,
+      height: 15,
+      borderRadius: 10,
+      marginRight: 24,
+      marginTop: 30,
+      zIndex: 333333,
+    },
+    iconPickerContainer: {
+      marginBottom: 16,
+    },
+    iconPreview: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 12,
+    },
+    iconPickerHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      borderRadius: 8,
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+      marginBottom: 16,
+    },
+    iconPickerTabs: {
+      flexDirection: 'row',
+      marginBottom: 12,
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+      borderRadius: 8,
+      padding: 4,
+    },
+    iconPickerTab: {
+      flex: 1,
+      paddingVertical: 8,
+      alignItems: 'center',
+      borderRadius: 6,
+    },
+    iconPickerTabActive: {
+      backgroundColor: '#00b894',
+    },
+    iconPickerTabText: {
+      fontSize: 12,
+      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
+    },
+    iconPickerTabTextActive: {
+      color: '#ffffff',
+    },
+    iconGrid: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+      justifyContent: 'space-between',
+    },
+    iconOption: {
+      width: '20%',
+      aspectRatio: 1,
+      borderRadius: 8,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
+      // marginBottom: 8,
+    },
+    iconOptionSelected: {
+      backgroundColor: '#00b894',
+    },
+    iconOptionText: {
+      fontSize: 24,
+    },
+    iconLabel: {
+      fontSize: 8,
+      marginTop: 4,
+      marginBottom: 4,
+      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
+      textAlign: 'center',
+    },
   });
 
   // Рендер вмісту форми в залежності від поточної сторінки
@@ -354,6 +642,7 @@ export default function HomeScreen() {
         return (
           <>
             <TextInput
+              ref={inputRefs.title}
               label="Назва (до 100 символів)"  // Changed label text
               value={newTask}
               onChangeText={setNewTask}
@@ -382,6 +671,7 @@ export default function HomeScreen() {
             
             <View style={{ marginBottom: 16 }}>
               <TextInput
+                ref={inputRefs.category}
                 label="Категорія"
                 value={category}
                 onChangeText={setCategory}
@@ -452,6 +742,7 @@ export default function HomeScreen() {
         return (
           <>
             <TextInput
+              ref={inputRefs.description}
               label="Опис (до 500 символів)"  // Changed label text
               value={description}
               onChangeText={setDescription}
@@ -481,167 +772,299 @@ export default function HomeScreen() {
               numberOfLines={4}
               dense
             />
-            <TextInput
-              label="Пріоритет"
-              value={priority}
-              onChangeText={setPriority}
-              placeholder="Низький, Середній, Високий"
-              mode="flat" // Change mode to flat
-              style={[styles.input, styles.inputUnderline]}
-              theme={{
-                ...styles.inputTheme,
-                colors: {
-                  ...styles.inputTheme.colors,
-                  background: 'transparent',
-                },
+            <View style={styles.prioritySelector}>
+              <Text style={styles.priorityLabel}>Пріоритет</Text>
+              <View style={styles.priorityOptions}>
+                {priorityOptions.map((option) => (
+                  <TouchableOpacity
+                    key={option}
+                    style={[
+                      styles.priorityOption,
+                      priority === option && styles.priorityOptionSelected,
+                    ]}
+                    onPress={() => setPriority(option)}
+                  >
+                    <Text style={[
+                      styles.priorityText,
+                      priority === option && styles.priorityTextSelected,
+                    ]}>
+                      {option}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                if (Platform.OS === 'android') {
+                  setAndroidPickerShow(true);
+                } else {
+                  setShowDatePicker(true);
+                }
               }}
-              contentStyle={{ 
-                paddingHorizontal: 0,
-                paddingVertical: 8,
-                fontSize: 15,
-              }}
-              labelStyle={styles.inputLabel}
-              placeholderTextColor={isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              activeUnderlineColor="#00b894" // Add this to control active underline color
-              underlineColor={isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} // Add this to control inactive underline color
-              textColor={isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)'}
-              right={<TextInput.Icon icon="priority-high" />}
-            />
-            <TextInput
-              label="Дата дедлайну"
-              value={deadline}
-              onChangeText={setDeadline}
-              placeholder="Виберіть дату дедлайну"
-              mode="flat" // Change mode to flat
-              style={[styles.input, styles.inputUnderline]}
-              theme={{
-                ...styles.inputTheme,
-                colors: {
-                  ...styles.inputTheme.colors,
-                  background: 'transparent',
-                },
-              }}
-              contentStyle={{ 
-                paddingHorizontal: 0,
-                paddingVertical: 8,
-                fontSize: 15,
-              }}
-              labelStyle={styles.inputLabel}
-              placeholderTextColor={isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              activeUnderlineColor="#00b894" // Add this to control active underline color
-              underlineColor={isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} // Add this to control inactive underline color
-              textColor={isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)'}
-              right={<TextInput.Icon icon="calendar" />}
-            />
-            <TextInput
-              label="Час виконання"
-              value={executionTime}
-              onChangeText={setExecutionTime}
-              placeholder="Година:Хвилина"
-              mode="flat" // Change mode to flat
-              style={[styles.input, styles.inputUnderline]}
-              theme={{
-                ...styles.inputTheme,
-                colors: {
-                  ...styles.inputTheme.colors,
-                  background: 'transparent',
-                },
-              }}
-              contentStyle={{ 
-                paddingHorizontal: 0,
-                paddingVertical: 8,
-                fontSize: 15,
-              }}
-              labelStyle={styles.inputLabel}
-              placeholderTextColor={isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              activeUnderlineColor="#00b894" // Add this to control active underline color
-              underlineColor={isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} // Add this to control inactive underline color
-              textColor={isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)'}
-            />
-            <TextInput
-              label="Повторення"
-              value={repetition}
-              onChangeText={setRepetition}
-              placeholder="Одноразово, Щоденно, Щотижнево, Щомісячно або конкретні дні"
-              mode="flat" // Change mode to flat
-              style={[styles.input, styles.inputUnderline]}
-              theme={{
-                ...styles.inputTheme,
-                colors: {
-                  ...styles.inputTheme.colors,
-                  background: 'transparent',
-                },
-              }}
-              contentStyle={{ 
-                paddingHorizontal: 0,
-                paddingVertical: 8,
-                fontSize: 15,
-              }}
-              labelStyle={styles.inputLabel}
-              placeholderTextColor={isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              activeUnderlineColor="#00b894" // Add this to control active underline color
-              underlineColor={isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} // Add this to control inactive underline color
-              textColor={isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)'}
-            />
+            >
+              <TextInput
+                ref={inputRefs.deadline}
+                label="Дата дедлайну"
+                value={formatDate(deadline ? new Date(deadline) : null)}
+                mode="flat"
+                style={[styles.input, styles.inputUnderline]}
+                theme={{
+                  ...styles.inputTheme,
+                  colors: {
+                    ...styles.inputTheme.colors,
+                    background: 'transparent',
+                  },
+                }}
+                editable={false}
+                right={
+                  <TextInput.Icon 
+                    icon="calendar" 
+                    onPress={() => {
+                      if (Platform.OS === 'android') {
+                        setAndroidPickerShow(true);
+                      } else {
+                        setShowDatePicker(true);
+                      }
+                    }}
+                  />
+                }
+              />
+            </TouchableOpacity>
+            {/* Для iOS */}
+            {Platform.OS === 'ios' && showDatePicker && (
+              <DateTimePicker
+                value={deadline ? new Date(deadline) : new Date()}
+                mode="date"
+                display="inline"
+                onChange={(event, selectedDate) => {
+                  if (selectedDate) {
+                    setDeadline(selectedDate.toISOString());
+                  }
+                  setShowDatePicker(false);
+                }}
+                minimumDate={new Date()}
+              />
+            )}
+            {/* Для Android */}
+            {Platform.OS === 'android' && androidPickerShow && (
+              <DateTimePicker
+                value={deadline ? new Date(deadline) : new Date()}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => {
+                  setAndroidPickerShow(false);
+                  if (event.type === 'set' && selectedDate) {
+                    setDeadline(selectedDate.toISOString());
+                  }
+                }}
+                minimumDate={new Date()}
+              />
+            )}
+            <TouchableOpacity
+              onPress={() => setShowTimePicker(true)}
+            >
+              <TextInput
+                ref={inputRefs.executionTime}
+                label="Час виконання"
+                value={executionTime}
+                mode="flat"
+                style={[styles.input, styles.inputUnderline]}
+                theme={{
+                  ...styles.inputTheme,
+                  colors: {
+                    ...styles.inputTheme.colors,
+                    background: 'transparent',
+                  },
+                }}
+                editable={false}
+                right={
+                  <TextInput.Icon 
+                    icon="clock-outline"
+                    onPress={() => setShowTimePicker(true)}
+                  />
+                }
+              />
+            </TouchableOpacity>
+
+            {/* Time Picker */}
+            {showTimePicker && (
+              <DateTimePicker
+                value={executionTime ? new Date(`2000-01-01T${executionTime}:00`) : new Date()}
+                mode="time"
+                is24Hour={true}
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={(event, selectedTime) => {
+                  setShowTimePicker(false);
+                  if (event.type === 'set' && selectedTime) {
+                    const hours = selectedTime.getHours().toString().padStart(2, '0');
+                    const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
+                    setExecutionTime(`${hours}:${minutes}`);
+                  }
+                }}
+              />
+            )}
           </>
         );
       case 2:
         return (
           <>
+            <View style={{ marginBottom: 16 }}>
+              <TouchableOpacity onPress={() => setShowColorPicker(!showColorPicker)}>
+                <TextInput
+                  ref={inputRefs.colorMarking}
+                  label="Кольорове маркування"
+                  value={colorMarking ? colorPalette.find(c => c.color === colorMarking)?.label : ''}
+                  mode="flat"
+                  style={[styles.input, styles.inputUnderline]}
+                  theme={{
+                    ...styles.inputTheme,
+                    colors: {
+                      ...styles.inputTheme.colors,
+                      background: 'transparent',
+                    },
+                  }}
+                  editable={false}
+                  right={
+                    <TextInput.Icon 
+                      icon="palette"
+                      onPress={() => setShowColorPicker(!showColorPicker)}
+                    />
+                  }
+                  left={colorMarking ? 
+                    <TextInput.Icon 
+                      icon="circle" 
+                      style={[styles.selectedColorPreview, { backgroundColor: colorMarking }]} 
+                      color={colorMarking} 
+                      size={16} 
+                      onPress={() => setShowColorPicker(!showColorPicker)}
+                    /> : undefined
+                  }
+                />
+              </TouchableOpacity>
+
+              {showColorPicker && (
+                <ScrollView style={[styles.colorPickerContainer, {
+                  backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
+                  borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                }]}>
+                  <View style={styles.colorGrid}>
+                    {colorPalette.map(({ color, label }) => (
+                      <TouchableOpacity
+                        key={color}
+                        style={[
+                          styles.colorOption,
+                          colorMarking === color && styles.colorOptionSelected
+                        ]}
+                        onPress={() => {
+                          setColorMarking(color);
+                          setShowColorPicker(false);
+                        }}
+                      >
+                        <View style={[styles.colorOptionInner, { backgroundColor: color }]}>
+                          <View style={[styles.colorPreview]} />
+                          <Text style={styles.colorLabel} numberOfLines={1}>
+                            {label}
+                          </Text>
+                          {colorMarking === color && (
+                            <IconButton 
+                              icon="check" 
+                              iconColor="#ffffff" 
+                              size={16}
+                              style={{ margin: 0, marginLeft: 'auto' }}
+                            />
+                          )}
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </ScrollView>
+              )}
+            </View>
+            <View style={styles.iconPickerContainer}>
+              <TouchableOpacity
+                onPress={() => setShowIconPicker(!showIconPicker)}
+                style={styles.iconPickerHeader}
+              >
+                <View style={styles.iconPreview}>
+                  {icon ? (
+                    selectedIconTab === 'emoji' ? (
+                      <Text style={{ fontSize: 24 }}>{icon}</Text>
+                    ) : (
+                      <IconButton icon={icon} size={24} />
+                    )
+                  ) : (
+                    <IconButton icon="emoticon-outline" size={24} />
+                  )}
+                </View>
+                <Text style={{ 
+                  color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
+                  flex: 1 
+                }}>
+                  {icon ? 'Обрана іконка' : 'Оберіть іконку'}
+                </Text>
+                <IconButton 
+                  icon={showIconPicker ? 'chevron-up' : 'chevron-down'}
+                  onPress={() => setShowIconPicker(!showIconPicker)}
+                />
+              </TouchableOpacity>
+
+              {showIconPicker && (
+                <View style={[styles.colorPickerContainer, {
+                  backgroundColor: isDarkMode ? '#1e1e1e' : '#ffffff',
+                  borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                }]}>
+                  <View style={styles.iconPickerTabs}>
+                    {['emoji', 'material'].map((tab) => (
+                      <TouchableOpacity
+                        key={tab}
+                        style={[
+                          styles.iconPickerTab,
+                          selectedIconTab === tab && styles.iconPickerTabActive,
+                        ]}
+                        onPress={() => setSelectedIconTab(tab)}
+                      >
+                        <Text style={[
+                          styles.iconPickerTabText,
+                          selectedIconTab === tab && styles.iconPickerTabTextActive,
+                        ]}>
+                          {tab === 'emoji' ? 'Emoji' : 'Іконки'}
+                        </Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+
+                  <ScrollView style={{ maxHeight: 280 }}>
+                    <View style={styles.iconGrid}>
+                      {iconCategories[selectedIconTab].map((item) => (
+                        <TouchableOpacity
+                          key={item.icon}
+                          style={[
+                            styles.iconOption,
+                            icon === item.icon && styles.iconOptionSelected,
+                          ]}
+                          onPress={() => {
+                            setIcon(item.icon);
+                            setShowIconPicker(false);
+                          }}
+                        >
+                          {selectedIconTab === 'emoji' ? (
+                            <Text style={styles.iconOptionText}>{item.icon}</Text>
+                          ) : (
+                            <IconButton icon={item.icon} size={24} />
+                          )}
+                          <Text style={styles.iconLabel} numberOfLines={1}>
+                            {item.label}
+                          </Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </ScrollView>
+                </View>
+              )}
+            </View>
             <TextInput
-              label="Кольорове маркування"
-              value={colorMarking}
-              onChangeText={setColorMarking}
-              placeholder="Виберіть колір"
-              mode="flat" // Change mode to flat
-              style={[styles.input, styles.inputUnderline]}
-              theme={{
-                ...styles.inputTheme,
-                colors: {
-                  ...styles.inputTheme.colors,
-                  background: 'transparent',
-                },
-              }}
-              contentStyle={{ 
-                paddingHorizontal: 0,
-                paddingVertical: 8,
-                fontSize: 15,
-              }}
-              labelStyle={styles.inputLabel}
-              placeholderTextColor={isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              activeUnderlineColor="#00b894" // Add this to control active underline color
-              underlineColor={isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} // Add this to control inactive underline color
-              textColor={isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)'}
-              right={<TextInput.Icon icon="palette" />}
-            />
-            <TextInput
-              label="Іконка"
-              
-              value={icon}
-              onChangeText={setIcon}
-              placeholder="Введіть іконку або emoji"
-              mode="flat" // Change mode to flat
-              style={[styles.input, styles.inputUnderline]}
-              theme={{
-                ...styles.inputTheme,
-                colors: {
-                  ...styles.inputTheme.colors,
-                  background: 'transparent',
-                },
-              }}
-              contentStyle={{ 
-                paddingHorizontal: 0,
-                paddingVertical: 8,
-                fontSize: 15,
-              }}
-              labelStyle={styles.inputLabel}
-              placeholderTextColor={isDarkMode ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}
-              activeUnderlineColor="#00b894" // Add this to control active underline color
-              underlineColor={isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'} // Add this to control inactive underline color
-              textColor={isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)'}
-              right={<TextInput.Icon icon="emoticon-outline" />}
-            />
-            <TextInput
+              ref={inputRefs.reminder}
               label="Нагадування"
               value={reminder}
               onChangeText={setReminder}
@@ -768,7 +1191,7 @@ export default function HomeScreen() {
                       styles.navTab,
                       currentPage === index && styles.activeNavTab,
                     ]}
-                    onPress={() => setCurrentPage(index)}
+                    onPress={() => handlePageChange(index)}  // Замість setCurrentPage(index)
                   >
                     <Text
                       style={[
@@ -793,7 +1216,7 @@ export default function HomeScreen() {
                     if (currentPage === 0) {
                       setModalVisible(false);
                     } else {
-                      setCurrentPage(currentPage - 1);
+                      handlePageChange(currentPage - 1);  // Замість setCurrentPage(currentPage - 1)
                     }
                   }}
                   style={[styles.navigationButton, styles.cancelButton]}
@@ -824,7 +1247,7 @@ export default function HomeScreen() {
                   buttonColor="#00b894"
                   loading={isLoading}
                   disabled={isLoading}
-                  onPress={currentPage < 2 ? () => setCurrentPage(currentPage + 1) : handleAddTask}
+                  onPress={currentPage < 2 ? () => handlePageChange(currentPage + 1) : handleAddTask}  // Замість setCurrentPage(currentPage + 1)
                   style={[styles.navigationButton, styles.nextButton]}
                   labelStyle={{ 
                     fontSize: 12,
