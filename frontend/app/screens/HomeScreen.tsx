@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList, Modal, TouchableOpacity, Alert, Animated, Dimensions, ScrollView, Platform } from 'react-native';
-import { Text, useTheme, FAB, TextInput, Button, IconButton, Portal, ProgressBar } from 'react-native-paper';
+import { View, StyleSheet, FlatList,  TouchableOpacity, Alert, Animated, Dimensions, ScrollView, Platform } from 'react-native';
+import { Text, useTheme, FAB, TextInput, Button, IconButton, Portal, ProgressBar, Dialog, Paragraph, Modal } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useThemeContext } from '../context/ThemeContext';
 // Якщо ви в Expo:
@@ -224,24 +224,57 @@ export default function HomeScreen() {
     { value: '10080', label: 'За 1 тиждень' },
   ];
 
+  // Додайте новий стан для алертів після інших станів
+  const [alert, setAlert] = useState<{
+    visible: boolean;
+    title: string;
+    message: string;
+    type?: 'info' | 'error' | 'success' | 'warning';
+    onConfirm?: () => void;
+  }>({
+    visible: false,
+    title: '',
+    message: '',
+  });
+
   // Функція створення завдання – здійснює базову валідацію для обов’язкових полів
   const handleAddTask = async () => {
     try {
       setIsLoading(true);
       if (!newTask.trim()) {
-        Alert.alert('Помилка', 'Назва завдання є обов’язковою.');
+        setAlert({
+          visible: true,
+          title: 'Помилка',
+          message: 'Назва завдання є обов\'язковою',
+          type: 'error'
+        });
         return;
       }
       if (newTask.length > 100) {
-        Alert.alert('Помилка', 'Назва завдання має бути менше 100 символів.');
+        setAlert({
+          visible: true,
+          title: 'Помилка',
+          message: 'Назва завдання має бути менше 100 символів',
+          type: 'error'
+        });
         return;
       }
       if (!category.trim()) {
-        Alert.alert('Помилка', 'Категорія є обов’язковою.');
+        setAlert({
+          visible: true,
+          title: 'Помилка',
+          message: 'Категорія є обов\'язковою',
+          type: 'error'
+        });
         return;
       }
       if (description.length > 500) {
-        Alert.alert('Помилка', 'Опис має бути до 500 символів.');
+        setAlert({
+          visible: true,
+          title: 'Помилка',
+          message: 'Опис має бути до 500 символів',
+          type: 'error'
+        });
         return;
       }
   
@@ -263,7 +296,12 @@ export default function HomeScreen() {
       setTasks((prev) => [...prev, newTaskData]);
       setModalVisible(false);
     } catch (error) {
-      Alert.alert('Error', 'Failed to create task');
+      setAlert({
+        visible: true,
+        title: 'Помилка',
+        message: 'Не вдалося створити завдання',
+        type: 'error'
+      });
     } finally {
       setIsLoading(false);
     }
@@ -308,10 +346,25 @@ export default function HomeScreen() {
       flex: 1,
       padding: 16,
       backgroundColor: isDarkMode ? '#121212' : '#f7f9fc',
+      paddingTop: 40,
     },
     headerContainer: {
-      alignItems: 'center',
-      marginVertical: 16,
+      paddingVertical: 20,
+      paddingHorizontal: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+      marginBottom: 20,
+    },
+    headerTitle: {
+      fontSize: 28,
+      fontWeight: '700',
+      color: '#00b894',
+      marginBottom: 8,
+    },
+    welcomeText: {
+      fontSize: 16,
+      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+      marginTop: 4,
     },
     taskText: {
       marginVertical: 8,
@@ -319,6 +372,8 @@ export default function HomeScreen() {
     },
     modalBackdrop: {
       flex: 1,
+      width: '100%',
+      height: '100%',
       backgroundColor: 'rgba(0,0,0,1)',
       justifyContent: 'center',
       alignItems: 'center',
@@ -437,19 +492,86 @@ export default function HomeScreen() {
       backgroundColor: '#00b894',
     },
     taskItem: {
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : '#ffffff',
+      borderRadius: 16,
+      marginBottom: 16,
       padding: 16,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-      borderRadius: 12,
+      shadowRadius: 8,
+      borderWidth: 1,
+      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    },
+    taskHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
       marginBottom: 12,
     },
+    taskIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 12,
+    },
+    taskTitleContainer: {
+      flex: 1,
+    },
     taskTitle: {
-      fontSize: 16,
-      fontWeight: 'bold',
+      fontSize: 17,
+      fontWeight: '600',
       marginBottom: 4,
+      color: isDarkMode ? '#fff' : '#2d3436',
+    },
+    taskCategory: {
+      fontSize: 13,
+      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+      marginBottom: 8,
     },
     taskDescription: {
       fontSize: 14,
-      opacity: 0.8,
+      lineHeight: 20,
+      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+      marginBottom: 12,
+    },
+    taskMetaContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    },
+    taskMetaItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    taskMetaText: {
+      fontSize: 12,
+      marginLeft: 4,
+      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+    },
+    priorityBadge: {
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 12,
+      marginLeft: 8,
+    },
+    priorityText: {
+      fontSize: 12,
+      fontWeight: '600',
+      color: '#ffffff',
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 32,
+    },
+    emptyText: {
+      fontSize: 16,
+      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+      textAlign: 'center',
+      marginTop: 8,
     },
     navigationButton: {
       minWidth: 100,
@@ -1166,12 +1288,17 @@ export default function HomeScreen() {
               )}
             </View>
             <Button 
-              mode="outlined" 
-              onPress={() => Alert.alert('Вкладення', 'Функція вкладення доступна для преміум-користувачів')}
-              theme={styles.inputTheme}
-            >
-              Додати Вкладення
-            </Button>
+  mode="outlined" 
+  onPress={() => setAlert({
+    visible: true,
+    title: 'Вкладення',
+    message: 'Функція вкладення доступна для преміум-користувачів',
+    type: 'info'
+  })}
+  theme={styles.inputTheme}
+>
+  Додати Вкладення
+</Button>
           </>
         );
       default:
@@ -1182,38 +1309,109 @@ export default function HomeScreen() {
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.headerContainer}>
-        <Text variant="headlineMedium" style={{ color: '#00b894' }}>
+        <Text variant="headlineMedium" style={styles.headerTitle}>
           Home
         </Text>
 
         {userName && (
-          <Text variant="titleMedium" style={{ color: colors.onBackground }}>
+          <Text variant="titleMedium" style={styles.welcomeText}>
             Welcome, {userName} 👋
           </Text>
         )}
       </View>
 
-      {tasks.length === 0 ? (
-        <Text style={{ color: colors.outline }}>You have no tasks yet</Text>
-      ) : (
-        <FlatList
-          data={tasks}
-          keyExtractor={(_, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.taskItem}>
-              <Text style={[styles.taskTitle, {color: colors.onBackground}]}>
-                {item.title} [{item.category}]
-              </Text>
-              {item.description && (
-                <Text style={[styles.taskDescription, {color: colors.onBackground}]}>
-                  {item.description}
-                </Text>
+      <FlatList
+        data={tasks}
+        keyExtractor={(_, index) => index.toString()}
+        contentContainerStyle={{ paddingBottom: 100 }}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <IconButton 
+              icon="clipboard-text-outline" 
+              size={48} 
+              color={isDarkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'} 
+            />
+            <Text style={styles.emptyText}>У вас поки немає завдань</Text>
+          </View>
+        )}
+        renderItem={({ item }) => (
+          <View style={styles.taskItem}>
+            <View style={styles.taskHeader}>
+              <View 
+                style={[
+                  styles.taskIcon, 
+                  { backgroundColor: item.colorMarking || '#00b894' }
+                ]}
+              >
+                {item.icon ? (
+                  typeof item.icon === 'string' && item.icon.length > 2 ? (
+                    <IconButton icon={item.icon} size={20} color="#fff" />
+                  ) : (
+                    <Text style={{ fontSize: 20 }}>{item.icon}</Text>
+                  )
+                ) : (
+                  <IconButton icon="checkbox-blank-circle-outline" size={20} color="#fff" />
+                )}
+              </View>
+              
+              <View style={styles.taskTitleContainer}>
+                <Text style={styles.taskTitle}>{item.title}</Text>
+                <Text style={styles.taskCategory}>{item.category}</Text>
+              </View>
+              
+              {item.priority && (
+                <View style={[
+                  styles.priorityBadge,
+                  { 
+                    backgroundColor: 
+                      item.priority === 'Високий' ? '#FF6B6B' :
+                      item.priority === 'Середній' ? '#FFD93D' : '#00b894'
+                  }
+                ]}>
+                  <Text style={styles.priorityText}>
+                    {item.priority}
+                  </Text>
+                </View>
               )}
             </View>
-          )}
-          contentContainerStyle={{ paddingBottom: 100 }}
-        />
-      )}
+            
+            {item.description && (
+              <Text style={styles.taskDescription} numberOfLines={2}>
+                {item.description}
+              </Text>
+            )}
+            
+            <View style={styles.taskMetaContainer}>
+              {item.deadline && (
+                <View style={styles.taskMetaItem}>
+                  <IconButton icon="calendar" size={16} />
+                  <Text style={styles.taskMetaText}>
+                    {new Date(item.deadline).toLocaleDateString('uk-UA')}
+                  </Text>
+                </View>
+              )}
+              
+              {item.executionTime && (
+                <View style={styles.taskMetaItem}>
+                  <IconButton icon="clock-outline" size={16} />
+                  <Text style={styles.taskMetaText}>
+                    {item.executionTime}
+                  </Text>
+                </View>
+              )}
+              
+              {item.reminder && (
+                <View style={styles.taskMetaItem}>
+                  <IconButton icon="bell-outline" size={16} />
+                  <Text style={styles.taskMetaText}>
+                    {reminderOptions.find(opt => opt.value === item.reminder)?.label}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+        )}
+      />
 
       <FAB
         icon="plus"
@@ -1222,124 +1420,208 @@ export default function HomeScreen() {
         style={[styles.fab, { backgroundColor: '#00b894' }]}
       />
 
-      <Modal
-        visible={modalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setModalVisible(false)}
+      {/* <Portal> */}
+  <Modal
+    visible={modalVisible}
+    onDismiss={() => setModalVisible(false)}
+    contentContainerStyle={{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'transparent',
+    }}
+  >
+    <View style={styles.modalBackdrop}>
+      <BlurView intensity={80} tint={isDarkMode ? 'dark' : 'light'} style={styles.blurContainer} />
+      <Animated.View 
+        style={[
+          styles.modalContent,
+          {
+            opacity: fadeAnim,
+            transform: [{
+              scale: fadeAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.9, 1],
+              }),
+            }],
+          },
+        ]}
       >
-        <View style={styles.modalBackdrop}>
-          <BlurView intensity={80} tint={isDarkMode ? 'dark' : 'light'} style={styles.blurContainer} />
-          <Animated.View 
-            style={[
-              styles.modalContent,
-              {
-                opacity: fadeAnim,
-                transform: [{
-                  scale: fadeAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0.9, 1],
-                  }),
-                }],
-              },
-            ]}
-          >
-            {/* Header */}
-            <View style={styles.modalHeader}>
-              <Text variant="titleLarge">Нове завдання</Text>
-              <IconButton icon="close" size={24} onPress={() => setModalVisible(false)} />
-            </View>
-
-            {/* Progress Bar – оновлено для 3 сторінок */}
-            <ProgressBar
-              progress={(currentPage + 1) / 3}
-              color="#00b894"
-              style={styles.stepProgress}
-            />
-
-            <View style={styles.modalBody}>
-              {/* Navigation Tabs */}
-              <View style={styles.navigationTabs}>
-                {['Основне', 'Деталі', 'Додатково'].map((tab, index) => (
-                  <TouchableOpacity
-                    key={tab}
-                    style={[
-                      styles.navTab,
-                      currentPage === index && styles.activeNavTab,
-                    ]}
-                    onPress={() => handlePageChange(index)}  // Замість setCurrentPage(index)
-                  >
-                    <Text
-                      style={[
-                        styles.navTabText,
-                        currentPage === index && styles.activeNavTabText,
-                      ]}
-                    >
-                      {tab}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-
-              {/* Вміст поточної сторінки */}
-              {renderFormPage()}
-
-              {/* Кнопки навігації */}
-              <View style={styles.modalButtons}>
-                <Button
-                  mode="outlined"
-                  onPress={() => {
-                    if (currentPage === 0) {
-                      setModalVisible(false);
-                    } else {
-                      handlePageChange(currentPage - 1);  // Замість setCurrentPage(currentPage - 1)
-                    }
-                  }}
-                  style={[styles.navigationButton, styles.cancelButton]}
-                  labelStyle={{ 
-                    fontSize: 12,
-                    fontWeight: '600',
-                    color: isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
-                  }}
-                >
-                  {currentPage === 0 ? 'Скасувати' : 'Назад'}
-                </Button>
-
-                {/* Step Indicators - перенесено сюди */}
-                <View style={[styles.stepIndicator, { marginBottom: 0 }]}>
-                  {[0, 1, 2].map((step) => (
-                    <View
-                      key={step}
-                      style={[
-                        styles.stepDot,
-                        currentPage === step && styles.activeStepDot,
-                      ]}
-                    />
-                  ))}
-                </View>
-
-                <Button
-                  mode="contained"
-                  buttonColor="#00b894"
-                  loading={isLoading}
-                  disabled={isLoading}
-                  onPress={currentPage < 2 ? () => handlePageChange(currentPage + 1) : handleAddTask}  // Замість setCurrentPage(currentPage + 1)
-                  style={[styles.navigationButton, styles.nextButton]}
-                  labelStyle={{ 
-                    fontSize: 12,
-                    fontWeight: '600'
-                  }}
-                  contentStyle={{
-                    height: 40,
-                  }}
-                >
-                  {currentPage < 2 ? 'Далі' : 'Створити'}
-                </Button>
-              </View>
-            </View>
-          </Animated.View>
+        {/* Header */}
+        <View style={styles.modalHeader}>
+          <Text variant="titleLarge">Нове завдання</Text>
+          <IconButton icon="close" size={24} onPress={() => setModalVisible(false)} />
         </View>
-      </Modal>
+
+        {/* Progress Bar – оновлено для 3 сторінок */}
+        <ProgressBar
+          progress={(currentPage + 1) / 3}
+          color="#00b894"
+          style={styles.stepProgress}
+        />
+
+        <View style={styles.modalBody}>
+          {/* Navigation Tabs */}
+          <View style={styles.navigationTabs}>
+            {['Основне', 'Деталі', 'Додатково'].map((tab, index) => (
+              <TouchableOpacity
+                key={tab}
+                style={[
+                  styles.navTab,
+                  currentPage === index && styles.activeNavTab,
+                ]}
+                onPress={() => handlePageChange(index)}  // Замість setCurrentPage(index)
+              >
+                <Text
+                  style={[
+                    styles.navTabText,
+                    currentPage === index && styles.activeNavTabText,
+                  ]}
+                >
+                  {tab}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          {/* Вміст поточної сторінки */}
+          {renderFormPage()}
+
+          {/* Кнопки навігації */}
+          <View style={styles.modalButtons}>
+            <Button
+              mode="outlined"
+              onPress={() => {
+                if (currentPage === 0) {
+                  setModalVisible(false);
+                } else {
+                  handlePageChange(currentPage - 1);  // Замість setCurrentPage(currentPage - 1)
+                }
+              }}
+              style={[styles.navigationButton, styles.cancelButton]}
+              labelStyle={{ 
+                fontSize: 12,
+                fontWeight: '600',
+                color: isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
+              }}
+            >
+              {currentPage === 0 ? 'Скасувати' : 'Назад'}
+            </Button>
+
+            {/* Step Indicators - перенесено сюди */}
+            <View style={[styles.stepIndicator, { marginBottom: 0 }]}>
+              {[0, 1, 2].map((step) => (
+                <View
+                  key={step}
+                  style={[
+                    styles.stepDot,
+                    currentPage === step && styles.activeStepDot,
+                  ]}
+                />
+              ))}
+            </View>
+
+            <Button
+              mode="contained"
+              buttonColor="#00b894"
+              loading={isLoading}
+              disabled={isLoading}
+              onPress={currentPage < 2 ? () => handlePageChange(currentPage + 1) : handleAddTask}  // Замість setCurrentPage(currentPage + 1)
+              style={[styles.navigationButton, styles.nextButton]}
+              labelStyle={{ 
+                fontSize: 12,
+                fontWeight: '600'
+              }}
+              contentStyle={{
+                height: 40,
+              }}
+            >
+              {currentPage < 2 ? 'Далі' : 'Створити'}
+            </Button>
+          </View>
+        </View>
+      </Animated.View>
+    </View>
+  </Modal>
+{/* </Portal> */}
+      <View style={{ zIndex: 10000, elevation: 1000 }}>
+      <Portal>
+  <Dialog
+    visible={alert.visible}
+    onDismiss={() => setAlert(prev => ({ ...prev, visible: false }))}
+    style={{
+      backgroundColor: isDarkMode ? '#1f1f1f' : '#ffffff',
+      borderRadius: 20,
+      marginHorizontal: 24,
+      paddingTop: 16,
+      paddingBottom: 12,
+      elevation: 6,
+      
+    }}
+  >
+    <Dialog.Icon 
+      icon={
+        alert.type === 'error' ? 'alert-circle' : 
+        alert.type === 'success' ? 'check-circle' :
+        alert.type === 'warning' ? 'alert' : 'information'
+      } 
+      size={44} 
+      color={
+        alert.type === 'error' ? '#FF6B6B' : 
+        alert.type === 'success' ? '#00b894' :
+        alert.type === 'warning' ? '#FFD93D' : '#45B7D1'
+      }
+    />
+
+    <Dialog.Title
+      style={{
+        textAlign: 'center',
+        fontWeight: '700',
+        fontSize: 22,
+        color: isDarkMode ? '#fff' : '#2d3436',
+        marginBottom: 10,
+      }}
+    >
+      {alert.title}
+    </Dialog.Title>
+
+    <Dialog.Content style={{ alignItems: 'center' }}>
+      <Paragraph
+        style={{
+          fontSize: 16,
+          color: isDarkMode ? '#ccc' : '#636e72',
+          textAlign: 'center',
+          lineHeight: 22,
+        }}
+      >
+        {alert.message}
+      </Paragraph>
+    </Dialog.Content>
+
+    <Dialog.Actions style={{ justifyContent: 'center', paddingBottom: 12 }}>
+      <Button
+        mode="contained"
+        onPress={() => {
+          if (alert.onConfirm) {
+            alert.onConfirm();
+          }
+          setAlert(prev => ({ ...prev, visible: false }));
+        }}
+        buttonColor={
+          alert.type === 'error' ? '#FF6B6B' : 
+          alert.type === 'success' ? '#00b894' :
+          alert.type === 'warning' ? '#FFD93D' : '#45B7D1'
+        }
+        textColor="#fff"
+        style={{ borderRadius: 10, paddingHorizontal: 28 }}
+        labelStyle={{ fontWeight: '600' }}
+      >
+        OK
+      </Button>
+    </Dialog.Actions>
+  </Dialog>
+</Portal>
+</View>
     </View>
   );
 }

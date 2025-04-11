@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { PaperProvider } from 'react-native-paper';
+import {  Provider as PaperProvider, Portal } from 'react-native-paper';
 
 import RegisterScreen from './app/screens/RegisterScreen';
 import LoginScreen from './app/screens/LoginScreen';
@@ -49,6 +49,7 @@ function MainApp() {
       }}
     >
       <PaperProvider theme={lightScreens.includes(currentRoute) ? DefaultTheme : theme}>
+      <Portal.Host>
       <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Onboarding" component={OnboardingScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
@@ -56,6 +57,7 @@ function MainApp() {
           <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
           <Stack.Screen name="Dashboard" component={BottomTabs} />
         </Stack.Navigator>
+        </Portal.Host>
       </PaperProvider>
     </NavigationContainer>
   );
