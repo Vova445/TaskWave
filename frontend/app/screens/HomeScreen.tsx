@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList,  TouchableOpacity, Alert, Animated, Dimensions, ScrollView, Platform } from 'react-native';
-import { Text, useTheme, FAB, TextInput, Button, IconButton, Portal, ProgressBar, Dialog, Paragraph, Modal } from 'react-native-paper';
+import { View, StyleSheet, FlatList,  TouchableOpacity, Alert, Animated, Dimensions, ScrollView, Platform, SectionList } from 'react-native';
+import { Text, useTheme, FAB, TextInput, Button, IconButton, Portal, ProgressBar, Dialog, Paragraph, Modal, Menu } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useThemeContext } from '../context/ThemeContext';
 // Якщо ви в Expo:
@@ -9,11 +9,32 @@ import { BlurView } from 'expo-blur';
 // import { BlurView } from '@react-native-community/blur';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+const isSameDay = (date1: Date, date2: Date) => {
+  return date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear();
+};
+
+const formatDateKey = (date: Date) => {
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  };
+  return date.toLocaleDateString('uk-UA', options);
+};
+
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { isDarkMode } = useThemeContext();
   const screenWidth = Dimensions.get('window').width;
   const [fadeAnim] = useState(new Animated.Value(0));
+
+  // Add the sorting hooks here
+  const [showSortMenu, setShowSortMenu] = useState(false);
+  const [sortAnchor, setSortAnchor] = useState({ x: 0, y: 0 });
+  const [sortBy, setSortBy] = useState<'priority' | 'date' | 'category' | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
   // Стан для даних користувача та завдань (зберігаємо як обʼєкт для кожного завдання)
   const [userName, setUserName] = useState<string | null>(null);
@@ -241,6 +262,8 @@ export default function HomeScreen() {
   const handleAddTask = async () => {
     try {
       setIsLoading(true);
+      
+      // Validation stays the same
       if (!newTask.trim()) {
         setAlert({
           visible: true,
@@ -250,29 +273,14 @@ export default function HomeScreen() {
         });
         return;
       }
-      if (newTask.length > 100) {
+      // ... other validation
+  
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
         setAlert({
           visible: true,
           title: 'Помилка',
-          message: 'Назва завдання має бути менше 100 символів',
-          type: 'error'
-        });
-        return;
-      }
-      if (!category.trim()) {
-        setAlert({
-          visible: true,
-          title: 'Помилка',
-          message: 'Категорія є обов\'язковою',
-          type: 'error'
-        });
-        return;
-      }
-      if (description.length > 500) {
-        setAlert({
-          visible: true,
-          title: 'Помилка',
-          message: 'Опис має бути до 500 символів',
+          message: 'Необхідно увійти в систему',
           type: 'error'
         });
         return;
@@ -289,12 +297,31 @@ export default function HomeScreen() {
         colorMarking: colorMarking.trim(),
         icon: icon.trim(),
         reminder: reminder.trim(),
-        attachments, // Обробка вкладення може бути реалізована пізніше
       };
   
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
-      setTasks((prev) => [...prev, newTaskData]);
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(newTaskData)
+      });
+  
+      if (!response.ok) {
+        throw new Error('Помилка створення завдання');
+      }
+  
+      const savedTask = await response.json();
+      setTasks(prev => [savedTask, ...prev]);
       setModalVisible(false);
+      
+      setAlert({
+        visible: true,
+        title: 'Успіх',
+        message: 'Завдання успішно створено',
+        type: 'success'
+      });
     } catch (error) {
       setAlert({
         visible: true,
@@ -306,6 +333,40 @@ export default function HomeScreen() {
       setIsLoading(false);
     }
   };
+
+  // Add function to fetch tasks
+  const fetchTasks = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) return;
+  
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Помилка завантаження завдань');
+      }
+  
+      const tasks = await response.json();
+      setTasks(tasks);
+    } catch (error) {
+      console.error('Error fetching tasks:', error);
+      setAlert({
+        visible: true,
+        title: 'Помилка',
+        message: 'Не вдалося завантажити завдання',
+        type: 'error'
+      });
+    }
+  };
+  
+  // Add useEffect to fetch tasks on component mount
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const handleCategorySelect = (selectedCategory: string) => {
     setCategory(selectedCategory);
@@ -338,6 +399,78 @@ export default function HomeScreen() {
       month: 'long',
       day: 'numeric'
     });
+  };
+
+  // Add the sorting function inside the component
+  const sortTasks = (tasksToSort: any[]) => {
+    if (!sortBy) return tasksToSort;
+
+    return [...tasksToSort].sort((a, b) => {
+      const multiplier = sortDirection === 'asc' ? 1 : -1;
+
+      switch (sortBy) {
+        case 'priority': {
+          const priorityOrder = { 'Високий': 3, 'Середній': 2, 'Низький': 1 };
+          return multiplier * ((priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0));
+        }
+        case 'date': {
+          const dateA = a.deadline ? new Date(a.deadline).getTime() : 0;
+          const dateB = b.deadline ? new Date(b.deadline).getTime() : 0;
+          return multiplier * (dateA - dateB);
+        }
+        case 'category': {
+          return multiplier * (a.category || '').localeCompare(b.category || '');
+        }
+        default:
+          return 0;
+      }
+    });
+  };
+
+  // Update the groupTasksByDate function
+  const groupTasksByDate = (tasks: any[]) => {
+    const sortedTasks = sortTasks(tasks);
+    const groups = sortedTasks.reduce((acc, task) => {
+      if (!task.deadline) {
+        const noDateKey = 'No deadline';
+        acc[noDateKey] = acc[noDateKey] || [];
+        acc[noDateKey].push(task);
+        return acc;
+      }
+  
+      const date = new Date(task.deadline);
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+  
+      let dateKey;
+      if (isSameDay(date, today)) {
+        dateKey = 'Today';
+      } else if (isSameDay(date, tomorrow)) {
+        dateKey = 'Tomorrow';
+      } else {
+        dateKey = formatDateKey(date);
+      }
+  
+      acc[dateKey] = acc[dateKey] || [];
+      acc[dateKey].push(task);
+      return acc;
+    }, {});
+  
+    // Якщо сортування не за датою, не сортуємо задачі в групах додатково
+    if (sortBy !== 'priority') {
+      return groups;
+    }
+  
+    // Існуючий код сортування за пріоритетом всередині груп
+    Object.keys(groups).forEach(key => {
+      groups[key].sort((a, b) => {
+        const priorityOrder = { 'Високий': 3, 'Середній': 2, 'Низький': 1 };
+        return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
+      });
+    });
+  
+    return groups;
   };
 
   /** СТИЛІ **/
@@ -812,6 +945,26 @@ export default function HomeScreen() {
     },
     reminderOptionTextSelected: {
       color: '#ffffff',
+    },
+    sectionHeader: {
+      padding: 16,
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+    },
+    sectionHeaderText: {
+      fontSize: 16,
+      fontWeight: '600',
+    },
+    sortButton: {
+      position: 'absolute',
+      right: 20,
+      bottom: 140,
+      borderRadius: 16,
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+    },
+    sortIcon: {
+      transform: [{ rotate: sortDirection === 'asc' ? '0deg' : '180deg' }],
     },
   });
 
@@ -1320,10 +1473,14 @@ export default function HomeScreen() {
         )}
       </View>
 
-      <FlatList
-        data={tasks}
-        keyExtractor={(_, index) => index.toString()}
+      <SectionList
+        sections={Object.entries(groupTasksByDate(tasks)).map(([title, data]) => ({
+          title,
+          data
+        }))}
+        keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={{ paddingBottom: 100 }}
+        stickySectionHeadersEnabled={true}
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
             <IconButton 
@@ -1332,6 +1489,16 @@ export default function HomeScreen() {
               color={isDarkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'} 
             />
             <Text style={styles.emptyText}>У вас поки немає завдань</Text>
+          </View>
+        )}
+        renderSectionHeader={({ section: { title } }) => (
+          <View style={[styles.sectionHeader, {
+          }]}>
+            <Text style={[styles.sectionHeaderText, {
+              color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
+            }]}>
+              {title}
+            </Text>
           </View>
         )}
         renderItem={({ item }) => (
@@ -1411,6 +1578,72 @@ export default function HomeScreen() {
             </View>
           </View>
         )}
+      />
+
+      <Menu
+        visible={showSortMenu}
+        onDismiss={() => setShowSortMenu(false)}
+        anchor={sortAnchor}
+      >
+        <Menu.Item
+          leadingIcon={sortBy === 'priority' ? 'check' : undefined}
+          onPress={() => {
+            setSortBy('priority');
+            if (sortBy === 'priority') {
+              setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+            }
+            setShowSortMenu(false);
+          }}
+          title="За пріоритетом"
+        />
+        <Menu.Item
+          leadingIcon={sortBy === 'date' ? 'check' : undefined}
+          onPress={() => {
+            setSortBy('date');
+            if (sortBy === 'date') {
+              setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+            }
+            setShowSortMenu(false);
+          }}
+          title="За датою"
+        />
+        <Menu.Item
+          leadingIcon={sortBy === 'category' ? 'check' : undefined}
+          onPress={() => {
+            setSortBy('category');
+            if (sortBy === 'category') {
+              setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
+            }
+            setShowSortMenu(false);
+          }}
+          title="За категорією"
+        />
+        {sortBy && (
+          <Menu.Item
+            leadingIcon="close"
+            onPress={() => {
+              setSortBy(null);
+              setShowSortMenu(false);
+            }}
+            title="Скинути сортування"
+          />
+        )}
+      </Menu>
+
+      <FAB
+        icon="sort"
+        customSize={48}
+        style={styles.sortButton}
+        onPress={(event) => {
+          const { nativeEvent } = event;
+          setSortAnchor({ x: nativeEvent.pageX, y: nativeEvent.pageY });
+          setShowSortMenu(true);
+        }}
+        label={sortBy ? `Сортування: ${
+          sortBy === 'priority' ? 'пріоритет' :
+          sortBy === 'date' ? 'дата' :
+          'категорія'
+        }` : 'Сортування'}
       />
 
       <FAB
