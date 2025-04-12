@@ -8,6 +8,12 @@ import { BlurView } from 'expo-blur';
 // Якщо ви не в Expo, замініть рядок імпорту на:
 // import { BlurView } from '@react-native-community/blur';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import TaskItem from '../components/TaskItem';
+import TaskFilters, { TaskFilter } from '../components/TaskFilters';
+import AddTaskModal from '../components/AddTaskModal';
+import AlertDialog from '../components/AlertDialog';
+import { useHomeStyles } from '../styles/homeStyles';
 
 const isSameDay = (date1: Date, date2: Date) => {
   return date1.getDate() === date2.getDate() &&
@@ -24,17 +30,12 @@ const formatDateKey = (date: Date) => {
   return date.toLocaleDateString('uk-UA', options);
 };
 
-enum TaskFilter {
-  ALL = 'all',
-  ACTIVE = 'active',
-  COMPLETED = 'completed'
-}
-
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { isDarkMode } = useThemeContext();
   const screenWidth = Dimensions.get('window').width;
   const [fadeAnim] = useState(new Animated.Value(0));
+  const styles = useHomeStyles(isDarkMode);
 
   // Add the sorting hooks here
   const [showSortMenu, setShowSortMenu] = useState(false);
@@ -275,7 +276,6 @@ export default function HomeScreen() {
     try {
       setIsLoading(true);
       
-      // Validation stays the same
       if (!newTask.trim()) {
         setAlert({
           visible: true,
@@ -285,7 +285,6 @@ export default function HomeScreen() {
         });
         return;
       }
-      // ... other validation
   
       const token = await AsyncStorage.getItem('token');
       if (!token) {
@@ -306,8 +305,8 @@ export default function HomeScreen() {
         deadline: deadline.trim(),
         executionTime: executionTime.trim(),
         repetition: repetition.trim(),
-        colorMarking: colorMarking.trim(),
-        icon: icon.trim(),
+        colorMarking: colorMarking, // Додано
+        icon: icon, // Додано
         reminder: reminder.trim(),
       };
   
@@ -581,638 +580,6 @@ export default function HomeScreen() {
     );
   };
 
-  /** СТИЛІ **/
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      paddingTop: 20,
-      backgroundColor: isDarkMode ? '#121212' : '#f7f9fc',
-    },
-    headerContainer: {
-      paddingTop: Platform.OS === 'ios' ? 60 : 40,
-      paddingBottom: 16,
-      paddingHorizontal: 20,
-      backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
-      borderBottomWidth: 1,
-      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-      marginBottom: 16,
-    },
-    headerTitle: {
-      fontSize: 32,
-      fontWeight: '700',
-      color: isDarkMode ? '#ffffff' : '#2d3436',
-      marginBottom: 8,
-    },
-    welcomeText: {
-      fontSize: 16,
-      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
-    },
-    taskText: {
-      marginVertical: 8,
-      color: isDarkMode ? '#fff' : '#2d3436',
-    },
-    modalBackdrop: {
-      flex: 1,
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'rgba(0,0,0,1)',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    blurContainer: {
-      ...StyleSheet.absoluteFillObject,
-    },
-    modalContent: {
-      width: '90%',
-      maxWidth: 420,
-      borderRadius: 24,
-      backgroundColor: isDarkMode ? 'rgba(20,20,20,0.8)' : 'rgba(255,255,255,0.9)',
-      borderWidth: 1,
-      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-      overflow: 'hidden',
-      paddingBottom: 20,
-    },
-    modalHeader: {
-      padding: 20,
-      borderBottomWidth: 1,
-      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-    modalBody: {
-      paddingHorizontal: 24,
-      paddingTop: 16,
-    },
-    stepProgress: {
-      height: 3,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-    },
-    navigationTabs: {
-      flexDirection: 'row',
-      marginBottom: 24,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-      borderRadius: 12,
-      padding: 4,
-    },
-    navTab: {
-      flex: 1,
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      borderRadius: 8,
-    },
-    activeNavTab: {
-      backgroundColor: '#00b894',
-    },
-    navTabText: {
-      textAlign: 'center',
-      fontSize: 10,
-      fontWeight: '600',
-      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-    },
-    activeNavTabText: {
-      color: '#fff',
-    },
-    stepIndicator: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginHorizontal: 16, // Додано відступи з боків
-    },
-    stepDot: {
-      width: 8,
-      height: 8,
-      borderRadius: 4,
-      marginHorizontal: 4,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
-    },
-    activeStepDot: {
-      backgroundColor: '#00b894',
-      width: 24,
-    },
-    input: {
-      marginBottom: 16,
-      backgroundColor: 'transparent', // Remove background
-      overflow: 'hidden',
-    },
-    inputUnderline: {
-      borderBottomWidth: 1,
-      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-      paddingBottom: 8,
-      paddingHorizontal: 0, // Remove horizontal padding
-    },
-    inputTheme: {
-      colors: {
-        primary: '#00b894',
-        onSurfaceVariant: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-        placeholder: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)',
-        outline: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-      },
-    },
-    multilineInput: {
-      minHeight: 100,
-    },
-    iconInput: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    modalButtons: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center', // Додано для вирівнювання по центру
-      marginTop: 24,
-      paddingTop: 16,
-      borderTopWidth: 1,
-      borderTopColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-      paddingHorizontal: 8,
-    },
-    fab: {
-      position: 'absolute',
-      right: 20,
-      bottom: 80,
-      borderRadius: 16,
-      backgroundColor: '#00b894',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.2,
-      shadowRadius: 8,
-      elevation: 5,
-    },
-    taskItem: {
-      marginHorizontal: 16,
-      marginBottom: 12,
-      backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
-      borderRadius: 16,
-      padding: 16,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 3,
-      borderWidth: 1.5,
-      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-    },
-    taskHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 12,
-      gap: 12,
-    },
-    taskIcon: {
-      width: 44,
-      height: 44,
-      borderRadius: 12,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    taskTitleContainer: {
-      flex: 1,
-    },
-    taskTitle: {
-      fontSize: 17,
-      fontWeight: '600',
-      marginBottom: 4,
-      color: isDarkMode ? '#ffffff' : '#2d3436',
-    },
-    taskCategory: {
-      fontSize: 14,
-      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
-    },
-    taskDescription: {
-      fontSize: 14,
-      lineHeight: 20,
-      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
-      marginBottom: 12,
-    },
-    taskMetaContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 16,
-      paddingTop: 12,
-      borderTopWidth: 1,
-      borderTopColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-    },
-    taskMetaItem: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 4,
-    },
-    taskMetaText: {
-      fontSize: 13,
-      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-    },
-    priorityBadge: {
-      paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 8,
-      marginLeft: 8,
-    },
-    priorityText: {
-      fontSize: 13,
-      fontWeight: '600',
-      color: '#ffffff',
-    },
-    emptyContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingVertical: 32,
-    },
-    emptyText: {
-      fontSize: 16,
-      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
-      textAlign: 'center',
-      marginTop: 8,
-    },
-    navigationButton: {
-      minWidth: 100,
-      borderRadius: 12,
-      paddingVertical: 8,
-    },
-    cancelButton: {
-      borderColor: isDarkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)',
-      borderWidth: 1.5,
-    },
-    nextButton: {
-      elevation: 2,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-    },
-    categoryDropdown: {
-      position: 'absolute',
-      top: '70%',
-      left: 0,
-      right: 0,
-      borderWidth: 1,
-      borderRadius: 8,
-      marginTop: 4,
-      zIndex: 1000,
-      elevation: 3,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-    },
-    categoryItem: {
-      borderBottomWidth: 1,
-      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-    },
-    newCategoryInput: {
-      padding: 8,
-      borderTopWidth: 1,
-      borderTopColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-    },
-    prioritySelector: {
-      marginBottom: 16,
-    },
-    priorityLabel: {
-      fontSize: 12,
-      marginBottom: 8,
-      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-    },
-    priorityOptions: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      gap: 8,
-    },
-    priorityOption: {
-      flex: 1,
-      paddingVertical: 10,
-      paddingHorizontal: 12,
-      borderRadius: 8,
-      borderWidth: 1,
-      alignItems: 'center',
-      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-    },
-    priorityOptionSelected: {
-      backgroundColor: '#00b894',
-      borderColor: '#00b894',
-    },
-    priorityText: {
-      fontSize: 14,
-      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
-    },
-    priorityTextSelected: {
-      color: '#ffffff',
-    },
-    colorPickerContainer: {
-      position: 'absolute',
-      top: '100%',
-      left: 0,
-      right: 0,
-      borderWidth: 1,
-      borderRadius: 12,
-      marginTop: 4,
-      marginBottom: 16,
-      padding: 12,
-      zIndex: 1000,
-      elevation: 3,
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      maxHeight: 280, 
-    },
-    colorGrid: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-      gap: 8,
-    },
-    colorOption: {
-      width: '48%',
-      height: 44, // Fixed height instead of aspectRatio
-      borderRadius: 8,
-      marginBottom: 12,
-      
-      borderWidth: 2,
-      borderColor: 'transparent',
-      overflow: 'hidden',
-    },
-    colorOptionInner: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 12,
-      paddingVertical: 8,
-    },
-    colorOptionSelected: {
-      borderColor: isDarkMode ? '#ffffff' : '#000000',
-      
-    },
-    colorPreview: {
-      width: 16,
-      height: 16,
-      borderRadius: 8,
-      marginRight: 8,
-      borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.3)',
-      
-    },
-    colorLabel: {
-      flex: 1,
-      fontSize: 13,
-      color: '#ffffff',
-      textShadowColor: 'rgba(0,0,0,0.3)',
-      textShadowOffset: { width: 0, height: 1 },
-      textShadowRadius: 2,
-    },
-    selectedColorPreview: {
-      width: 15,
-      height: 15,
-      borderRadius: 10,
-      marginRight: 24,
-      marginTop: 30,
-      zIndex: 333333,
-    },
-    iconPickerContainer: {
-      marginBottom: 16,
-    
-    },
-    iconPreview: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginRight: 12,
-      
-      
-    },
-    iconPickerHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingVertical: 8,
-      paddingHorizontal: 12,
-      borderRadius: 8,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-      marginBottom: 16,
-      
-    },
-    iconPickerTabs: {
-      flexDirection: 'row',
-      marginBottom: 12,
-     
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-      borderRadius: 8,
-      padding: 4,
-      
-    },
-    iconPickerTab: {
-      flex: 1,
-      paddingVertical: 8,
-      alignItems: 'center',
-      borderRadius: 6,
-      
-    },
-    iconPickerTabActive: {
-      backgroundColor: '#00b894',
-    },
-    iconPickerTabText: {
-      fontSize: 12,
-      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-    },
-    iconPickerTabTextActive: {
-      color: '#ffffff',
-    },
-    iconGrid: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: 8,
-      justifyContent: 'space-between',
-      
-    },
-    iconOption: {
-      width: '20%',
-      aspectRatio: 1,
-      borderRadius: 8,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
-      
-      // marginBottom: 8,
-    },
-    iconOptionSelected: {
-      backgroundColor: '#00b894',
-    },
-    iconOptionText: {
-      fontSize: 24,
-    },
-    iconLabel: {
-      fontSize: 8,
-      marginTop: 4,
-      marginBottom: 4,
-      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
-      textAlign: 'center',
-    },
-    reminderOption: {
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-      borderBottomWidth: 1,
-      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-    },
-    reminderOptionSelected: {
-      backgroundColor: '#00b894',
-    },
-    reminderOptionText: {
-      fontSize: 12,
-      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
-    },
-    reminderOptionTextSelected: {
-      color: '#ffffff',
-    },
-    sectionHeader: {
-      paddingHorizontal: 20,
-      paddingVertical: 12,
-    },
-    sectionHeaderText: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.8)',
-    },
-    sortButton: {
-      position: 'absolute',
-      right: 20,
-      bottom: 150,
-      borderRadius: 16,
-      backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.2,
-      shadowRadius: 8,
-      elevation: 5,
-    },
-    // Стилі для фільтрації та пошуку
-    filterContainer: {
-      marginHorizontal: 16,
-      marginBottom: 16,
-      borderRadius: 16,
-      padding: 12,
-      
-    },
-    filterHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    filterTitle: {
-      fontSize: 16,
-      fontWeight: '600',
-      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
-    },
-    filterButtonsContainer: {
-      flexDirection: 'row',
-      gap: 8,
-      marginBottom: 12,
-    },
-    filterButton: {
-      flex: 1,
-      paddingVertical: 10,
-      paddingHorizontal: 12,
-      borderRadius: 12,
-      borderWidth: 1.5,
-      borderColor: isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)',
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)',
-    },
-    filterButtonActive: {
-      backgroundColor: '#00b894',
-      borderColor: '#00b894',
-    },
-    filterButtonText: {
-      fontSize: 12,
-      fontWeight: '600',
-      textAlign: 'center',
-      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.8)',
-    },
-    filterButtonTextActive: {
-      color: '#ffffff',
-    },
-    searchContainer: {
-      paddingHorizontal: 16,
-      marginBottom: 16,
-    },
-    searchInput: {
-      borderRadius: 16,
-      borderWidth: 1.5,
-      borderColor: isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)',
-      
-    },
-    filterBadge: {
-      position: 'absolute',
-      top: -6,
-      right: -6,
-      backgroundColor: '#00b894',
-      borderRadius: 10,
-      width: 20,
-      height: 20,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    filterBadgeText: {
-      color: '#ffffff',
-      fontSize: 12,
-      fontWeight: '600',
-    },
-    noResultsContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingVertical: 32,
-    },
-    noResultsText: {
-      fontSize: 16,
-      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
-      textAlign: 'center',
-      marginTop: 8,
-    },
-    filterIndicator: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 12,
-      paddingVertical: 4,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
-      borderRadius: 16,
-      marginRight: 8,
-    },
-    filterIndicatorText: {
-      fontSize: 12,
-      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
-      marginRight: 4,
-    },
-    activeFiltersContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: 8,
-      marginBottom: 12,
-      paddingHorizontal: 16,
-    },
-    clearFiltersButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingVertical: 4,
-      paddingHorizontal: 8,
-      borderRadius: 8,
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-    },
-    clearFiltersText: {
-      fontSize: 12,
-      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
-      marginLeft: 4,
-    },
-    searchIconContainer: {
-      position: 'absolute',
-      right: 16,
-      top: '50%',
-      transform: [{ translateY: -12 }],
-    },
-    searchIcon: {
-      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
-    }
-  });
-
   // Рендер вмісту форми в залежності від поточної сторінки
   const renderFormPage = () => {
     switch (currentPage) {
@@ -1465,6 +832,7 @@ export default function HomeScreen() {
                   if (event.type === 'set' && selectedTime) {
                     const hours = selectedTime.getHours().toString().padStart(2, '0');
                     const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
+                    
                     setExecutionTime(`${hours}:${minutes}`);
                   }
                 }}
@@ -1704,7 +1072,83 @@ export default function HomeScreen() {
     }
   };
 
+  // Додайте нові функції для обробки дій свайпу:
+const handleCompleteTask = async (task) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) return;
+
+    const updatedTask = { ...task, isCompleted: !task.isCompleted };
+    
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks/${task.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ isCompleted: !task.isCompleted })
+    });
+
+    if (!response.ok) throw new Error('Failed to update task');
+
+    setTasks(prev => prev.map(t => 
+      t.id === task.id ? updatedTask : t
+    ));
+  } catch (error) {
+    setAlert({
+      visible: true,
+      title: 'Помилка',
+      message: 'Не вдалося оновити статус завдання',
+      type: 'error'
+    });
+  }
+};
+
+const handleDeleteTask = async (task) => {
+  try {
+    const token = await AsyncStorage.getItem('token');
+    if (!token) return;
+
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/tasks/${task.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to delete task');
+
+    setTasks(prev => prev.filter(t => t.id !== task.id));
+    
+    setAlert({
+      visible: true,
+      title: 'Успіх',
+      message: 'Завдання успішно видалено',
+      type: 'success'
+    });
+  } catch (error) {
+    setAlert({
+      visible: true,
+      title: 'Помилка',
+      message: 'Не вдалося видалити завдання',
+      type: 'error'
+    });
+  }
+};
+
+const handleEditTask = (task) => {
+  // Тут буде логіка відкриття модального вікна редагування
+  // TODO: Implement edit functionality
+  setAlert({
+    visible: true,
+    title: 'Інформація',
+    message: 'Функція редагування буде доступна незабаром',
+    type: 'info'
+  });
+};
+
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.headerContainer}>
         <Text variant="headlineMedium" style={styles.headerTitle}>
@@ -1716,85 +1160,29 @@ export default function HomeScreen() {
             Welcome, {userName} 👋
           </Text>
         )}
+
+        
       </View>
 
-      <View style={styles.filterContainer}>
-  <View style={styles.filterButtonsContainer}>
-    <TouchableOpacity
-      style={[
-        styles.filterButton,
-        taskFilter === TaskFilter.ALL && styles.filterButtonActive
-      ]}
-      onPress={() => setTaskFilter(TaskFilter.ALL)}
-    >
-      <Text style={[
-        styles.filterButtonText,
-        taskFilter === TaskFilter.ALL && styles.filterButtonTextActive
-      ]}>
-        Всі
-      </Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity
-      style={[
-        styles.filterButton,
-        taskFilter === TaskFilter.ACTIVE && styles.filterButtonActive
-      ]}
-      onPress={() => setTaskFilter(TaskFilter.ACTIVE)}
-    >
-      <Text style={[
-        styles.filterButtonText,
-        taskFilter === TaskFilter.ACTIVE && styles.filterButtonTextActive
-      ]}>
-        Активні
-      </Text>
-    </TouchableOpacity>
-
-    <TouchableOpacity
-      style={[
-        styles.filterButton,
-        taskFilter === TaskFilter.COMPLETED && styles.filterButtonActive
-      ]}
-      onPress={() => setTaskFilter(TaskFilter.COMPLETED)}
-    >
-      <Text style={[
-        styles.filterButtonText,
-        taskFilter === TaskFilter.COMPLETED && styles.filterButtonTextActive
-      ]}>
-        Завершені
-      </Text>
-    </TouchableOpacity>
-  </View>
-</View>
-
-<View style={styles.searchContainer}>
-  <TextInput
-    placeholder="Пошук за назвою або описом..."
-    value={searchQuery}
-    onChangeText={setSearchQuery}
-    mode="outlined"
-    style={[
-      styles.searchInput,
-      Platform.select({
-        ios: { height: 40 },
-        android: { height: 44 }
-      })
-    ]}
-    theme={{
-      colors: {
-        primary: '#00b894',
-      }
-    }}
-    left={<TextInput.Icon icon="magnify" />}
-    right={searchQuery ? 
-      <TextInput.Icon 
-        icon="close" 
-        onPress={() => setSearchQuery('')}
-      /> : null
-    }
-  />
-</View>
-
+      <TaskFilters 
+  taskFilter={taskFilter}
+  setTaskFilter={setTaskFilter}
+  searchQuery={searchQuery}
+  setSearchQuery={setSearchQuery}
+  isDarkMode={isDarkMode}
+  styles={styles}
+  totalTasks={tasks.length}
+  activeTasks={tasks.filter(t => !t.isCompleted).length}
+  completedTasks={tasks.filter(t => t.isCompleted).length}
+  sortBy={sortBy}
+  sortDirection={sortDirection}
+  onSortPress={(event) => {
+    const { nativeEvent } = event;
+    setSortAnchor({ x: nativeEvent.pageX, y: nativeEvent.pageY });
+    setShowSortMenu(true);
+  }}
+/>
+    
       <SectionList
         sections={Object.entries(groupTasksByDate(tasks)).map(([title, data]) => ({
           title,
@@ -1824,94 +1212,15 @@ export default function HomeScreen() {
           </View>
         )}
         renderItem={({ item }) => (
-          <TouchableOpacity 
-            style={[
-              styles.taskItem,
-              item.isCompleted && {
-                opacity: 0.7,
-                backgroundColor: isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'
-              }
-            ]}
-            onPress={() => {/* Handle task press */}}
-          >
-            <View style={styles.taskHeader}>
-              <TouchableOpacity 
-                style={[
-                  styles.taskIcon,
-                  { backgroundColor: item.colorMarking || '#00b894' }
-                ]}
-                onPress={() => {
-                  // Toggle task completion
-                  const updatedTask = { ...item, isCompleted: !item.isCompleted };
-                  // Update task in the state
-                  setTasks(prev => prev.map(t => 
-                    t.id === item.id ? updatedTask : t
-                  ));
-                }}
-              >
-                <IconButton 
-                  icon={item.isCompleted ? "check-circle" : "checkbox-blank-circle-outline"} 
-                  size={20} 
-                  color="#fff" 
-                />
-              </TouchableOpacity>
-              
-              <View style={styles.taskTitleContainer}>
-                <Text style={styles.taskTitle}>{item.title}</Text>
-                <Text style={styles.taskCategory}>{item.category}</Text>
-              </View>
-              
-              {item.priority && (
-                <View style={[
-                  styles.priorityBadge,
-                  { 
-                    backgroundColor: 
-                      item.priority === 'Високий' ? '#FF6B6B' :
-                      item.priority === 'Середній' ? '#FFD93D' : '#00b894'
-                  }
-                ]}>
-                  <Text style={styles.priorityText}>
-                    {item.priority}
-                  </Text>
-                </View>
-              )}
-            </View>
-            
-            {item.description && (
-              <Text style={styles.taskDescription} numberOfLines={2}>
-                {item.description}
-              </Text>
-            )}
-            
-            <View style={styles.taskMetaContainer}>
-              {item.deadline && (
-                <View style={styles.taskMetaItem}>
-                  <IconButton icon="calendar" size={16} />
-                  <Text style={styles.taskMetaText}>
-                    {new Date(item.deadline).toLocaleDateString('uk-UA')}
-                  </Text>
-                </View>
-              )}
-              
-              {item.executionTime && (
-                <View style={styles.taskMetaItem}>
-                  <IconButton icon="clock-outline" size={16} />
-                  <Text style={styles.taskMetaText}>
-                    {item.executionTime}
-                  </Text>
-                </View>
-              )}
-              
-              {item.reminder && (
-                <View style={styles.taskMetaItem}>
-                  <IconButton icon="bell-outline" size={16} />
-                  <Text style={styles.taskMetaText}>
-                    {reminderOptions.find(opt => opt.value === item.reminder)?.label}
-                  </Text>
-                </View>
-              )}
-            </View>
-          </TouchableOpacity>
+          <TaskItem
+            item={item}
+            isDarkMode={isDarkMode}
+            styles={styles}
+            onComplete={handleCompleteTask}
+            onDelete={handleDeleteTask}
+            onEdit={handleEditTask}
+            reminderOptions={reminderOptions}
+          />
         )}
       />
 
@@ -1966,230 +1275,65 @@ export default function HomeScreen() {
       </Menu>
 
       <FAB
-        icon="sort"
-        customSize={48}
-        style={styles.sortButton}
-        onPress={(event) => {
-          const { nativeEvent } = event;
-          setSortAnchor({ x: nativeEvent.pageX, y: nativeEvent.pageY });
-          setShowSortMenu(true);
-        }}
-        label={sortBy ? `Сортування: ${
-          sortBy === 'priority' ? 'пріоритет' :
-          sortBy === 'date' ? 'дата' :
-          'категорія'
-        }` : 'Сортування'}
-      />
-
-      <FAB
         icon="plus"
         label="Add Task"
         onPress={() => setModalVisible(true)}
         style={[styles.fab, { backgroundColor: '#00b894' }]}
       />
 
-      {/* <Portal> */}
-  <Modal
-    visible={modalVisible}
-    onDismiss={() => setModalVisible(false)}
-    contentContainerStyle={{
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'transparent',
-    }}
-  >
-    <View style={styles.modalBackdrop}>
-      <BlurView intensity={80} tint={isDarkMode ? 'dark' : 'light'} style={styles.blurContainer} />
-      <Animated.View 
-        style={[
-          styles.modalContent,
-          {
-            opacity: fadeAnim,
-            transform: [{
-              scale: fadeAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0.9, 1],
-              }),
-            }],
-          },
-        ]}
-      >
-        {/* Header */}
-        <View style={styles.modalHeader}>
-          <Text variant="titleLarge">Нове завдання</Text>
-          <IconButton icon="close" size={24} onPress={() => setModalVisible(false)} />
-        </View>
-
-        {/* Progress Bar – оновлено для 3 сторінок */}
-        <ProgressBar
-          progress={(currentPage + 1) / 3}
-          color="#00b894"
-          style={styles.stepProgress}
-        />
-
-        <View style={styles.modalBody}>
-          {/* Navigation Tabs */}
-          <View style={styles.navigationTabs}>
-            {['Основне', 'Деталі', 'Додатково'].map((tab, index) => (
-              <TouchableOpacity
-                key={tab}
-                style={[
-                  styles.navTab,
-                  currentPage === index && styles.activeNavTab,
-                ]}
-                onPress={() => handlePageChange(index)}  // Замість setCurrentPage(index)
-              >
-                <Text
-                  style={[
-                    styles.navTabText,
-                    currentPage === index && styles.activeNavTabText,
-                  ]}
-                >
-                  {tab}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-
-          {/* Вміст поточної сторінки */}
-          {renderFormPage()}
-
-          {/* Кнопки навігації */}
-          <View style={styles.modalButtons}>
-            <Button
-              mode="outlined"
-              onPress={() => {
-                if (currentPage === 0) {
-                  setModalVisible(false);
-                } else {
-                  handlePageChange(currentPage - 1);  // Замість setCurrentPage(currentPage - 1)
-                }
-              }}
-              style={[styles.navigationButton, styles.cancelButton]}
-              labelStyle={{ 
-                fontSize: 12,
-                fontWeight: '600',
-                color: isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
-              }}
-            >
-              {currentPage === 0 ? 'Скасувати' : 'Назад'}
-            </Button>
-
-            {/* Step Indicators - перенесено сюди */}
-            <View style={[styles.stepIndicator, { marginBottom: 0 }]}>
-              {[0, 1, 2].map((step) => (
-                <View
-                  key={step}
-                  style={[
-                    styles.stepDot,
-                    currentPage === step && styles.activeStepDot,
-                  ]}
-                />
-              ))}
-            </View>
-
-            <Button
-              mode="contained"
-              buttonColor="#00b894"
-              loading={isLoading}
-              disabled={isLoading}
-              onPress={currentPage < 2 ? () => handlePageChange(currentPage + 1) : handleAddTask}  // Замість setCurrentPage(currentPage + 1)
-              style={[styles.navigationButton, styles.nextButton]}
-              labelStyle={{ 
-                fontSize: 12,
-                fontWeight: '600'
-              }}
-              contentStyle={{
-                height: 40,
-              }}
-            >
-              {currentPage < 2 ? 'Далі' : 'Створити'}
-            </Button>
-          </View>
-        </View>
-      </Animated.View>
-    </View>
-  </Modal>
-{/* </Portal> */}
-      <View style={{ zIndex: 10000, elevation: 1000 }}>
-      <Portal>
-  <Dialog
-    visible={alert.visible}
-    onDismiss={() => setAlert(prev => ({ ...prev, visible: false }))}
-    style={{
-      backgroundColor: isDarkMode ? '#1f1f1f' : '#ffffff',
-      borderRadius: 20,
-      marginHorizontal: 24,
-      paddingTop: 16,
-      paddingBottom: 12,
-      elevation: 6,
-      
-    }}
-  >
-    <Dialog.Icon 
-      icon={
-        alert.type === 'error' ? 'alert-circle' : 
-        alert.type === 'success' ? 'check-circle' :
-        alert.type === 'warning' ? 'alert' : 'information'
-      } 
-      size={44} 
-      color={
-        alert.type === 'error' ? '#FF6B6B' : 
-        alert.type === 'success' ? '#00b894' :
-        alert.type === 'warning' ? '#FFD93D' : '#45B7D1'
-      }
-    />
-
-    <Dialog.Title
-      style={{
-        textAlign: 'center',
-        fontWeight: '700',
-        fontSize: 22,
-        color: isDarkMode ? '#fff' : '#2d3436',
-        marginBottom: 10,
-      }}
-    >
-      {alert.title}
-    </Dialog.Title>
-
-    <Dialog.Content style={{ alignItems: 'center' }}>
-      <Paragraph
-        style={{
-          fontSize: 16,
-          color: isDarkMode ? '#ccc' : '#636e72',
-          textAlign: 'center',
-          lineHeight: 22,
+      <AddTaskModal 
+        visible={modalVisible}
+        onDismiss={() => setModalVisible(false)}
+        currentPage={currentPage}
+        handlePageChange={handlePageChange}
+        renderFormPage={renderFormPage}
+        handleAddTask={handleAddTask}
+        isLoading={isLoading}
+        isDarkMode={isDarkMode}
+        styles={styles}
+        fadeAnim={fadeAnim}
+        categories={categories}
+        priorityOptions={priorityOptions}
+        colorPalette={colorPalette}
+        iconCategories={iconCategories}
+        reminderOptions={reminderOptions}
+        onAddCategory={(newCategory) => setCategories(prev => [...prev, newCategory])}
+        formData={{
+          newTask,
+          category,
+          description,
+          priority,
+          deadline,
+          executionTime,
+          repetition,
+          colorMarking,
+          icon,
+          reminder,
         }}
-      >
-        {alert.message}
-      </Paragraph>
-    </Dialog.Content>
-
-    <Dialog.Actions style={{ justifyContent: 'center', paddingBottom: 12 }}>
-      <Button
-        mode="contained"
-        onPress={() => {
-          if (alert.onConfirm) {
-            alert.onConfirm();
-          }
-          setAlert(prev => ({ ...prev, visible: false }));
+        setFormData={{
+          setNewTask,
+          setCategory,
+          setDescription,
+          setPriority,
+          setDeadline,
+          setExecutionTime,
+          setRepetition,
+          setColorMarking,
+          setIcon,
+          setReminder,
         }}
-        buttonColor={
-          alert.type === 'error' ? '#FF6B6B' : 
-          alert.type === 'success' ? '#00b894' :
-          alert.type === 'warning' ? '#FFD93D' : '#45B7D1'
-        }
-        textColor="#fff"
-        style={{ borderRadius: 10, paddingHorizontal: 28 }}
-        labelStyle={{ fontWeight: '600' }}
-      >
-        OK
-      </Button>
-    </Dialog.Actions>
-  </Dialog>
-</Portal>
-</View>
+      />
+    
+      <AlertDialog 
+        visible={alert.visible}
+        title={alert.title}
+        message={alert.message}
+        type={alert.type}
+        onDismiss={() => setAlert(prev => ({ ...prev, visible: false }))}
+        onConfirm={alert.onConfirm}
+        isDarkMode={isDarkMode}
+      />
     </View>
+    </GestureHandlerRootView>
   );
 }
