@@ -24,6 +24,12 @@ const formatDateKey = (date: Date) => {
   return date.toLocaleDateString('uk-UA', options);
 };
 
+enum TaskFilter {
+  ALL = 'all',
+  ACTIVE = 'active',
+  COMPLETED = 'completed'
+}
+
 export default function HomeScreen() {
   const { colors } = useTheme();
   const { isDarkMode } = useThemeContext();
@@ -258,6 +264,12 @@ export default function HomeScreen() {
     message: '',
   });
 
+  // Додайте після інших станів
+  const [taskFilter, setTaskFilter] = useState<TaskFilter>(TaskFilter.ALL);
+
+  // Додайте новий стан для пошуку після інших станів
+  const [searchQuery, setSearchQuery] = useState('');
+
   // Функція створення завдання – здійснює базову валідацію для обов’язкових полів
   const handleAddTask = async () => {
     try {
@@ -429,7 +441,33 @@ export default function HomeScreen() {
 
   // Update the groupTasksByDate function
   const groupTasksByDate = (tasks: any[]) => {
-    const sortedTasks = sortTasks(tasks);
+    // Спочатку фільтруємо за статусом
+    let filteredTasks = tasks;
+    
+    // Фільтрація за статусом
+    switch (taskFilter) {
+      case TaskFilter.ACTIVE:
+        filteredTasks = tasks.filter(task => !task.isCompleted);
+        break;
+      case TaskFilter.COMPLETED:
+        filteredTasks = tasks.filter(task => task.isCompleted);
+        break;
+      default:
+        filteredTasks = tasks;
+    }
+  
+    // Додаємо пошук
+    if (searchQuery.trim()) {
+      filteredTasks = filteredTasks.filter(task => 
+        task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (task.description && task.description.toLowerCase().includes(searchQuery.toLowerCase()))
+      );
+    }
+  
+    // Потім сортуємо
+    const sortedTasks = sortTasks(filteredTasks);
+  
+    // Групуємо за датами
     const groups = sortedTasks.reduce((acc, task) => {
       if (!task.deadline) {
         const noDateKey = 'No deadline';
@@ -473,31 +511,101 @@ export default function HomeScreen() {
     return groups;
   };
 
+  const TaskList: React.FC<TaskListProps> = ({ tasks, ...props }) => {
+    const [filterType, setFilterType] = useState<TaskFilter>(TaskFilter.ALL);
+    const [searchQuery, setSearchQuery] = useState('');
+  
+    const filterTasks = (tasks: Task[]) => {
+      // First apply status filter
+      let filteredTasks = tasks;
+      
+      switch (filterType) {
+        case TaskFilter.ACTIVE:
+          filteredTasks = tasks.filter(task => !task.isCompleted);
+          break;
+        case TaskFilter.COMPLETED:
+          filteredTasks = tasks.filter(task => task.isCompleted);
+          break;
+        default:
+          filteredTasks = tasks;
+      }
+  
+      // Then apply search filter
+      if (searchQuery.trim()) {
+        filteredTasks = filteredTasks.filter(task => 
+          task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          task.description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      }
+  
+      return filteredTasks;
+    };
+  
+    return (
+      <div className="task-list">
+        <div className="task-list-controls">
+          <div className="filter-controls">
+            <button 
+              className={`filter-btn ${filterType === TaskFilter.ALL ? 'active' : ''}`}
+              onClick={() => setFilterType(TaskFilter.ALL)}
+            >
+              All
+            </button>
+            <button 
+              className={`filter-btn ${filterType === TaskFilter.ACTIVE ? 'active' : ''}`}
+              onClick={() => setFilterType(TaskFilter.ACTIVE)}
+            >
+              Active
+            </button>
+            <button 
+              className={`filter-btn ${filterType === TaskFilter.COMPLETED ? 'active' : ''}`}
+              onClick={() => setFilterType(TaskFilter.COMPLETED)}
+            >
+              Completed
+            </button>
+          </div>
+          
+          <div className="search-control">
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+  
+        {/* Replace your existing tasks mapping with filtered tasks */}
+        {groupTasksByDate(filterTasks(tasks)).map(/* your existing grouping code */)}
+      </div>
+    );
+  };
+
   /** СТИЛІ **/
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: 16,
+      paddingTop: 20,
       backgroundColor: isDarkMode ? '#121212' : '#f7f9fc',
-      paddingTop: 40,
     },
     headerContainer: {
-      paddingVertical: 20,
-      paddingHorizontal: 16,
+      paddingTop: Platform.OS === 'ios' ? 60 : 40,
+      paddingBottom: 16,
+      paddingHorizontal: 20,
+      backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
       borderBottomWidth: 1,
-      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-      marginBottom: 20,
+      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+      marginBottom: 16,
     },
     headerTitle: {
-      fontSize: 28,
+      fontSize: 32,
       fontWeight: '700',
-      color: '#00b894',
+      color: isDarkMode ? '#ffffff' : '#2d3436',
       marginBottom: 8,
     },
     welcomeText: {
       fontSize: 16,
-      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
-      marginTop: 4,
+      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)',
     },
     taskText: {
       marginVertical: 8,
@@ -623,28 +731,38 @@ export default function HomeScreen() {
       bottom: 80,
       borderRadius: 16,
       backgroundColor: '#00b894',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+      elevation: 5,
     },
     taskItem: {
-      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : '#ffffff',
+      marginHorizontal: 16,
+      marginBottom: 12,
+      backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
       borderRadius: 16,
-      marginBottom: 16,
       padding: 16,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
       shadowRadius: 8,
-      borderWidth: 1,
-      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+      elevation: 3,
+      borderWidth: 1.5,
+      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
     },
     taskHeader: {
       flexDirection: 'row',
       alignItems: 'center',
       marginBottom: 12,
+      gap: 12,
     },
     taskIcon: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
+      width: 44,
+      height: 44,
+      borderRadius: 12,
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 12,
     },
     taskTitleContainer: {
       flex: 1,
@@ -653,12 +771,11 @@ export default function HomeScreen() {
       fontSize: 17,
       fontWeight: '600',
       marginBottom: 4,
-      color: isDarkMode ? '#fff' : '#2d3436',
+      color: isDarkMode ? '#ffffff' : '#2d3436',
     },
     taskCategory: {
-      fontSize: 13,
+      fontSize: 14,
       color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
-      marginBottom: 8,
     },
     taskDescription: {
       fontSize: 14,
@@ -668,29 +785,29 @@ export default function HomeScreen() {
     },
     taskMetaContainer: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
       alignItems: 'center',
+      gap: 16,
       paddingTop: 12,
       borderTopWidth: 1,
-      borderTopColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+      borderTopColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
     },
     taskMetaItem: {
       flexDirection: 'row',
       alignItems: 'center',
+      gap: 4,
     },
     taskMetaText: {
-      fontSize: 12,
-      marginLeft: 4,
-      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+      fontSize: 13,
+      color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)',
     },
     priorityBadge: {
-      paddingHorizontal: 8,
-      paddingVertical: 4,
-      borderRadius: 12,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 8,
       marginLeft: 8,
     },
     priorityText: {
-      fontSize: 12,
+      fontSize: 13,
       fontWeight: '600',
       color: '#ffffff',
     },
@@ -947,25 +1064,153 @@ export default function HomeScreen() {
       color: '#ffffff',
     },
     sectionHeader: {
-      padding: 16,
+      paddingHorizontal: 20,
       paddingVertical: 12,
-      borderBottomWidth: 1,
-      borderBottomColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
     },
     sectionHeaderText: {
       fontSize: 16,
       fontWeight: '600',
+      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.8)',
     },
     sortButton: {
       position: 'absolute',
       right: 20,
-      bottom: 140,
+      bottom: 150,
       borderRadius: 16,
+      backgroundColor: isDarkMode ? '#1a1a1a' : '#ffffff',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+      elevation: 5,
+    },
+    // Стилі для фільтрації та пошуку
+    filterContainer: {
+      marginHorizontal: 16,
+      marginBottom: 16,
+      borderRadius: 16,
+      padding: 12,
+      
+    },
+    filterHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    filterTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
+    },
+    filterButtonsContainer: {
+      flexDirection: 'row',
+      gap: 8,
+      marginBottom: 12,
+    },
+    filterButton: {
+      flex: 1,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      borderRadius: 12,
+      borderWidth: 1.5,
+      borderColor: isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)',
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)',
+    },
+    filterButtonActive: {
+      backgroundColor: '#00b894',
+      borderColor: '#00b894',
+    },
+    filterButtonText: {
+      fontSize: 12,
+      fontWeight: '600',
+      textAlign: 'center',
+      color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.8)',
+    },
+    filterButtonTextActive: {
+      color: '#ffffff',
+    },
+    searchContainer: {
+      paddingHorizontal: 16,
+      marginBottom: 16,
+    },
+    searchInput: {
+      borderRadius: 16,
+      borderWidth: 1.5,
+      borderColor: isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)',
+      
+    },
+    filterBadge: {
+      position: 'absolute',
+      top: -6,
+      right: -6,
+      backgroundColor: '#00b894',
+      borderRadius: 10,
+      width: 20,
+      height: 20,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    filterBadgeText: {
+      color: '#ffffff',
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    noResultsContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 32,
+    },
+    noResultsText: {
+      fontSize: 16,
+      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+      textAlign: 'center',
+      marginTop: 8,
+    },
+    filterIndicator: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 12,
+      paddingVertical: 4,
+      backgroundColor: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+      borderRadius: 16,
+      marginRight: 8,
+    },
+    filterIndicatorText: {
+      fontSize: 12,
+      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+      marginRight: 4,
+    },
+    activeFiltersContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+      marginBottom: 12,
+      paddingHorizontal: 16,
+    },
+    clearFiltersButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 4,
+      paddingHorizontal: 8,
+      borderRadius: 8,
       backgroundColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
     },
-    sortIcon: {
-      transform: [{ rotate: sortDirection === 'asc' ? '0deg' : '180deg' }],
+    clearFiltersText: {
+      fontSize: 12,
+      color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+      marginLeft: 4,
     },
+    searchIconContainer: {
+      position: 'absolute',
+      right: 16,
+      top: '50%',
+      transform: [{ translateY: -12 }],
+    },
+    searchIcon: {
+      color: isDarkMode ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)',
+    }
   });
 
   // Рендер вмісту форми в залежності від поточної сторінки
@@ -1473,6 +1718,83 @@ export default function HomeScreen() {
         )}
       </View>
 
+      <View style={styles.filterContainer}>
+  <View style={styles.filterButtonsContainer}>
+    <TouchableOpacity
+      style={[
+        styles.filterButton,
+        taskFilter === TaskFilter.ALL && styles.filterButtonActive
+      ]}
+      onPress={() => setTaskFilter(TaskFilter.ALL)}
+    >
+      <Text style={[
+        styles.filterButtonText,
+        taskFilter === TaskFilter.ALL && styles.filterButtonTextActive
+      ]}>
+        Всі
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={[
+        styles.filterButton,
+        taskFilter === TaskFilter.ACTIVE && styles.filterButtonActive
+      ]}
+      onPress={() => setTaskFilter(TaskFilter.ACTIVE)}
+    >
+      <Text style={[
+        styles.filterButtonText,
+        taskFilter === TaskFilter.ACTIVE && styles.filterButtonTextActive
+      ]}>
+        Активні
+      </Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={[
+        styles.filterButton,
+        taskFilter === TaskFilter.COMPLETED && styles.filterButtonActive
+      ]}
+      onPress={() => setTaskFilter(TaskFilter.COMPLETED)}
+    >
+      <Text style={[
+        styles.filterButtonText,
+        taskFilter === TaskFilter.COMPLETED && styles.filterButtonTextActive
+      ]}>
+        Завершені
+      </Text>
+    </TouchableOpacity>
+  </View>
+</View>
+
+<View style={styles.searchContainer}>
+  <TextInput
+    placeholder="Пошук за назвою або описом..."
+    value={searchQuery}
+    onChangeText={setSearchQuery}
+    mode="outlined"
+    style={[
+      styles.searchInput,
+      Platform.select({
+        ios: { height: 40 },
+        android: { height: 44 }
+      })
+    ]}
+    theme={{
+      colors: {
+        primary: '#00b894',
+      }
+    }}
+    left={<TextInput.Icon icon="magnify" />}
+    right={searchQuery ? 
+      <TextInput.Icon 
+        icon="close" 
+        onPress={() => setSearchQuery('')}
+      /> : null
+    }
+  />
+</View>
+
       <SectionList
         sections={Object.entries(groupTasksByDate(tasks)).map(([title, data]) => ({
           title,
@@ -1480,7 +1802,7 @@ export default function HomeScreen() {
         }))}
         keyExtractor={(item, index) => index.toString()}
         contentContainerStyle={{ paddingBottom: 100 }}
-        stickySectionHeadersEnabled={true}
+        // stickySectionHeadersEnabled={true}
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
             <IconButton 
@@ -1502,24 +1824,37 @@ export default function HomeScreen() {
           </View>
         )}
         renderItem={({ item }) => (
-          <View style={styles.taskItem}>
+          <TouchableOpacity 
+            style={[
+              styles.taskItem,
+              item.isCompleted && {
+                opacity: 0.7,
+                backgroundColor: isDarkMode ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'
+              }
+            ]}
+            onPress={() => {/* Handle task press */}}
+          >
             <View style={styles.taskHeader}>
-              <View 
+              <TouchableOpacity 
                 style={[
-                  styles.taskIcon, 
+                  styles.taskIcon,
                   { backgroundColor: item.colorMarking || '#00b894' }
                 ]}
+                onPress={() => {
+                  // Toggle task completion
+                  const updatedTask = { ...item, isCompleted: !item.isCompleted };
+                  // Update task in the state
+                  setTasks(prev => prev.map(t => 
+                    t.id === item.id ? updatedTask : t
+                  ));
+                }}
               >
-                {item.icon ? (
-                  typeof item.icon === 'string' && item.icon.length > 2 ? (
-                    <IconButton icon={item.icon} size={20} color="#fff" />
-                  ) : (
-                    <Text style={{ fontSize: 20 }}>{item.icon}</Text>
-                  )
-                ) : (
-                  <IconButton icon="checkbox-blank-circle-outline" size={20} color="#fff" />
-                )}
-              </View>
+                <IconButton 
+                  icon={item.isCompleted ? "check-circle" : "checkbox-blank-circle-outline"} 
+                  size={20} 
+                  color="#fff" 
+                />
+              </TouchableOpacity>
               
               <View style={styles.taskTitleContainer}>
                 <Text style={styles.taskTitle}>{item.title}</Text>
@@ -1576,7 +1911,7 @@ export default function HomeScreen() {
                 </View>
               )}
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
 
