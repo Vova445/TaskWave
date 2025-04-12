@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "اختر اللغة",
       "close": "إغلاق"
-    }
+    },
+    "filters": {
+    "all": "الكل",
+    "active": "نشط",
+    "completed": "مكتمل",
+    "searchPlaceholder": "ابحث حسب العنوان أو الوصف..."
+  },
+  "modal": {
+    "cancel": "إلغاء",
+    "back": "رجوع",
+    "next": "التالي",
+    "create": "إنشاء"
+  },
+  "taskModal": {
+    "newTask": "مهمة جديدة"
+  },
+  "taskDetails": {
+    "completed": "مكتمل",
+    "inProgress": "قيد التنفيذ",
+    "description": "وصف المهمة",
+    "mainInfo": "المعلومات الأساسية",
+    "category": "الفئة",
+    "priority": "الأولوية",
+    "timeSettings": "إعدادات الوقت",
+    "deadline": "الموعد النهائي",
+    "executionTime": "وقت التنفيذ",
+    "reminder": "تذكير"
+  },
+  "buttonsHome": {
+    "edit": "تعديل",
+    "delete": "حذف"
+  },
+  "priority": {
+    "high": "عالية",
+    "medium": "متوسطة",
+    "low": "منخفضة"
+  },
+  "home": {
+    "title": "مهامي",
+    "welcome": "مرحبًا، {{name}}!",
+    "noTasks": "لا توجد مهام حاليًا."
+  },
+  "filter": {
+    "all": "الكل",
+    "active": "نشط",
+    "completed": "مكتمل",
+    "searchPlaceholder": "ابحث عن المهام..."
+  },
+  "alert": {
+    "error": "خطأ",
+    "success": "تم بنجاح",
+    "info": "معلومة",
+    "taskNameRequired": "اسم المهمة مطلوب",
+    "loginRequired": "يجب تسجيل الدخول",
+    "taskCreated": "تم إنشاء المهمة بنجاح",
+    "taskCreationFailed": "فشل في إنشاء المهمة",
+    "taskLoadFailed": "فشل في تحميل المهام",
+    "taskUpdateFailed": "فشل في تحديث حالة المهمة",
+    "taskDeleted": "تم حذف المهمة بنجاح",
+    "taskDeletionFailed": "فشل في حذف المهمة",
+    "editComingSoon": "وظيفة التعديل قادمة قريبًا",
+    "attachmentsUnavailable": "ميزة المرفقات متاحة للمستخدمين المميزين فقط"
+  },
+  "form": {
+    "titleLabel": "العنوان (حتى 100 حرف)",
+    "categoryLabel": "الفئة",
+    "categoryPlaceholder": "اختر أو أنشئ فئة",
+    "newCategoryPlaceholder": "أنشئ فئة جديدة",
+    "descriptionLabel": "الوصف (حتى 500 حرف)",
+    "descriptionPlaceholder": "أضف وصفًا للمهمة",
+    "priorityLabel": "الأولوية",
+    "deadlineLabel": "تاريخ الاستحقاق",
+    "executionTimeLabel": "وقت التنفيذ",
+    "colorMarkingLabel": "تمييز بالألوان",
+    "reminderLabel": "تذكير",
+    "iconSelected": "تم اختيار الأيقونة",
+    "selectIcon": "اختر أيقونة",
+    "icons": "الأيقونات",
+    "addAttachment": "إضافة مرفق"
+  },
+  "reminder": {
+    "atDeadline": "في الموعد النهائي",
+    "minutesBefore": "قبل {{minutes}} دقيقة",
+    "hoursBefore": "قبل {{hours}} ساعة",
+    "daysBefore": "قبل {{days}} يوم",
+    "weeksBefore": "قبل {{weeks}} أسبوع"
+  },
+  "sort": {
+    "byPriority": "فرز حسب الأولوية",
+    "byDate": "فرز حسب التاريخ",
+    "byCategory": "فرز حسب الفئة",
+    "reset": "إعادة تعيين الفرز"
+  },
+  "fab": {
+    "addTask": "إضافة مهمة"
+  },
+  "dates": {
+    "today": "اليوم",
+    "tomorrow": "غدًا",
+    "noDeadline": "لا يوجد موعد نهائي"
+  },
+  "categories": {
+    "work": "العمل",
+    "study": "الدراسة",
+    "personal": "شخصي",
+    "shopping": "التسوق",
+    "health": "الصحة"
+  },
+  "icons": {
+    "calendar": "التقويم",
+    "book": "كتاب",
+    "computer": "حاسوب",
+    "notes": "ملاحظات",
+    "goal": "هدف",
+    "star": "نجمة",
+    "run": "جري",
+    "art": "فن",
+    "shopping": "تسوق",
+    "home": "منزل",
+    "sport": "رياضة",
+    "music": "موسيقى",
+    "alarm": "منبه",
+    "pencil": "قلم رصاص",
+    "heart": "قلب",
+    "check": "تحقق",
+    "bell": "جرس",
+    "briefcase": "حقيبة",
+    "flag": "علم"
+  },
+  "colors": {
+    "red": "أحمر",
+    "turquoise": "فيروزي",
+    "skyblue": "أزرق سماوي",
+    "mint": "نعناعي",
+    "yellow": "أصفر",
+    "pink": "وردي",
+    "purple": "أرجواني",
+    "blue": "أزرق",
+    "orange": "برتقالي",
+    "emerald": "زمردي",
+    "green": "أخضر",
+    "lightblue": "أزرق فاتح"
+  }
   }
   

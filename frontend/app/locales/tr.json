@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "Dil Seç",
       "close": "Kapat"
-    }
+    },
+    "filters": {
+    "all": "Tümü",
+    "active": "Aktif",
+    "completed": "Tamamlandı",
+    "searchPlaceholder": "Başlığa veya açıklamaya göre ara..."
+  },
+  "modal": {
+    "cancel": "İptal",
+    "back": "Geri",
+    "next": "İleri",
+    "create": "Oluştur"
+  },
+  "taskModal": {
+    "newTask": "Yeni Görev"
+  },
+  "taskDetails": {
+    "completed": "Tamamlandı",
+    "inProgress": "Devam Ediyor",
+    "description": "Görev Açıklaması",
+    "mainInfo": "Temel Bilgiler",
+    "category": "Kategori",
+    "priority": "Öncelik",
+    "timeSettings": "Zaman Ayarları",
+    "deadline": "Son Tarih",
+    "executionTime": "Uygulama Zamanı",
+    "reminder": "Hatırlatma"
+  },
+  "buttonsHome": {
+    "edit": "Düzenle",
+    "delete": "Sil"
+  },
+  "priority": {
+    "high": "Yüksek",
+    "medium": "Orta",
+    "low": "Düşük"
+  },
+  "home": {
+    "title": "Görevlerim",
+    "welcome": "Hoş geldiniz, {{name}}!",
+    "noTasks": "Şu anda hiçbir göreviniz yok."
+  },
+  "filter": {
+    "all": "Tümü",
+    "active": "Aktif",
+    "completed": "Tamamlandı",
+    "searchPlaceholder": "Görev ara..."
+  },
+  "alert": {
+    "error": "Hata",
+    "success": "Başarılı",
+    "info": "Bilgi",
+    "taskNameRequired": "Görev adı gereklidir",
+    "loginRequired": "Giriş yapmalısınız",
+    "taskCreated": "Görev başarıyla oluşturuldu",
+    "taskCreationFailed": "Görev oluşturulamadı",
+    "taskLoadFailed": "Görevler yüklenemedi",
+    "taskUpdateFailed": "Görev durumu güncellenemedi",
+    "taskDeleted": "Görev başarıyla silindi",
+    "taskDeletionFailed": "Görev silinemedi",
+    "editComingSoon": "Düzenleme özelliği yakında geliyor",
+    "attachmentsUnavailable": "Ek dosya özelliği yalnızca premium kullanıcılar için kullanılabilir"
+  },
+  "form": {
+    "titleLabel": "Başlık (en fazla 100 karakter)",
+    "categoryLabel": "Kategori",
+    "categoryPlaceholder": "Bir kategori seçin veya oluşturun",
+    "newCategoryPlaceholder": "Yeni kategori oluştur",
+    "descriptionLabel": "Açıklama (en fazla 500 karakter)",
+    "descriptionPlaceholder": "Görev için bir açıklama ekleyin",
+    "priorityLabel": "Öncelik",
+    "deadlineLabel": "Son Tarih",
+    "executionTimeLabel": "Uygulama Zamanı",
+    "colorMarkingLabel": "Renk İşareti",
+    "reminderLabel": "Hatırlatma",
+    "iconSelected": "Simge Seçildi",
+    "selectIcon": "Simge Seçin",
+    "icons": "Simgeler",
+    "addAttachment": "Ek Ekle"
+  },
+  "reminder": {
+    "atDeadline": "Son tarihte",
+    "minutesBefore": "{{minutes}} dakika önce",
+    "hoursBefore": "{{hours}} saat önce",
+    "daysBefore": "{{days}} gün önce",
+    "weeksBefore": "{{weeks}} hafta önce"
+  },
+  "sort": {
+    "byPriority": "Önceliğe göre sırala",
+    "byDate": "Tarihe göre sırala",
+    "byCategory": "Kategoriye göre sırala",
+    "reset": "Sıralamayı sıfırla"
+  },
+  "fab": {
+    "addTask": "Görev Ekle"
+  },
+  "dates": {
+    "today": "Bugün",
+    "tomorrow": "Yarın",
+    "noDeadline": "Son tarih yok"
+  },
+  "categories": {
+    "work": "İş",
+    "study": "Öğrenim",
+    "personal": "Kişisel",
+    "shopping": "Alışveriş",
+    "health": "Sağlık"
+  },
+  "icons": {
+    "calendar": "Takvim",
+    "book": "Kitap",
+    "computer": "Bilgisayar",
+    "notes": "Notlar",
+    "goal": "Hedef",
+    "star": "Yıldız",
+    "run": "Koşu",
+    "art": "Sanat",
+    "shopping": "Alışveriş",
+    "home": "Ev",
+    "sport": "Spor",
+    "music": "Müzik",
+    "alarm": "Alarm",
+    "pencil": "Kalem",
+    "heart": "Kalp",
+    "check": "Onayla",
+    "bell": "Zil",
+    "briefcase": "Çanta",
+    "flag": "Bayrak"
+  },
+  "colors": {
+    "red": "Kırmızı",
+    "turquoise": "Turkuaz",
+    "skyblue": "Gökyüzü Mavisi",
+    "mint": "Nane Yeşili",
+    "yellow": "Sarı",
+    "pink": "Pembe",
+    "purple": "Mor",
+    "blue": "Mavi",
+    "orange": "Turuncu",
+    "emerald": "Zümrüt",
+    "green": "Yeşil",
+    "lightblue": "Açık Mavi"
+  }
   }
   

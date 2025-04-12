@@ -61,5 +61,149 @@
   "languageDialog": {
     "title": "Select Language",
     "close": "Close"
+  },
+  "filters": {
+  "all": "All",
+  "active": "Active",
+  "completed": "Completed",
+  "searchPlaceholder": "Search by title or description..."
+},
+"modal": {
+  "cancel": "Cancel",
+  "back": "Back",
+  "next": "Next",
+  "create": "Create"
+},
+"taskModal": {
+  "newTask": "New Task"
+},
+"taskDetails": {
+  "completed": "Completed",
+  "inProgress": "In Progress",
+  "description": "Task Description",
+  "mainInfo": "Main Information",
+  "category": "Category",
+  "priority": "Priority",
+  "timeSettings": "Time Settings",
+  "deadline": "Deadline",
+  "executionTime": "Execution Time",
+  "reminder": "Reminder"
+},
+"buttonsHome": {
+  "edit": "Edit",
+  "delete": "Delete"
+},
+
+"priority": {
+  "high": "High",
+  "medium": "Medium",
+  "low": "Low"
+},
+"home": {
+    "title": "My Tasks",
+    "welcome": "Welcome, {{name}}!",
+    "noTasks": "You currently have no tasks."
+  },
+  "filter": {
+    "all": "All",
+    "active": "Active",
+    "completed": "Completed",
+    "searchPlaceholder": "Search tasks..."
+  },
+  "alert": {
+    "error": "Error",
+    "success": "Success",
+    "info": "Information",
+    "taskNameRequired": "Task name is required",
+    "loginRequired": "You must be logged in",
+    "taskCreated": "Task created successfully",
+    "taskCreationFailed": "Failed to create task",
+    "taskLoadFailed": "Failed to load tasks",
+    "taskUpdateFailed": "Failed to update task status",
+    "taskDeleted": "Task deleted successfully",
+    "taskDeletionFailed": "Failed to delete task",
+    "editComingSoon": "Edit functionality coming soon",
+    "attachmentsUnavailable": "Attachments feature is available for premium users"
+  },
+  "form": {
+    "titleLabel": "Title (up to 100 characters)",
+    "categoryLabel": "Category",
+    "categoryPlaceholder": "Select or create a category",
+    "newCategoryPlaceholder": "Create a new category",
+    "descriptionLabel": "Description (up to 500 characters)",
+    "descriptionPlaceholder": "Add a description for the task",
+    "priorityLabel": "Priority",
+    "deadlineLabel": "Deadline Date",
+    "executionTimeLabel": "Execution Time",
+    "colorMarkingLabel": "Color Marking",
+    "reminderLabel": "Reminder",
+    "iconSelected": "Icon Selected",
+    "selectIcon": "Select an icon",
+    "icons": "Icons",
+    "addAttachment": "Add Attachment"
+  },
+
+  "reminder": {
+    "atDeadline": "At deadline",
+    "minutesBefore": "Before {{minutes}} minutes",
+    "hoursBefore": "Before {{hours}} hour(s)",
+    "daysBefore": "Before {{days}} day(s)",
+    "weeksBefore": "Before {{weeks}} week(s)"
+  },
+  "sort": {
+    "byPriority": "Sort by priority",
+    "byDate": "Sort by date",
+    "byCategory": "Sort by category",
+    "reset": "Reset sorting"
+  },
+  "fab": {
+    "addTask": "Add Task"
+  },
+  "dates": {
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "noDeadline": "No deadline"
+  },
+  "categories": {
+    "work": "Work",
+    "study": "Study",
+    "personal": "Personal",
+    "shopping": "Shopping",
+    "health": "Health"
+  },
+  "icons": {
+    "calendar": "Calendar",
+    "book": "Book",
+    "computer": "Computer",
+    "notes": "Notes",
+    "goal": "Goal",
+    "star": "Star",
+    "run": "Run",
+    "art": "Art",
+    "shopping": "Shopping",
+    "home": "Home",
+    "sport": "Sport",
+    "music": "Music",
+    "alarm": "Alarm",
+    "pencil": "Pencil",
+    "heart": "Heart",
+    "check": "Check",
+    "bell": "Bell",
+    "briefcase": "Briefcase",
+    "flag": "Flag"
+  },
+  "colors": {
+    "red": "Red",
+    "turquoise": "Turquoise",
+    "skyblue": "Sky Blue",
+    "mint": "Mint",
+    "yellow": "Yellow",
+    "pink": "Pink",
+    "purple": "Purple",
+    "blue": "Blue",
+    "orange": "Orange",
+    "emerald": "Emerald",
+    "green": "Green",
+    "lightblue": "Light Blue"
   }
 }

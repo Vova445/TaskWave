@@ -6,6 +6,7 @@ import { Task, TaskItemProps } from '../types/task';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 import TaskDetailsModal from './TaskDetailsModal';
+import { useTranslation } from 'react-i18next';
 
 const TaskItem: React.FC<TaskItemProps> = ({ 
   item, 
@@ -14,6 +15,8 @@ const TaskItem: React.FC<TaskItemProps> = ({
   onDelete, 
   onEdit 
 }) => {
+  const { t } = useTranslation();
+
   const swipeableRef = useRef<Swipeable>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [isActionVisible, setIsActionVisible] = useState(false);
@@ -63,28 +66,40 @@ const TaskItem: React.FC<TaskItemProps> = ({
 
   const getPriorityData = (priority?: string) => {
     switch (priority) {
-      case 'Високий': return { color: '#FF6B6B', icon: 'flag' };
-      case 'Середній': return { color: '#FFD93D', icon: 'flag-variant' };
-      case 'Низький': return { color: '#00b894', icon: 'flag-outline' };
-      default: return { color: '#00b894', icon: 'flag-outline' };
+        case 'Високий': return { color: '#FF6B6B', icon: 'flag', label: t('priority.high') };
+        case 'Середній': return { color: '#FFD93D', icon: 'flag-variant', label: t('priority.medium') };
+        case 'Низький': return { color: '#00b894', icon: 'flag-outline', label: t('priority.low') };
+        default: return { color: '#00b894', icon: 'flag-outline', label: '' };
     }
-  };
+};
 
   const formatDateTime = (date: string) => {
     const deadlineDate = new Date(date);
     const today = new Date();
     const tomorrow = new Date(today);
     tomorrow.setDate(tomorrow.getDate() + 1);
-
+  
     const timeStr = format(deadlineDate, 'HH:mm');
-    
+  
     if (deadlineDate.toDateString() === today.toDateString()) {
-      return `Сьогодні, ${timeStr}`;
+      return `${t('dates.today')}, ${timeStr}`;
     } else if (deadlineDate.toDateString() === tomorrow.toDateString()) {
-      return `Завтра, ${timeStr}`;
+      return `${t('dates.tomorrow')}, ${timeStr}`;
     }
+  
     return format(deadlineDate, "d MMM, HH:mm", { locale: uk });
   };
+  
+  const translateCategory = (category?: string) => {
+    switch (category) {
+        case 'Робота': return t('categories.work');
+        case 'Навчання': return t('categories.study');
+        case 'Особисте': return t('categories.personal');
+        case 'Покупки': return t('categories.shopping');
+        case 'Здоров\'я': return t('categories.health');
+        default: return category;
+    }
+};
 
   const priorityData = getPriorityData(item.priority);
 
@@ -145,7 +160,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                       style={styles.metaIcon}
                     />
                     <Text style={[styles.priorityText, { color: priorityData.color }]}>
-                      {item.priority}
+                      {priorityData.label}
                     </Text>
                   </View>
                   )}
@@ -195,7 +210,7 @@ const TaskItem: React.FC<TaskItemProps> = ({
                       styles.categoryText,
                       isDarkMode && styles.categoryTextDark
                     ]}>
-                      {item.category}
+                      {translateCategory(item.category)}
                     </Text>
                   </View>
                 )}

@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import StepIndicator from './StepIndicator';
+import { useTranslation } from 'react-i18next';
 
 interface ModalNavigationProps {
   currentPage: number;
@@ -20,19 +21,21 @@ const ModalNavigation: React.FC<ModalNavigationProps> = ({
   isDarkMode,
   styles,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.modalButtons}>
       <Button
         mode="outlined"
         onPress={onBack}
         style={[styles.navigationButton, styles.cancelButton]}
-        labelStyle={{ 
+        labelStyle={{
           fontSize: 12,
           fontWeight: '600',
-          color: isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
+          color: isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)',
         }}
       >
-        {currentPage === 0 ? 'Скасувати' : 'Назад'}
+        {currentPage === 0 ? t('modal.cancel') : t('modal.back')}
       </Button>
 
       <StepIndicator 
@@ -51,7 +54,7 @@ const ModalNavigation: React.FC<ModalNavigationProps> = ({
         labelStyle={{ fontSize: 12, fontWeight: '600' }}
         contentStyle={{ height: 40 }}
       >
-        {currentPage < 2 ? 'Далі' : 'Створити'}
+        {currentPage < 2 ? t('modal.next') : t('modal.create')}
       </Button>
     </View>
   );

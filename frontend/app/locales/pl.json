@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "Wybierz język",
       "close": "Zamknij"
-    }
+    },
+    "filters": {
+    "all": "Wszystkie",
+    "active": "Aktywne",
+    "completed": "Ukończone",
+    "searchPlaceholder": "Szukaj po tytule lub opisie..."
+  },
+  "modal": {
+    "cancel": "Anuluj",
+    "back": "Wstecz",
+    "next": "Dalej",
+    "create": "Utwórz"
+  },
+  "taskModal": {
+    "newTask": "Nowe Zadanie"
+  },
+  "taskDetails": {
+    "completed": "Ukończone",
+    "inProgress": "W trakcie",
+    "description": "Opis zadania",
+    "mainInfo": "Główne informacje",
+    "category": "Kategoria",
+    "priority": "Priorytet",
+    "timeSettings": "Ustawienia czasu",
+    "deadline": "Termin",
+    "executionTime": "Czas wykonania",
+    "reminder": "Przypomnienie"
+  },
+  "buttonsHome": {
+    "edit": "Edytuj",
+    "delete": "Usuń"
+  },
+  "priority": {
+    "high": "Wysoki",
+    "medium": "Średni",
+    "low": "Niski"
+  },
+  "home": {
+    "title": "Moje Zadania",
+    "welcome": "Witaj, {{name}}!",
+    "noTasks": "Nie masz jeszcze żadnych zadań."
+  },
+  "filter": {
+    "all": "Wszystkie",
+    "active": "Aktywne",
+    "completed": "Ukończone",
+    "searchPlaceholder": "Szukaj zadań..."
+  },
+  "alert": {
+    "error": "Błąd",
+    "success": "Sukces",
+    "info": "Informacja",
+    "taskNameRequired": "Nazwa zadania jest wymagana",
+    "loginRequired": "Musisz się zalogować",
+    "taskCreated": "Zadanie zostało utworzone",
+    "taskCreationFailed": "Nie udało się utworzyć zadania",
+    "taskLoadFailed": "Nie udało się załadować zadań",
+    "taskUpdateFailed": "Nie udało się zaktualizować statusu zadania",
+    "taskDeleted": "Zadanie zostało usunięte",
+    "taskDeletionFailed": "Nie udało się usunąć zadania",
+    "editComingSoon": "Funkcja edycji będzie wkrótce dostępna",
+    "attachmentsUnavailable": "Załączniki dostępne tylko dla użytkowników premium"
+  },
+  "form": {
+    "titleLabel": "Tytuł (do 100 znaków)",
+    "categoryLabel": "Kategoria",
+    "categoryPlaceholder": "Wybierz lub utwórz kategorię",
+    "newCategoryPlaceholder": "Utwórz nową kategorię",
+    "descriptionLabel": "Opis (do 500 znaków)",
+    "descriptionPlaceholder": "Dodaj opis do zadania",
+    "priorityLabel": "Priorytet",
+    "deadlineLabel": "Termin wykonania",
+    "executionTimeLabel": "Czas wykonania",
+    "colorMarkingLabel": "Oznaczenie kolorem",
+    "reminderLabel": "Przypomnienie",
+    "iconSelected": "Ikona wybrana",
+    "selectIcon": "Wybierz ikonę",
+    "icons": "Ikony",
+    "addAttachment": "Dodaj załącznik"
+  },
+  "reminder": {
+    "atDeadline": "W momencie terminu",
+    "minutesBefore": "{{minutes}} minut przed",
+    "hoursBefore": "{{hours}} godzin przed",
+    "daysBefore": "{{days}} dni przed",
+    "weeksBefore": "{{weeks}} tygodni przed"
+  },
+  "sort": {
+    "byPriority": "Sortuj według priorytetu",
+    "byDate": "Sortuj według daty",
+    "byCategory": "Sortuj według kategorii",
+    "reset": "Resetuj sortowanie"
+  },
+  "fab": {
+    "addTask": "Dodaj Zadanie"
+  },
+  "dates": {
+    "today": "Dzisiaj",
+    "tomorrow": "Jutro",
+    "noDeadline": "Brak terminu"
+  },
+  "categories": {
+    "work": "Praca",
+    "study": "Nauka",
+    "personal": "Osobiste",
+    "shopping": "Zakupy",
+    "health": "Zdrowie"
+  },
+  "icons": {
+    "calendar": "Kalendarz",
+    "book": "Książka",
+    "computer": "Komputer",
+    "notes": "Notatki",
+    "goal": "Cel",
+    "star": "Gwiazda",
+    "run": "Bieganie",
+    "art": "Sztuka",
+    "shopping": "Zakupy",
+    "home": "Dom",
+    "sport": "Sport",
+    "music": "Muzyka",
+    "alarm": "Alarm",
+    "pencil": "Ołówek",
+    "heart": "Serce",
+    "check": "Zaznacz",
+    "bell": "Dzwonek",
+    "briefcase": "Teczka",
+    "flag": "Flaga"
+  },
+  "colors": {
+    "red": "Czerwony",
+    "turquoise": "Turkusowy",
+    "skyblue": "Błękitny",
+    "mint": "Miętowy",
+    "yellow": "Żółty",
+    "pink": "Różowy",
+    "purple": "Fioletowy",
+    "blue": "Niebieski",
+    "orange": "Pomarańczowy",
+    "emerald": "Szmaragdowy",
+    "green": "Zielony",
+    "lightblue": "Jasnoniebieski"
+  }
   }
   

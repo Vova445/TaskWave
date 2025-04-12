@@ -3,10 +3,7 @@ import { View, StyleSheet, FlatList,  TouchableOpacity, Alert, Animated, Dimensi
 import { Text, useTheme, FAB, TextInput, Button, IconButton, Portal, ProgressBar, Dialog, Paragraph, Modal, Menu } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useThemeContext } from '../context/ThemeContext';
-// Якщо ви в Expo:
 import { BlurView } from 'expo-blur';
-// Якщо ви не в Expo, замініть рядок імпорту на:
-// import { BlurView } from '@react-native-community/blur';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import TaskItem from '../components/TaskItem';
@@ -14,6 +11,7 @@ import TaskFilters, { TaskFilter } from '../components/TaskFilters';
 import AddTaskModal from '../components/AddTaskModal';
 import AlertDialog from '../components/AlertDialog';
 import { useHomeStyles } from '../styles/homeStyles';
+import { useTranslation } from 'react-i18next';
 
 const isSameDay = (date1: Date, date2: Date) => {
   return date1.getDate() === date2.getDate() &&
@@ -22,12 +20,15 @@ const isSameDay = (date1: Date, date2: Date) => {
 };
 
 const formatDateKey = (date: Date) => {
+  const { t, i18n } = useTranslation();
+  
   const options: Intl.DateTimeFormatOptions = {
     weekday: 'long',
     day: 'numeric',
     month: 'long'
   };
-  return date.toLocaleDateString('uk-UA', options);
+  
+  return date.toLocaleDateString(i18n.language, options);
 };
 
 export default function HomeScreen() {
@@ -36,45 +37,38 @@ export default function HomeScreen() {
   const screenWidth = Dimensions.get('window').width;
   const [fadeAnim] = useState(new Animated.Value(0));
   const styles = useHomeStyles(isDarkMode);
+  const { t } = useTranslation();
 
-  // Add the sorting hooks here
   const [showSortMenu, setShowSortMenu] = useState(false);
   const [sortAnchor, setSortAnchor] = useState({ x: 0, y: 0 });
   const [sortBy, setSortBy] = useState<'priority' | 'date' | 'category' | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-  // Стан для даних користувача та завдань (зберігаємо як обʼєкт для кожного завдання)
   const [userName, setUserName] = useState<string | null>(null);
   const [tasks, setTasks] = useState<any[]>([]);
 
-  // Стан модального вікна та поточної сторінки форми (0-Основне, 1-Деталі, 2-Додатково)
   const [modalVisible, setModalVisible] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
 
-  // Обов’язкові поля
   const [newTask, setNewTask] = useState('');
   const [category, setCategory] = useState('');
 
-  // Необов’язкові поля – група "Деталі"
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('');
   const [deadline, setDeadline] = useState('');
   const [executionTime, setExecutionTime] = useState('');
   const [repetition, setRepetition] = useState('');
 
-  // Необов’язкові поля – група "Додатково"
   const [colorMarking, setColorMarking] = useState('');
   const [icon, setIcon] = useState('');
   const [reminder, setReminder] = useState('');
   const [attachments, setAttachments] = useState(null);
 
-  // Add new states
   const [isLoading, setIsLoading] = useState(false);
-  const [categories, setCategories] = useState<string[]>(['Робота', 'Навчання', 'Особисте', 'Покупки', 'Здоров\'я']);
+  const [categories, setCategories] = useState<string[]>([t('categories.work'), t('categories.study'), t('categories.personal'), t('categories.shopping'), t('categories.health')]);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [newCategoryInput, setNewCategoryInput] = useState('');
 
-  // Додайте новий state для зберігання посилань на TextInput
   const [inputRefs] = useState({
     title: React.createRef<any>(),
     category: React.createRef<any>(),
@@ -88,80 +82,71 @@ export default function HomeScreen() {
     reminder: React.createRef<any>(),
   });
 
-  // First add a new state for priority dropdown
   const [showPriorityDropdown, setShowPriorityDropdown] = useState(false);
-  const priorityOptions = ['Низький', 'Середній', 'Високий'];
+  const priorityOptions = [t('priority.low'), t('priority.medium'), t('priority.high')];
 
-  // Додайте нові стани
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [androidPickerShow, setAndroidPickerShow] = useState(false);
 
-  // Add new states for time picker
   const [showTimePicker, setShowTimePicker] = useState(false);
 
-  // Add new states and constants
   const [showColorPicker, setShowColorPicker] = useState(false);
 
-  // Додайте нові стани
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [selectedIconTab, setSelectedIconTab] = useState('emoji');
 
-  // Додайте константи для іконок
   const iconCategories = {
     emoji: [
-      { icon: '📅', label: 'Календар' },
-      { icon: '📚', label: 'Книга' },
-      { icon: '💻', label: 'Комп\'ютер' },
-      { icon: '📝', label: 'Нотатки' },
-      { icon: '🎯', label: 'Ціль' },
-      { icon: '⭐', label: 'Зірка' },
-      { icon: '🏃', label: 'Біг' },
-      { icon: '🎨', label: 'Мистецтво' },
-      { icon: '🛒', label: 'Покупки' },
-      { icon: '🏠', label: 'Дім' },
-      { icon: '💪', label: 'Спорт' },
-      { icon: '🎵', label: 'Музика' },
+      { icon: '📅', label: t('icons.calendar') },
+      { icon: '📚', label: t('icons.book') },
+      { icon: '💻', label: t('icons.computer') },
+      { icon: '📝', label: t('icons.notes') },
+      { icon: '🎯', label: t('icons.goal') },
+      { icon: '⭐', label: t('icons.star') },
+      { icon: '🏃', label: t('icons.run') },
+      { icon: '🎨', label: t('icons.art') },
+      { icon: '🛒', label: t('icons.shopping') },
+      { icon: '🏠', label: t('icons.home') },
+      { icon: '💪', label: t('icons.sport') },
+      { icon: '🎵', label: t('icons.music') },
     ],
     material: [
-      { icon: 'home', label: 'Дім' },
-      { icon: 'book', label: 'Книга' },
-      { icon: 'shopping-cart', label: 'Покупки' },
-      { icon: 'alarm', label: 'Будильник' },
-      { icon: 'star', label: 'Зірка' },
-      { icon: 'calendar', label: 'Календар' },
-      { icon: 'pencil', label: 'Олівець' },
-      { icon: 'heart', label: 'Серце' },
-      { icon: 'check', label: 'Галочка' },
-      { icon: 'bell', label: 'Дзвінок' },
-      { icon: 'briefcase', label: 'Портфель' },
-      { icon: 'flag', label: 'Прапор' },
+      { icon: 'home', label: t('icons.home') },
+      { icon: 'book', label: t('icons.book') },
+      { icon: 'shopping-cart', label: t('icons.shopping') },
+      { icon: 'alarm', label: t('icons.alarm') },
+      { icon: 'star', label: t('icons.star') },
+      { icon: 'calendar', label: t('icons.calendar') },
+      { icon: 'pencil', label: t('icons.pencil') },
+      { icon: 'heart', label: t('icons.heart') },
+      { icon: 'check', label: t('icons.check') },
+      { icon: 'bell', label: t('icons.bell') },
+      { icon: 'briefcase', label: t('icons.briefcase') },
+      { icon: 'flag', label: t('icons.flag') },
     ],
   };
-
-  // Update color palette with better colors and add labels
+  
   const colorPalette = [
-    { color: '#FF6B6B', label: 'Червоний' },
-    { color: '#4ECDC4', label: 'Бірюзовий' },
-    { color: '#45B7D1', label: 'Голубий' },
-    { color: '#96CEB4', label: 'М\'ятний' },
-    { color: '#FFD93D', label: 'Жовтий' },
-    { color: '#FF9F9F', label: 'Рожевий' },
-    { color: '#9B59B6', label: 'Фіолетовий' },
-    { color: '#3498DB', label: 'Синій' },
-    { color: '#FF9F43', label: 'Оранжевий' },
-    { color: '#1ABC9C', label: 'Смарагдовий' },
-    { color: '#2ECC71', label: 'Зелений' },
-    { color: '#74B9FF', label: 'Небесний' },
+    { color: '#FF6B6B', label: t('colors.red') },
+    { color: '#4ECDC4', label: t('colors.turquoise') },
+    { color: '#45B7D1', label: t('colors.skyblue') },
+    { color: '#96CEB4', label: t('colors.mint') },
+    { color: '#FFD93D', label: t('colors.yellow') },
+    { color: '#FF9F9F', label: t('colors.pink') },
+    { color: '#9B59B6', label: t('colors.purple') },
+    { color: '#3498DB', label: t('colors.blue') },
+    { color: '#FF9F43', label: t('colors.orange') },
+    { color: '#1ABC9C', label: t('colors.emerald') },
+    { color: '#2ECC71', label: t('colors.green') },
+    { color: '#74B9FF', label: t('colors.lightblue') },
   ];
 
-  // Add helper function for time formatting
   const formatTime = (timeString: string) => {
     if (!timeString) return '';
     const [hours, minutes] = timeString.split(':');
     return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
   };
 
-  // Завантаження профілю користувача
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -182,9 +167,9 @@ export default function HomeScreen() {
     fetchProfile();
   }, []);
 
-  // При закритті модального вікна скидаємо всі поля та номер сторінки
   useEffect(() => {
     if (!modalVisible) {
+      handleDropdownToggle('');
       setCurrentPage(0);
       setNewTask('');
       setCategory('');
@@ -197,10 +182,12 @@ export default function HomeScreen() {
       setIcon('');
       setReminder('');
       setAttachments(null);
+      setNewCategoryInput('');
+      setSelectedIconTab('emoji');
+      setCategories([t('categories.work'), t('categories.study'), t('categories.personal'), t('categories.shopping'), t('categories.health')]);
     }
   }, [modalVisible]);
 
-  // Add fade animation for modal
   useEffect(() => {
     if (modalVisible) {
       Animated.timing(fadeAnim, {
@@ -213,20 +200,27 @@ export default function HomeScreen() {
     }
   }, [modalVisible]);
 
-  // Add new state to track active dropdown
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  // Add function to handle dropdown toggling
   const handleDropdownToggle = (dropdownName: string) => {
-    // If clicking the same dropdown that's already open, close it
+    if (!dropdownName) {
+      setActiveDropdown(null);
+      setShowCategoryDropdown(false);
+      setShowDatePicker(false);
+      setShowTimePicker(false);
+      setShowColorPicker(false);
+      setShowIconPicker(false);
+      setAndroidPickerShow(false);
+      setShowReminderDropdown(false);
+      
+      return;
+    }
+    
     if (activeDropdown === dropdownName) {
       setActiveDropdown(null);
     } else {
-      // Close previous dropdown and open the new one
       setActiveDropdown(dropdownName);
     }
-
-    // Set specific dropdown states
     setShowCategoryDropdown(dropdownName === 'category');
     setShowDatePicker(dropdownName === 'date');
     setShowTimePicker(dropdownName === 'time');
@@ -235,24 +229,20 @@ export default function HomeScreen() {
     setAndroidPickerShow(dropdownName === 'date' && Platform.OS === 'android');
     setShowReminderDropdown(dropdownName === 'reminder');
   };
-
-  // Add new state for reminder dropdown
   const [showReminderDropdown, setShowReminderDropdown] = useState(false);
 
-  // Add reminder options
   const reminderOptions = [
-    { value: '0', label: 'В момент дедлайну' },
-    { value: '5', label: 'За 5 хвилин' },
-    { value: '15', label: 'За 15 хвилин' },
-    { value: '30', label: 'За 30 хвилин' },
-    { value: '60', label: 'За 1 годину' },
-    { value: '120', label: 'За 2 години' },
-    { value: '1440', label: 'За 1 день' },
-    { value: '2880', label: 'За 2 дні' },
-    { value: '10080', label: 'За 1 тиждень' },
+    { value: '0', label: t('reminder.atDeadline') },
+    { value: '5', label: t('reminder.minutesBefore', { minutes: 5 }) },
+    { value: '15', label: t('reminder.minutesBefore', { minutes: 15 }) },
+    { value: '30', label: t('reminder.minutesBefore', { minutes: 30 }) },
+    { value: '60', label: t('reminder.hoursBefore', { hours: 1 }) },
+    { value: '120', label: t('reminder.hoursBefore', { hours: 2 }) },
+    { value: '1440', label: t('reminder.daysBefore', { days: 1 }) },
+    { value: '2880', label: t('reminder.daysBefore', { days: 2 }) },
+    { value: '10080', label: t('reminder.weeksBefore', { weeks: 1 }) },
   ];
 
-  // Додайте новий стан для алертів після інших станів
   const [alert, setAlert] = useState<{
     visible: boolean;
     title: string;
@@ -265,13 +255,10 @@ export default function HomeScreen() {
     message: '',
   });
 
-  // Додайте після інших станів
   const [taskFilter, setTaskFilter] = useState<TaskFilter>(TaskFilter.ALL);
 
-  // Додайте новий стан для пошуку після інших станів
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Функція створення завдання – здійснює базову валідацію для обов’язкових полів
   const handleAddTask = async () => {
     try {
       setIsLoading(true);
@@ -279,8 +266,8 @@ export default function HomeScreen() {
       if (!newTask.trim()) {
         setAlert({
           visible: true,
-          title: 'Помилка',
-          message: 'Назва завдання є обов\'язковою',
+          title: t('alert.error'),
+          message: t('alert.taskNameRequired'),
           type: 'error'
         });
         return;
@@ -290,8 +277,8 @@ export default function HomeScreen() {
       if (!token) {
         setAlert({
           visible: true,
-          title: 'Помилка',
-          message: 'Необхідно увійти в систему',
+          title: t('alert.error'),
+          message: t('alert.loginRequired'),
           type: 'error'
         });
         return;
@@ -305,8 +292,8 @@ export default function HomeScreen() {
         deadline: deadline.trim(),
         executionTime: executionTime.trim(),
         repetition: repetition.trim(),
-        colorMarking: colorMarking, // Додано
-        icon: icon, // Додано
+        colorMarking: colorMarking, 
+        icon: icon,
         reminder: reminder.trim(),
       };
   
@@ -320,7 +307,7 @@ export default function HomeScreen() {
       });
   
       if (!response.ok) {
-        throw new Error('Помилка створення завдання');
+        throw new Error(t('alert.taskCreationFailed'));
       }
   
       const savedTask = await response.json();
@@ -329,15 +316,15 @@ export default function HomeScreen() {
       
       setAlert({
         visible: true,
-        title: 'Успіх',
-        message: 'Завдання успішно створено',
+        title: t('alert.success'),
+        message: t('alert.taskCreated'),
         type: 'success'
       });
     } catch (error) {
       setAlert({
         visible: true,
-        title: 'Помилка',
-        message: 'Не вдалося створити завдання',
+        title: t('alert.error'),
+        message: t('alert.taskCreationFailed'),
         type: 'error'
       });
     } finally {
@@ -345,7 +332,6 @@ export default function HomeScreen() {
     }
   };
 
-  // Add function to fetch tasks
   const fetchTasks = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
@@ -358,7 +344,7 @@ export default function HomeScreen() {
       });
   
       if (!response.ok) {
-        throw new Error('Помилка завантаження завдань');
+        throw new Error(t('alert.taskLoadFailed'));
       }
   
       const tasks = await response.json();
@@ -367,14 +353,13 @@ export default function HomeScreen() {
       console.error('Error fetching tasks:', error);
       setAlert({
         visible: true,
-        title: 'Помилка',
-        message: 'Не вдалося завантажити завдання',
+        title: t('alert.error'),
+        message: t('alert.taskLoadFailed'),
         type: 'error'
       });
     }
   };
   
-  // Add useEffect to fetch tasks on component mount
   useEffect(() => {
     fetchTasks();
   }, []);
@@ -393,16 +378,14 @@ export default function HomeScreen() {
     }
   };
 
-  // Update handlePageChange to use new function
   const handlePageChange = (newPage: number) => {
     Object.values(inputRefs).forEach(ref => {
       ref.current?.blur();
     });
-    handleDropdownToggle(''); // Close all dropdowns
+    handleDropdownToggle('');
     setCurrentPage(newPage);
   };
 
-  // Додайте функцію для форматування дати
   const formatDate = (date: Date | null) => {
     if (!date) return '';
     return date.toLocaleDateString('uk-UA', {
@@ -412,7 +395,6 @@ export default function HomeScreen() {
     });
   };
 
-  // Add the sorting function inside the component
   const sortTasks = (tasksToSort: any[]) => {
     if (!sortBy) return tasksToSort;
 
@@ -421,7 +403,7 @@ export default function HomeScreen() {
 
       switch (sortBy) {
         case 'priority': {
-          const priorityOrder = { 'Високий': 3, 'Середній': 2, 'Низький': 1 };
+          const priorityOrder = { [t('priority.high')]: 3, [t('priority.medium')]: 2, [t('priority.low')]: 1 };
           return multiplier * ((priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0));
         }
         case 'date': {
@@ -438,12 +420,9 @@ export default function HomeScreen() {
     });
   };
 
-  // Update the groupTasksByDate function
   const groupTasksByDate = (tasks: any[]) => {
-    // Спочатку фільтруємо за статусом
     let filteredTasks = tasks;
     
-    // Фільтрація за статусом
     switch (taskFilter) {
       case TaskFilter.ACTIVE:
         filteredTasks = tasks.filter(task => !task.isCompleted);
@@ -455,7 +434,6 @@ export default function HomeScreen() {
         filteredTasks = tasks;
     }
   
-    // Додаємо пошук
     if (searchQuery.trim()) {
       filteredTasks = filteredTasks.filter(task => 
         task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -463,13 +441,11 @@ export default function HomeScreen() {
       );
     }
   
-    // Потім сортуємо
     const sortedTasks = sortTasks(filteredTasks);
   
-    // Групуємо за датами
     const groups = sortedTasks.reduce((acc, task) => {
       if (!task.deadline) {
-        const noDateKey = 'No deadline';
+        const noDateKey = t('dates.noDeadline');
         acc[noDateKey] = acc[noDateKey] || [];
         acc[noDateKey].push(task);
         return acc;
@@ -482,9 +458,9 @@ export default function HomeScreen() {
   
       let dateKey;
       if (isSameDay(date, today)) {
-        dateKey = 'Today';
+        dateKey = t('dates.today');
       } else if (isSameDay(date, tomorrow)) {
-        dateKey = 'Tomorrow';
+        dateKey = t('dates.tomorrow');
       } else {
         dateKey = formatDateKey(date);
       }
@@ -494,15 +470,13 @@ export default function HomeScreen() {
       return acc;
     }, {});
   
-    // Якщо сортування не за датою, не сортуємо задачі в групах додатково
     if (sortBy !== 'priority') {
       return groups;
     }
   
-    // Існуючий код сортування за пріоритетом всередині груп
     Object.keys(groups).forEach(key => {
       groups[key].sort((a, b) => {
-        const priorityOrder = { 'Високий': 3, 'Середній': 2, 'Низький': 1 };
+        const priorityOrder = { [t('priority.high')]: 3, [t('priority.medium')]: 2, [t('priority.low')]: 1 }
         return (priorityOrder[b.priority] || 0) - (priorityOrder[a.priority] || 0);
       });
     });
@@ -515,7 +489,6 @@ export default function HomeScreen() {
     const [searchQuery, setSearchQuery] = useState('');
   
     const filterTasks = (tasks: Task[]) => {
-      // First apply status filter
       let filteredTasks = tasks;
       
       switch (filterType) {
@@ -529,7 +502,6 @@ export default function HomeScreen() {
           filteredTasks = tasks;
       }
   
-      // Then apply search filter
       if (searchQuery.trim()) {
         filteredTasks = filteredTasks.filter(task => 
           task.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -548,39 +520,37 @@ export default function HomeScreen() {
               className={`filter-btn ${filterType === TaskFilter.ALL ? 'active' : ''}`}
               onClick={() => setFilterType(TaskFilter.ALL)}
             >
-              All
+             {t('filter.all')}
             </button>
             <button 
               className={`filter-btn ${filterType === TaskFilter.ACTIVE ? 'active' : ''}`}
               onClick={() => setFilterType(TaskFilter.ACTIVE)}
             >
-              Active
+             {t('filter.active')}
             </button>
             <button 
               className={`filter-btn ${filterType === TaskFilter.COMPLETED ? 'active' : ''}`}
               onClick={() => setFilterType(TaskFilter.COMPLETED)}
             >
-              Completed
+             {t('filter.completed')}
             </button>
           </div>
           
           <div className="search-control">
             <input
               type="text"
-              placeholder="Search tasks..."
+              placeholder={t('filter.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
         </div>
   
-        {/* Replace your existing tasks mapping with filtered tasks */}
-        {groupTasksByDate(filterTasks(tasks)).map(/* your existing grouping code */)}
+        {groupTasksByDate(filterTasks(tasks)).map()}
       </div>
     );
   };
 
-  // Рендер вмісту форми в залежності від поточної сторінки
   const renderFormPage = () => {
     switch (currentPage) {
       case 0:
@@ -588,7 +558,7 @@ export default function HomeScreen() {
           <>
             <TextInput
               ref={inputRefs.title}
-              label="Назва (до 100 символів)"  // Changed label text
+              label={t('form.titleLabel')}
               value={newTask}
               onChangeText={setNewTask}
               maxLength={100}
@@ -617,10 +587,10 @@ export default function HomeScreen() {
             <View style={{ marginBottom: 16 }}>
               <TextInput
                 ref={inputRefs.category}
-                label="Категорія"
+                label={t('form.categoryLabel')}
                 value={category}
                 onChangeText={setCategory}
-                placeholder="Оберіть або створіть категорію"
+                placeholder={t('form.categoryPlaceholder')}
                 mode="flat"
                 style={[styles.input, styles.inputUnderline]}
                 theme={{
@@ -664,7 +634,7 @@ export default function HomeScreen() {
                   
                   <View style={styles.newCategoryInput}>
                     <TextInput
-                      placeholder="Створити нову категорію"
+                      placeholder={t('form.newCategoryPlaceholder')}
                       value={newCategoryInput}
                       onChangeText={setNewCategoryInput}
                       mode="flat"
@@ -688,11 +658,11 @@ export default function HomeScreen() {
           <>
             <TextInput
               ref={inputRefs.description}
-              label="Опис (до 500 символів)"  // Changed label text
+              label={t('form.descriptionLabel')}
               value={description}
               onChangeText={setDescription}
-              placeholder="Додайте опис до завдання"  // Simplified placeholder
-              maxLength={500}  // Added maxLength
+              placeholder={t('form.descriptionPlaceholder')}
+              maxLength={500}
               mode="flat"
               style={[styles.input, styles.inputUnderline, { minHeight: 80 }]}
               theme={{
@@ -718,7 +688,7 @@ export default function HomeScreen() {
               dense
             />
             <View style={styles.prioritySelector}>
-              <Text style={styles.priorityLabel}>Пріоритет</Text>
+              <Text style={styles.priorityLabel}>{t('form.priorityLabel')}</Text>
               <View style={styles.priorityOptions}>
                 {priorityOptions.map((option) => (
                   <TouchableOpacity
@@ -744,7 +714,7 @@ export default function HomeScreen() {
             >
               <TextInput
                 ref={inputRefs.deadline}
-                label="Дата дедлайну"
+                label={t('form.deadlineLabel')}
                 value={formatDate(deadline ? new Date(deadline) : null)}
                 mode="flat"
                 style={[styles.input, styles.inputUnderline]}
@@ -764,7 +734,6 @@ export default function HomeScreen() {
                 }
               />
             </TouchableOpacity>
-            {/* Для iOS */}
             {Platform.OS === 'ios' && showDatePicker && (
               <DateTimePicker
                 value={deadline ? new Date(deadline) : new Date()}
@@ -779,7 +748,6 @@ export default function HomeScreen() {
                 minimumDate={new Date()}
               />
             )}
-            {/* Для Android */}
             {Platform.OS === 'android' && androidPickerShow && (
               <DateTimePicker
                 value={deadline ? new Date(deadline) : new Date()}
@@ -799,7 +767,7 @@ export default function HomeScreen() {
             >
               <TextInput
                 ref={inputRefs.executionTime}
-                label="Час виконання"
+                label={t('form.executionTimeLabel')}
                 value={executionTime}
                 mode="flat"
                 style={[styles.input, styles.inputUnderline]}
@@ -820,7 +788,6 @@ export default function HomeScreen() {
               />
             </TouchableOpacity>
 
-            {/* Time Picker */}
             {showTimePicker && (
               <DateTimePicker
                 value={executionTime ? new Date(`2000-01-01T${executionTime}:00`) : new Date()}
@@ -847,7 +814,7 @@ export default function HomeScreen() {
               <TouchableOpacity onPress={() => handleDropdownToggle('color')}>
                 <TextInput
                   ref={inputRefs.colorMarking}
-                  label="Кольорове маркування"
+                  label={t('form.colorMarkingLabel')}
                   value={colorMarking ? colorPalette.find(c => c.color === colorMarking)?.label : ''}
                   mode="flat"
                   style={[styles.input, styles.inputUnderline]}
@@ -935,7 +902,7 @@ export default function HomeScreen() {
                   color: isDarkMode ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.9)',
                   flex: 1 
                 }}>
-                  {icon ? 'Обрана іконка' : 'Оберіть іконку'}
+                  {icon ? t('form.iconSelected') : t('form.selectIcon')}
                 </Text>
                 <IconButton 
                   icon={showIconPicker ? 'chevron-up' : 'chevron-down'}
@@ -962,7 +929,7 @@ export default function HomeScreen() {
                           styles.iconPickerTabText,
                           selectedIconTab === tab && styles.iconPickerTabTextActive,
                         ]}>
-                          {tab === 'emoji' ? 'Emoji' : 'Іконки'}
+                          {tab === 'emoji' ? 'Emoji' : t('form.icons')}
                         </Text>
                       </TouchableOpacity>
                     ))}
@@ -1001,7 +968,7 @@ export default function HomeScreen() {
               <TouchableOpacity onPress={() => handleDropdownToggle('reminder')}>
                 <TextInput
                   ref={inputRefs.reminder}
-                  label="Нагадування"
+                  label={t('form.reminderLabel')}
                   value={reminder ? reminderOptions.find(opt => opt.value === reminder)?.label : ''}
                   mode="flat"
                   style={[styles.input, styles.inputUnderline]}
@@ -1057,13 +1024,13 @@ export default function HomeScreen() {
   mode="outlined" 
   onPress={() => setAlert({
     visible: true,
-    title: 'Вкладення',
-    message: 'Функція вкладення доступна для преміум-користувачів',
+    title: t('alert.info'),
+                message: t('alert.attachmentsUnavailable'),
     type: 'info'
   })}
   theme={styles.inputTheme}
 >
-  Додати Вкладення
+{t('form.addAttachment')}
 </Button>
           </>
         );
@@ -1072,7 +1039,6 @@ export default function HomeScreen() {
     }
   };
 
-  // Додайте нові функції для обробки дій свайпу:
 const handleCompleteTask = async (task) => {
   try {
     const token = await AsyncStorage.getItem('token');
@@ -1097,8 +1063,8 @@ const handleCompleteTask = async (task) => {
   } catch (error) {
     setAlert({
       visible: true,
-      title: 'Помилка',
-      message: 'Не вдалося оновити статус завдання',
+      title: t('alert.error'),
+        message: t('alert.taskUpdateFailed'),
       type: 'error'
     });
   }
@@ -1122,27 +1088,26 @@ const handleDeleteTask = async (task) => {
     
     setAlert({
       visible: true,
-      title: 'Успіх',
-      message: 'Завдання успішно видалено',
+      title: t('alert.success'),
+        message: t('alert.taskDeleted'),
       type: 'success'
     });
   } catch (error) {
     setAlert({
       visible: true,
-      title: 'Помилка',
-      message: 'Не вдалося видалити завдання',
+      title: t('alert.error'),
+        message: t('alert.taskDeletionFailed'),
       type: 'error'
     });
   }
 };
 
 const handleEditTask = (task) => {
-  // Тут буде логіка відкриття модального вікна редагування
   // TODO: Implement edit functionality
   setAlert({
     visible: true,
-    title: 'Інформація',
-    message: 'Функція редагування буде доступна незабаром',
+    title: t('alert.info'),
+      message: t('alert.editComingSoon'),
     type: 'info'
   });
 };
@@ -1152,12 +1117,12 @@ const handleEditTask = (task) => {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.headerContainer}>
         <Text variant="headlineMedium" style={styles.headerTitle}>
-          Home
+          {t('home.title')}
         </Text>
 
         {userName && (
           <Text variant="titleMedium" style={styles.welcomeText}>
-            Welcome, {userName} 👋
+            {t('home.welcome', { name: userName })}
           </Text>
         )}
 
@@ -1198,7 +1163,9 @@ const handleEditTask = (task) => {
               size={48} 
               color={isDarkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.2)'} 
             />
-            <Text style={styles.emptyText}>У вас поки немає завдань</Text>
+            <Text style={styles.emptyText}>
+  {t('home.noTasks')}
+</Text>
           </View>
         )}
         renderSectionHeader={({ section: { title } }) => (
@@ -1238,7 +1205,7 @@ const handleEditTask = (task) => {
             }
             setShowSortMenu(false);
           }}
-          title="За пріоритетом"
+          title={t('sort.byPriority')}
         />
         <Menu.Item
           leadingIcon={sortBy === 'date' ? 'check' : undefined}
@@ -1249,7 +1216,7 @@ const handleEditTask = (task) => {
             }
             setShowSortMenu(false);
           }}
-          title="За датою"
+          title={t('sort.byDate')}
         />
         <Menu.Item
           leadingIcon={sortBy === 'category' ? 'check' : undefined}
@@ -1260,7 +1227,7 @@ const handleEditTask = (task) => {
             }
             setShowSortMenu(false);
           }}
-          title="За категорією"
+          title={t('sort.byCategory')}
         />
         {sortBy && (
           <Menu.Item
@@ -1269,14 +1236,14 @@ const handleEditTask = (task) => {
               setSortBy(null);
               setShowSortMenu(false);
             }}
-            title="Скинути сортування"
+            title={t('sort.reset')}
           />
         )}
       </Menu>
 
       <FAB
         icon="plus"
-        label="Add Task"
+        label={t('fab.addTask')}
         onPress={() => setModalVisible(true)}
         style={[styles.fab, { backgroundColor: '#00b894' }]}
       />

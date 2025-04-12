@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "Choisir la langue",
       "close": "Fermer"
-    }
+    },
+    "filters": {
+    "all": "Tous",
+    "active": "Actifs",
+    "completed": "Terminés",
+    "searchPlaceholder": "Rechercher par titre ou description..."
+  },
+  "modal": {
+    "cancel": "Annuler",
+    "back": "Retour",
+    "next": "Suivant",
+    "create": "Créer"
+  },
+  "taskModal": {
+    "newTask": "Nouvelle Tâche"
+  },
+  "taskDetails": {
+    "completed": "Terminé",
+    "inProgress": "En cours",
+    "description": "Description de la tâche",
+    "mainInfo": "Informations principales",
+    "category": "Catégorie",
+    "priority": "Priorité",
+    "timeSettings": "Paramètres de temps",
+    "deadline": "Date limite",
+    "executionTime": "Heure d'exécution",
+    "reminder": "Rappel"
+  },
+  "buttonsHome": {
+    "edit": "Modifier",
+    "delete": "Supprimer"
+  },
+  "priority": {
+    "high": "Haute",
+    "medium": "Moyenne",
+    "low": "Basse"
+  },
+  "home": {
+    "title": "Mes Tâches",
+    "welcome": "Bienvenue, {{name}} !",
+    "noTasks": "Vous n’avez actuellement aucune tâche."
+  },
+  "filter": {
+    "all": "Tous",
+    "active": "Actifs",
+    "completed": "Terminés",
+    "searchPlaceholder": "Rechercher des tâches..."
+  },
+  "alert": {
+    "error": "Erreur",
+    "success": "Succès",
+    "info": "Information",
+    "taskNameRequired": "Le nom de la tâche est requis",
+    "loginRequired": "Vous devez être connecté",
+    "taskCreated": "Tâche créée avec succès",
+    "taskCreationFailed": "Échec de la création de la tâche",
+    "taskLoadFailed": "Échec du chargement des tâches",
+    "taskUpdateFailed": "Échec de la mise à jour du statut de la tâche",
+    "taskDeleted": "Tâche supprimée avec succès",
+    "taskDeletionFailed": "Échec de la suppression de la tâche",
+    "editComingSoon": "La fonctionnalité d’édition sera bientôt disponible",
+    "attachmentsUnavailable": "La fonctionnalité des pièces jointes est disponible pour les utilisateurs premium"
+  },
+  "form": {
+    "titleLabel": "Titre (jusqu’à 100 caractères)",
+    "categoryLabel": "Catégorie",
+    "categoryPlaceholder": "Sélectionnez ou créez une catégorie",
+    "newCategoryPlaceholder": "Créer une nouvelle catégorie",
+    "descriptionLabel": "Description (jusqu’à 500 caractères)",
+    "descriptionPlaceholder": "Ajoutez une description à la tâche",
+    "priorityLabel": "Priorité",
+    "deadlineLabel": "Date limite",
+    "executionTimeLabel": "Heure d’exécution",
+    "colorMarkingLabel": "Marquage en couleur",
+    "reminderLabel": "Rappel",
+    "iconSelected": "Icône sélectionnée",
+    "selectIcon": "Sélectionner une icône",
+    "icons": "Icônes",
+    "addAttachment": "Ajouter une pièce jointe"
+  },
+  "reminder": {
+    "atDeadline": "À l’échéance",
+    "minutesBefore": "{{minutes}} minutes avant",
+    "hoursBefore": "{{hours}} heure(s) avant",
+    "daysBefore": "{{days}} jour(s) avant",
+    "weeksBefore": "{{weeks}} semaine(s) avant"
+  },
+  "sort": {
+    "byPriority": "Trier par priorité",
+    "byDate": "Trier par date",
+    "byCategory": "Trier par catégorie",
+    "reset": "Réinitialiser le tri"
+  },
+  "fab": {
+    "addTask": "Ajouter une Tâche"
+  },
+  "dates": {
+    "today": "Aujourd’hui",
+    "tomorrow": "Demain",
+    "noDeadline": "Pas de date limite"
+  },
+  "categories": {
+    "work": "Travail",
+    "study": "Études",
+    "personal": "Personnel",
+    "shopping": "Achats",
+    "health": "Santé"
+  },
+  "icons": {
+    "calendar": "Calendrier",
+    "book": "Livre",
+    "computer": "Ordinateur",
+    "notes": "Notes",
+    "goal": "Objectif",
+    "star": "Étoile",
+    "run": "Course",
+    "art": "Art",
+    "shopping": "Achats",
+    "home": "Maison",
+    "sport": "Sport",
+    "music": "Musique",
+    "alarm": "Alarme",
+    "pencil": "Crayon",
+    "heart": "Cœur",
+    "check": "Cocher",
+    "bell": "Cloche",
+    "briefcase": "Mallette",
+    "flag": "Drapeau"
+  },
+  "colors": {
+    "red": "Rouge",
+    "turquoise": "Turquoise",
+    "skyblue": "Bleu ciel",
+    "mint": "Menthe",
+    "yellow": "Jaune",
+    "pink": "Rose",
+    "purple": "Violet",
+    "blue": "Bleu",
+    "orange": "Orange",
+    "emerald": "Émeraude",
+    "green": "Vert",
+    "lightblue": "Bleu clair"
+  }
   }
   

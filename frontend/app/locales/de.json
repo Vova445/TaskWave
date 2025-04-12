@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "Sprache auswählen",
       "close": "Schließen"
-    }
+    },
+    "filters": {
+    "all": "Alle",
+    "active": "Aktiv",
+    "completed": "Abgeschlossen",
+    "searchPlaceholder": "Nach Titel oder Beschreibung suchen..."
+  },
+  "modal": {
+    "cancel": "Abbrechen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "create": "Erstellen"
+  },
+  "taskModal": {
+    "newTask": "Neue Aufgabe"
+  },
+  "taskDetails": {
+    "completed": "Abgeschlossen",
+    "inProgress": "In Bearbeitung",
+    "description": "Aufgabenbeschreibung",
+    "mainInfo": "Hauptinformationen",
+    "category": "Kategorie",
+    "priority": "Priorität",
+    "timeSettings": "Zeiteinstellungen",
+    "deadline": "Fälligkeitsdatum",
+    "executionTime": "Ausführungszeit",
+    "reminder": "Erinnerung"
+  },
+  "buttonsHome": {
+    "edit": "Bearbeiten",
+    "delete": "Löschen"
+  },
+  "priority": {
+    "high": "Hoch",
+    "medium": "Mittel",
+    "low": "Niedrig"
+  },
+  "home": {
+    "title": "Meine Aufgaben",
+    "welcome": "Willkommen, {{name}}!",
+    "noTasks": "Du hast derzeit keine Aufgaben."
+  },
+  "filter": {
+    "all": "Alle",
+    "active": "Aktiv",
+    "completed": "Abgeschlossen",
+    "searchPlaceholder": "Aufgaben durchsuchen..."
+  },
+  "alert": {
+    "error": "Fehler",
+    "success": "Erfolg",
+    "info": "Information",
+    "taskNameRequired": "Ein Aufgabenname ist erforderlich",
+    "loginRequired": "Du musst angemeldet sein",
+    "taskCreated": "Aufgabe erfolgreich erstellt",
+    "taskCreationFailed": "Aufgabe konnte nicht erstellt werden",
+    "taskLoadFailed": "Aufgaben konnten nicht geladen werden",
+    "taskUpdateFailed": "Status der Aufgabe konnte nicht aktualisiert werden",
+    "taskDeleted": "Aufgabe erfolgreich gelöscht",
+    "taskDeletionFailed": "Aufgabe konnte nicht gelöscht werden",
+    "editComingSoon": "Bearbeitungsfunktion bald verfügbar",
+    "attachmentsUnavailable": "Anhangsfunktion ist nur für Premium-Nutzer verfügbar"
+  },
+  "form": {
+    "titleLabel": "Titel (max. 100 Zeichen)",
+    "categoryLabel": "Kategorie",
+    "categoryPlaceholder": "Wähle oder erstelle eine Kategorie",
+    "newCategoryPlaceholder": "Neue Kategorie erstellen",
+    "descriptionLabel": "Beschreibung (max. 500 Zeichen)",
+    "descriptionPlaceholder": "Füge eine Beschreibung zur Aufgabe hinzu",
+    "priorityLabel": "Priorität",
+    "deadlineLabel": "Fälligkeitsdatum",
+    "executionTimeLabel": "Ausführungszeit",
+    "colorMarkingLabel": "Farbmarkierung",
+    "reminderLabel": "Erinnerung",
+    "iconSelected": "Symbol ausgewählt",
+    "selectIcon": "Symbol auswählen",
+    "icons": "Symbole",
+    "addAttachment": "Anhang hinzufügen"
+  },
+  "reminder": {
+    "atDeadline": "Zum Fälligkeitsdatum",
+    "minutesBefore": "{{minutes}} Minuten vorher",
+    "hoursBefore": "{{hours}} Stunde(n) vorher",
+    "daysBefore": "{{days}} Tag(e) vorher",
+    "weeksBefore": "{{weeks}} Woche(n) vorher"
+  },
+  "sort": {
+    "byPriority": "Nach Priorität sortieren",
+    "byDate": "Nach Datum sortieren",
+    "byCategory": "Nach Kategorie sortieren",
+    "reset": "Sortierung zurücksetzen"
+  },
+  "fab": {
+    "addTask": "Aufgabe hinzufügen"
+  },
+  "dates": {
+    "today": "Heute",
+    "tomorrow": "Morgen",
+    "noDeadline": "Kein Fälligkeitsdatum"
+  },
+  "categories": {
+    "work": "Arbeit",
+    "study": "Studium",
+    "personal": "Persönlich",
+    "shopping": "Einkauf",
+    "health": "Gesundheit"
+  },
+  "icons": {
+    "calendar": "Kalender",
+    "book": "Buch",
+    "computer": "Computer",
+    "notes": "Notizen",
+    "goal": "Ziel",
+    "star": "Stern",
+    "run": "Laufen",
+    "art": "Kunst",
+    "shopping": "Einkauf",
+    "home": "Zuhause",
+    "sport": "Sport",
+    "music": "Musik",
+    "alarm": "Wecker",
+    "pencil": "Bleistift",
+    "heart": "Herz",
+    "check": "Haken",
+    "bell": "Glocke",
+    "briefcase": "Aktenkoffer",
+    "flag": "Flagge"
+  },
+  "colors": {
+    "red": "Rot",
+    "turquoise": "Türkis",
+    "skyblue": "Himmelblau",
+    "mint": "Minze",
+    "yellow": "Gelb",
+    "pink": "Rosa",
+    "purple": "Lila",
+    "blue": "Blau",
+    "orange": "Orange",
+    "emerald": "Smaragd",
+    "green": "Grün",
+    "lightblue": "Hellblau"
+  }
   }
   

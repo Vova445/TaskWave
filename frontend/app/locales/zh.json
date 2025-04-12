@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "选择语言",
       "close": "关闭"
-    }
+    },
+    "filters": {
+    "all": "全部",
+    "active": "进行中",
+    "completed": "已完成",
+    "searchPlaceholder": "按标题或描述搜索..."
+  },
+  "modal": {
+    "cancel": "取消",
+    "back": "返回",
+    "next": "下一步",
+    "create": "创建"
+  },
+  "taskModal": {
+    "newTask": "新任务"
+  },
+  "taskDetails": {
+    "completed": "已完成",
+    "inProgress": "进行中",
+    "description": "任务描述",
+    "mainInfo": "基本信息",
+    "category": "类别",
+    "priority": "优先级",
+    "timeSettings": "时间设置",
+    "deadline": "截止日期",
+    "executionTime": "执行时间",
+    "reminder": "提醒"
+  },
+  "buttonsHome": {
+    "edit": "编辑",
+    "delete": "删除"
+  },
+  "priority": {
+    "high": "高",
+    "medium": "中",
+    "low": "低"
+  },
+  "home": {
+    "title": "我的任务",
+    "welcome": "欢迎，{{name}}！",
+    "noTasks": "您目前没有任务。"
+  },
+  "filter": {
+    "all": "全部",
+    "active": "进行中",
+    "completed": "已完成",
+    "searchPlaceholder": "搜索任务..."
+  },
+  "alert": {
+    "error": "错误",
+    "success": "成功",
+    "info": "信息",
+    "taskNameRequired": "任务名称是必填项",
+    "loginRequired": "您必须先登录",
+    "taskCreated": "任务创建成功",
+    "taskCreationFailed": "创建任务失败",
+    "taskLoadFailed": "加载任务失败",
+    "taskUpdateFailed": "更新任务状态失败",
+    "taskDeleted": "任务删除成功",
+    "taskDeletionFailed": "删除任务失败",
+    "editComingSoon": "编辑功能即将推出",
+    "attachmentsUnavailable": "附件功能仅适用于高级用户"
+  },
+  "form": {
+    "titleLabel": "标题（最多100个字符）",
+    "categoryLabel": "类别",
+    "categoryPlaceholder": "选择或创建一个类别",
+    "newCategoryPlaceholder": "创建新类别",
+    "descriptionLabel": "描述（最多500个字符）",
+    "descriptionPlaceholder": "为任务添加描述",
+    "priorityLabel": "优先级",
+    "deadlineLabel": "截止日期",
+    "executionTimeLabel": "执行时间",
+    "colorMarkingLabel": "颜色标记",
+    "reminderLabel": "提醒",
+    "iconSelected": "已选择图标",
+    "selectIcon": "选择图标",
+    "icons": "图标",
+    "addAttachment": "添加附件"
+  },
+  "reminder": {
+    "atDeadline": "截止时",
+    "minutesBefore": "提前{{minutes}}分钟",
+    "hoursBefore": "提前{{hours}}小时",
+    "daysBefore": "提前{{days}}天",
+    "weeksBefore": "提前{{weeks}}周"
+  },
+  "sort": {
+    "byPriority": "按优先级排序",
+    "byDate": "按日期排序",
+    "byCategory": "按类别排序",
+    "reset": "重置排序"
+  },
+  "fab": {
+    "addTask": "添加任务"
+  },
+  "dates": {
+    "today": "今天",
+    "tomorrow": "明天",
+    "noDeadline": "无截止日期"
+  },
+  "categories": {
+    "work": "工作",
+    "study": "学习",
+    "personal": "个人",
+    "shopping": "购物",
+    "health": "健康"
+  },
+  "icons": {
+    "calendar": "日历",
+    "book": "书籍",
+    "computer": "电脑",
+    "notes": "笔记",
+    "goal": "目标",
+    "star": "星星",
+    "run": "跑步",
+    "art": "艺术",
+    "shopping": "购物",
+    "home": "家庭",
+    "sport": "运动",
+    "music": "音乐",
+    "alarm": "闹钟",
+    "pencil": "铅笔",
+    "heart": "心形",
+    "check": "勾选",
+    "bell": "铃铛",
+    "briefcase": "公文包",
+    "flag": "旗帜"
+  },
+  "colors": {
+    "red": "红色",
+    "turquoise": "青绿色",
+    "skyblue": "天蓝色",
+    "mint": "薄荷色",
+    "yellow": "黄色",
+    "pink": "粉色",
+    "purple": "紫色",
+    "blue": "蓝色",
+    "orange": "橙色",
+    "emerald": "翡翠绿",
+    "green": "绿色",
+    "lightblue": "淡蓝色"
+  }
   }
   

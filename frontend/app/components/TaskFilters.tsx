@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity, Platform } from 'react-native';
 import { Text, TextInput, IconButton } from 'react-native-paper';
 import { useHomeStyles } from '../styles/homeStyles';
+import { useTranslation } from 'react-i18next';
 
 export enum TaskFilter {
   ALL = 'all',
@@ -19,7 +20,6 @@ interface TaskFiltersProps {
   totalTasks?: number;
   activeTasks?: number;
   completedTasks?: number;
-  // Add new props for sorting
   sortBy: 'priority' | 'date' | 'category' | null;
   sortDirection: 'asc' | 'desc';
   onSortPress: (event: any) => void;
@@ -40,11 +40,12 @@ const TaskFilters: React.FC<TaskFiltersProps> = ({
   onSortPress
 }) => {
   const homeStyles = useHomeStyles(isDarkMode);
-  
+  const { t } = useTranslation();
+
   const filterOptions = [
-    { value: TaskFilter.ALL, label: 'Всі', count: totalTasks },
-    { value: TaskFilter.ACTIVE, label: 'Активні', count: activeTasks },
-    { value: TaskFilter.COMPLETED, label: 'Завершені', count: completedTasks }
+    { value: TaskFilter.ALL, label: t('filters.all'), count: totalTasks },
+    { value: TaskFilter.ACTIVE, label: t('filters.active'), count: activeTasks },
+    { value: TaskFilter.COMPLETED, label: t('filters.completed'), count: completedTasks }
   ];
 
   return (
@@ -89,7 +90,7 @@ const TaskFilters: React.FC<TaskFiltersProps> = ({
 
       <View style={styles.searchContainer}>
         <TextInput
-          placeholder="Пошук за назвою або описом..."
+          placeholder={t('filters.searchPlaceholder')}
           value={searchQuery}
           onChangeText={setSearchQuery}
           mode="outlined"

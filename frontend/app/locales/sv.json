@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "Välj språk",
       "close": "Stäng"
-    }
+    },
+    "filters": {
+    "all": "Alla",
+    "active": "Aktiva",
+    "completed": "Slutförda",
+    "searchPlaceholder": "Sök efter titel eller beskrivning..."
+  },
+  "modal": {
+    "cancel": "Avbryt",
+    "back": "Tillbaka",
+    "next": "Nästa",
+    "create": "Skapa"
+  },
+  "taskModal": {
+    "newTask": "Ny Uppgift"
+  },
+  "taskDetails": {
+    "completed": "Slutförd",
+    "inProgress": "Pågår",
+    "description": "Uppgiftsbeskrivning",
+    "mainInfo": "Huvudinformation",
+    "category": "Kategori",
+    "priority": "Prioritet",
+    "timeSettings": "Tidsinställningar",
+    "deadline": "Deadline",
+    "executionTime": "Utförandetid",
+    "reminder": "Påminnelse"
+  },
+  "buttonsHome": {
+    "edit": "Redigera",
+    "delete": "Radera"
+  },
+  "priority": {
+    "high": "Hög",
+    "medium": "Mellan",
+    "low": "Låg"
+  },
+  "home": {
+    "title": "Mina Uppgifter",
+    "welcome": "Välkommen, {{name}}!",
+    "noTasks": "Du har inga uppgifter just nu."
+  },
+  "filter": {
+    "all": "Alla",
+    "active": "Aktiva",
+    "completed": "Slutförda",
+    "searchPlaceholder": "Sök uppgifter..."
+  },
+  "alert": {
+    "error": "Fel",
+    "success": "Lyckades",
+    "info": "Information",
+    "taskNameRequired": "Uppgiftsnamn krävs",
+    "loginRequired": "Du måste vara inloggad",
+    "taskCreated": "Uppgift skapades",
+    "taskCreationFailed": "Kunde inte skapa uppgift",
+    "taskLoadFailed": "Kunde inte ladda uppgifter",
+    "taskUpdateFailed": "Kunde inte uppdatera uppgiftens status",
+    "taskDeleted": "Uppgift raderad",
+    "taskDeletionFailed": "Kunde inte radera uppgift",
+    "editComingSoon": "Redigeringsfunktionen kommer snart",
+    "attachmentsUnavailable": "Bilagor är endast tillgängliga för premiumanvändare"
+  },
+  "form": {
+    "titleLabel": "Titel (upp till 100 tecken)",
+    "categoryLabel": "Kategori",
+    "categoryPlaceholder": "Välj eller skapa en kategori",
+    "newCategoryPlaceholder": "Skapa ny kategori",
+    "descriptionLabel": "Beskrivning (upp till 500 tecken)",
+    "descriptionPlaceholder": "Lägg till en beskrivning till uppgiften",
+    "priorityLabel": "Prioritet",
+    "deadlineLabel": "Deadline",
+    "executionTimeLabel": "Utförandetid",
+    "colorMarkingLabel": "Färgmarkering",
+    "reminderLabel": "Påminnelse",
+    "iconSelected": "Ikon vald",
+    "selectIcon": "Välj en ikon",
+    "icons": "Ikoner",
+    "addAttachment": "Lägg till bilaga"
+  },
+  "reminder": {
+    "atDeadline": "Vid deadline",
+    "minutesBefore": "{{minutes}} minuter innan",
+    "hoursBefore": "{{hours}} timmar innan",
+    "daysBefore": "{{days}} dagar innan",
+    "weeksBefore": "{{weeks}} veckor innan"
+  },
+  "sort": {
+    "byPriority": "Sortera efter prioritet",
+    "byDate": "Sortera efter datum",
+    "byCategory": "Sortera efter kategori",
+    "reset": "Återställ sortering"
+  },
+  "fab": {
+    "addTask": "Lägg till uppgift"
+  },
+  "dates": {
+    "today": "Idag",
+    "tomorrow": "Imorgon",
+    "noDeadline": "Ingen deadline"
+  },
+  "categories": {
+    "work": "Arbete",
+    "study": "Studier",
+    "personal": "Personligt",
+    "shopping": "Shopping",
+    "health": "Hälsa"
+  },
+  "icons": {
+    "calendar": "Kalender",
+    "book": "Bok",
+    "computer": "Dator",
+    "notes": "Anteckningar",
+    "goal": "Mål",
+    "star": "Stjärna",
+    "run": "Springa",
+    "art": "Konst",
+    "shopping": "Shopping",
+    "home": "Hem",
+    "sport": "Sport",
+    "music": "Musik",
+    "alarm": "Alarm",
+    "pencil": "Blyertspenna",
+    "heart": "Hjärta",
+    "check": "Bocka av",
+    "bell": "Klocka",
+    "briefcase": "Portfölj",
+    "flag": "Flagga"
+  },
+  "colors": {
+    "red": "Röd",
+    "turquoise": "Turkos",
+    "skyblue": "Himmelsblå",
+    "mint": "Mintgrön",
+    "yellow": "Gul",
+    "pink": "Rosa",
+    "purple": "Lila",
+    "blue": "Blå",
+    "orange": "Orange",
+    "emerald": "Smaragdgrön",
+    "green": "Grön",
+    "lightblue": "Ljusblå"
+  }
   }
   

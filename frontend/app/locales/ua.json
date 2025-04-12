@@ -61,5 +61,148 @@
   "languageDialog": {
     "title": "Оберіть мову",
     "close": "Закрити"
+  },
+  "filters": {
+    "all": "Усі",
+    "active": "Активні",
+    "completed": "Завершені",
+    "searchPlaceholder": "Пошук за назвою або описом..."
+  },
+  "modal": {
+    "cancel": "Скасувати",
+    "back": "Назад",
+    "next": "Далі",
+    "create": "Створити"
+  },
+  "taskModal": {
+    "newTask": "Нове завдання"
+  },
+  "taskDetails": {
+    "completed": "Завершено",
+    "inProgress": "В процесі",
+    "description": "Опис завдання",
+    "mainInfo": "Основна інформація",
+    "category": "Категорія",
+    "priority": "Пріоритет",
+    "timeSettings": "Часові параметри",
+    "deadline": "Дедлайн",
+    "executionTime": "Час виконання",
+    "reminder": "Нагадування"
+  },
+  "buttonsHome": {
+    "edit": "Редагувати",
+    "delete": "Видалити"
+  },
+  "priority": {
+    "high": "Високий",
+    "medium": "Середній",
+    "low": "Низький"
+  },
+  "home": {
+    "title": "Мої завдання",
+    "welcome": "Вітаємо, {{name}}!",
+    "noTasks": "У вас поки немає завдань."
+  },
+  "filter": {
+    "all": "Усі",
+    "active": "Активні",
+    "completed": "Завершені",
+    "searchPlaceholder": "Пошук завдань..."
+  },
+  "alert": {
+    "error": "Помилка",
+    "success": "Успіх",
+    "info": "Інформація",
+    "taskNameRequired": "Назва завдання є обов’язковою",
+    "loginRequired": "Потрібно увійти в систему",
+    "taskCreated": "Завдання успішно створено",
+    "taskCreationFailed": "Не вдалося створити завдання",
+    "taskLoadFailed": "Не вдалося завантажити завдання",
+    "taskUpdateFailed": "Не вдалося оновити статус завдання",
+    "taskDeleted": "Завдання успішно видалено",
+    "taskDeletionFailed": "Не вдалося видалити завдання",
+    "editComingSoon": "Функція редагування буде доступна незабаром",
+    "attachmentsUnavailable": "Функція вкладень доступна для преміум-користувачів"
+  },
+  "form": {
+    "titleLabel": "Назва (до 100 символів)",
+    "categoryLabel": "Категорія",
+    "categoryPlaceholder": "Оберіть або створіть категорію",
+    "newCategoryPlaceholder": "Створити нову категорію",
+    "descriptionLabel": "Опис (до 500 символів)",
+    "descriptionPlaceholder": "Додайте опис до завдання",
+    "priorityLabel": "Пріоритет",
+    "deadlineLabel": "Дата дедлайну",
+    "executionTimeLabel": "Час виконання",
+    "colorMarkingLabel": "Кольорове маркування",
+    "reminderLabel": "Нагадування",
+    "iconSelected": "Обрана іконка",
+    "selectIcon": "Оберіть іконку",
+    "icons": "Іконки",
+    "addAttachment": "Додати вкладення"
+  },
+  "reminder": {
+    "atDeadline": "У момент дедлайну",
+    "minutesBefore": "За {{minutes}} хв",
+    "hoursBefore": "За {{hours}} год",
+    "daysBefore": "За {{days}} дн",
+    "weeksBefore": "За {{weeks}} тиж"
+  },
+  "sort": {
+    "byPriority": "За пріоритетом",
+    "byDate": "За датою",
+    "byCategory": "За категорією",
+    "reset": "Скинути сортування"
+  },
+  "fab": {
+    "addTask": "Додати завдання"
+  },
+  "dates": {
+    "today": "Сьогодні",
+    "tomorrow": "Завтра",
+    "noDeadline": "Без дедлайну"
+  },
+  "categories": {
+    "work": "Робота",
+    "study": "Навчання",
+    "personal": "Особисте",
+    "shopping": "Покупки",
+    "health": "Здоров’я"
+  },
+  "icons": {
+    "calendar": "Календар",
+    "book": "Книга",
+    "computer": "Комп’ютер",
+    "notes": "Нотатки",
+    "goal": "Ціль",
+    "star": "Зірка",
+    "run": "Біг",
+    "art": "Мистецтво",
+    "shopping": "Покупки",
+    "home": "Дім",
+    "sport": "Спорт",
+    "music": "Музика",
+    "alarm": "Будильник",
+    "pencil": "Олівець",
+    "heart": "Серце",
+    "check": "Галочка",
+    "bell": "Дзвінок",
+    "briefcase": "Портфель",
+    "flag": "Прапор"
+  },
+  "colors": {
+    "red": "Червоний",
+    "turquoise": "Бірюзовий",
+    "skyblue": "Голубий",
+    "mint": "М’ятний",
+    "yellow": "Жовтий",
+    "pink": "Рожевий",
+    "purple": "Фіолетовий",
+    "blue": "Синій",
+    "orange": "Оранжевий",
+    "emerald": "Смарагдовий",
+    "green": "Зелений",
+    "lightblue": "Небесний"
   }
+
   }

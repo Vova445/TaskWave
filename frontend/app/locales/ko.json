@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "언어 선택",
       "close": "닫기"
-    }
+    },
+    "filters": {
+    "all": "전체",
+    "active": "진행 중",
+    "completed": "완료됨",
+    "searchPlaceholder": "제목 또는 설명으로 검색..."
+  },
+  "modal": {
+    "cancel": "취소",
+    "back": "뒤로",
+    "next": "다음",
+    "create": "생성"
+  },
+  "taskModal": {
+    "newTask": "새 작업"
+  },
+  "taskDetails": {
+    "completed": "완료됨",
+    "inProgress": "진행 중",
+    "description": "작업 설명",
+    "mainInfo": "기본 정보",
+    "category": "카테고리",
+    "priority": "우선순위",
+    "timeSettings": "시간 설정",
+    "deadline": "마감일",
+    "executionTime": "실행 시간",
+    "reminder": "알림"
+  },
+  "buttonsHome": {
+    "edit": "편집",
+    "delete": "삭제"
+  },
+  "priority": {
+    "high": "높음",
+    "medium": "중간",
+    "low": "낮음"
+  },
+  "home": {
+    "title": "내 작업",
+    "welcome": "{{name}}님, 환영합니다!",
+    "noTasks": "현재 등록된 작업이 없습니다."
+  },
+  "filter": {
+    "all": "전체",
+    "active": "진행 중",
+    "completed": "완료됨",
+    "searchPlaceholder": "작업 검색..."
+  },
+  "alert": {
+    "error": "오류",
+    "success": "성공",
+    "info": "정보",
+    "taskNameRequired": "작업 이름은 필수입니다",
+    "loginRequired": "로그인이 필요합니다",
+    "taskCreated": "작업이 성공적으로 생성되었습니다",
+    "taskCreationFailed": "작업 생성에 실패했습니다",
+    "taskLoadFailed": "작업을 불러오는 데 실패했습니다",
+    "taskUpdateFailed": "작업 상태를 업데이트하지 못했습니다",
+    "taskDeleted": "작업이 삭제되었습니다",
+    "taskDeletionFailed": "작업 삭제에 실패했습니다",
+    "editComingSoon": "편집 기능은 곧 제공됩니다",
+    "attachmentsUnavailable": "첨부 기능은 프리미엄 사용자만 이용할 수 있습니다"
+  },
+  "form": {
+    "titleLabel": "제목 (최대 100자)",
+    "categoryLabel": "카테고리",
+    "categoryPlaceholder": "카테고리를 선택하거나 새로 만드세요",
+    "newCategoryPlaceholder": "새 카테고리 생성",
+    "descriptionLabel": "설명 (최대 500자)",
+    "descriptionPlaceholder": "작업에 대한 설명을 추가하세요",
+    "priorityLabel": "우선순위",
+    "deadlineLabel": "마감일",
+    "executionTimeLabel": "실행 시간",
+    "colorMarkingLabel": "색상 표시",
+    "reminderLabel": "알림",
+    "iconSelected": "아이콘 선택됨",
+    "selectIcon": "아이콘 선택",
+    "icons": "아이콘",
+    "addAttachment": "첨부파일 추가"
+  },
+  "reminder": {
+    "atDeadline": "마감 시",
+    "minutesBefore": "{{minutes}}분 전",
+    "hoursBefore": "{{hours}}시간 전",
+    "daysBefore": "{{days}}일 전",
+    "weeksBefore": "{{weeks}}주 전"
+  },
+  "sort": {
+    "byPriority": "우선순위로 정렬",
+    "byDate": "날짜로 정렬",
+    "byCategory": "카테고리로 정렬",
+    "reset": "정렬 초기화"
+  },
+  "fab": {
+    "addTask": "작업 추가"
+  },
+  "dates": {
+    "today": "오늘",
+    "tomorrow": "내일",
+    "noDeadline": "마감일 없음"
+  },
+  "categories": {
+    "work": "업무",
+    "study": "학습",
+    "personal": "개인",
+    "shopping": "쇼핑",
+    "health": "건강"
+  },
+  "icons": {
+    "calendar": "달력",
+    "book": "책",
+    "computer": "컴퓨터",
+    "notes": "노트",
+    "goal": "목표",
+    "star": "별",
+    "run": "달리기",
+    "art": "예술",
+    "shopping": "쇼핑",
+    "home": "집",
+    "sport": "스포츠",
+    "music": "음악",
+    "alarm": "알람",
+    "pencil": "연필",
+    "heart": "하트",
+    "check": "체크",
+    "bell": "벨",
+    "briefcase": "서류가방",
+    "flag": "깃발"
+  },
+  "colors": {
+    "red": "빨간색",
+    "turquoise": "청록색",
+    "skyblue": "하늘색",
+    "mint": "민트색",
+    "yellow": "노란색",
+    "pink": "분홍색",
+    "purple": "보라색",
+    "blue": "파란색",
+    "orange": "주황색",
+    "emerald": "에메랄드색",
+    "green": "초록색",
+    "lightblue": "연파랑색"
+  }
   }
   

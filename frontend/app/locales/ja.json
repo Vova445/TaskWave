@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "言語を選択",
       "close": "閉じる"
-    }
+    },
+    "filters": {
+    "all": "すべて",
+    "active": "アクティブ",
+    "completed": "完了",
+    "searchPlaceholder": "タイトルまたは説明で検索..."
+  },
+  "modal": {
+    "cancel": "キャンセル",
+    "back": "戻る",
+    "next": "次へ",
+    "create": "作成"
+  },
+  "taskModal": {
+    "newTask": "新しいタスク"
+  },
+  "taskDetails": {
+    "completed": "完了",
+    "inProgress": "進行中",
+    "description": "タスクの説明",
+    "mainInfo": "基本情報",
+    "category": "カテゴリ",
+    "priority": "優先度",
+    "timeSettings": "時間設定",
+    "deadline": "締切",
+    "executionTime": "実行時間",
+    "reminder": "リマインダー"
+  },
+  "buttonsHome": {
+    "edit": "編集",
+    "delete": "削除"
+  },
+  "priority": {
+    "high": "高",
+    "medium": "中",
+    "low": "低"
+  },
+  "home": {
+    "title": "マイタスク",
+    "welcome": "ようこそ、{{name}}さん！",
+    "noTasks": "現在、タスクはありません。"
+  },
+  "filter": {
+    "all": "すべて",
+    "active": "アクティブ",
+    "completed": "完了",
+    "searchPlaceholder": "タスクを検索..."
+  },
+  "alert": {
+    "error": "エラー",
+    "success": "成功",
+    "info": "情報",
+    "taskNameRequired": "タスク名は必須です",
+    "loginRequired": "ログインが必要です",
+    "taskCreated": "タスクが作成されました",
+    "taskCreationFailed": "タスクの作成に失敗しました",
+    "taskLoadFailed": "タスクの読み込みに失敗しました",
+    "taskUpdateFailed": "タスクの更新に失敗しました",
+    "taskDeleted": "タスクが削除されました",
+    "taskDeletionFailed": "タスクの削除に失敗しました",
+    "editComingSoon": "編集機能はまもなく利用可能になります",
+    "attachmentsUnavailable": "添付ファイル機能はプレミアムユーザー専用です"
+  },
+  "form": {
+    "titleLabel": "タイトル（最大100文字）",
+    "categoryLabel": "カテゴリ",
+    "categoryPlaceholder": "カテゴリを選択または作成",
+    "newCategoryPlaceholder": "新しいカテゴリを作成",
+    "descriptionLabel": "説明（最大500文字）",
+    "descriptionPlaceholder": "タスクの説明を追加してください",
+    "priorityLabel": "優先度",
+    "deadlineLabel": "締切日",
+    "executionTimeLabel": "実行時間",
+    "colorMarkingLabel": "色のマーク",
+    "reminderLabel": "リマインダー",
+    "iconSelected": "アイコンが選択されました",
+    "selectIcon": "アイコンを選択",
+    "icons": "アイコン",
+    "addAttachment": "添付ファイルを追加"
+  },
+  "reminder": {
+    "atDeadline": "締切時",
+    "minutesBefore": "{{minutes}}分前",
+    "hoursBefore": "{{hours}}時間前",
+    "daysBefore": "{{days}}日前",
+    "weeksBefore": "{{weeks}}週間前"
+  },
+  "sort": {
+    "byPriority": "優先度で並び替え",
+    "byDate": "日付で並び替え",
+    "byCategory": "カテゴリで並び替え",
+    "reset": "並び替えをリセット"
+  },
+  "fab": {
+    "addTask": "タスクを追加"
+  },
+  "dates": {
+    "today": "今日",
+    "tomorrow": "明日",
+    "noDeadline": "締切なし"
+  },
+  "categories": {
+    "work": "仕事",
+    "study": "勉強",
+    "personal": "個人",
+    "shopping": "買い物",
+    "health": "健康"
+  },
+  "icons": {
+    "calendar": "カレンダー",
+    "book": "本",
+    "computer": "コンピューター",
+    "notes": "メモ",
+    "goal": "目標",
+    "star": "星",
+    "run": "ランニング",
+    "art": "アート",
+    "shopping": "買い物",
+    "home": "家",
+    "sport": "スポーツ",
+    "music": "音楽",
+    "alarm": "アラーム",
+    "pencil": "鉛筆",
+    "heart": "ハート",
+    "check": "チェック",
+    "bell": "ベル",
+    "briefcase": "ブリーフケース",
+    "flag": "旗"
+  },
+  "colors": {
+    "red": "赤",
+    "turquoise": "ターコイズ",
+    "skyblue": "スカイブルー",
+    "mint": "ミント",
+    "yellow": "黄色",
+    "pink": "ピンク",
+    "purple": "紫",
+    "blue": "青",
+    "orange": "オレンジ",
+    "emerald": "エメラルド",
+    "green": "緑",
+    "lightblue": "ライトブルー"
+  }
   }
   

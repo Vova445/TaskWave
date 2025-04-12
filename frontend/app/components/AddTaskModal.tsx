@@ -3,6 +3,7 @@ import { View, Animated, Platform } from 'react-native';
 import { Modal, IconButton, Text, ProgressBar, Button } from 'react-native-paper';
 import { BlurView } from 'expo-blur';
 import ModalNavigation from './ModalNavigation';
+import { useTranslation } from 'react-i18next';
 
 interface AddTaskModalProps {
   visible: boolean;
@@ -70,7 +71,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
   formData,
   setFormData,
 }) => {
-  // Add dropdown states
+  const { t } = useTranslation();
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const [newCategoryInput, setNewCategoryInput] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -82,7 +83,6 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
   const [showReminderDropdown, setShowReminderDropdown] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  // Add input refs
   const [inputRefs] = useState({
     title: React.createRef<any>(),
     category: React.createRef<any>(),
@@ -95,7 +95,6 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
     reminder: React.createRef<any>(),
   });
 
-  // Add helper functions
   const handleDropdownToggle = (dropdownName: string) => {
     setActiveDropdown(activeDropdown === dropdownName ? null : dropdownName);
     setShowCategoryDropdown(dropdownName === 'category');
@@ -121,7 +120,6 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
     }
   };
 
-  // Add date/time formatting functions
   const formatDate = (date: Date | null) => {
     if (!date) return '';
     return date.toLocaleDateString('uk-UA', {
@@ -165,7 +163,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
           ]}
         >
           <View style={styles.modalHeader}>
-            <Text variant="titleLarge">Нове завдання</Text>
+          <Text variant="titleLarge">{t('taskModal.newTask')}</Text>
             <IconButton icon="close" size={24} onPress={onDismiss} />
           </View>
 

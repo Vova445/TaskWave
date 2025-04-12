@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "Seleccionar idioma",
       "close": "Cerrar"
-    }
+    },
+    "filters": {
+    "all": "Todos",
+    "active": "Activos",
+    "completed": "Completados",
+    "searchPlaceholder": "Buscar por título o descripción..."
+  },
+  "modal": {
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "create": "Crear"
+  },
+  "taskModal": {
+    "newTask": "Nueva Tarea"
+  },
+  "taskDetails": {
+    "completed": "Completado",
+    "inProgress": "En progreso",
+    "description": "Descripción de la tarea",
+    "mainInfo": "Información principal",
+    "category": "Categoría",
+    "priority": "Prioridad",
+    "timeSettings": "Configuración de tiempo",
+    "deadline": "Fecha límite",
+    "executionTime": "Hora de ejecución",
+    "reminder": "Recordatorio"
+  },
+  "buttonsHome": {
+    "edit": "Editar",
+    "delete": "Eliminar"
+  },
+  "priority": {
+    "high": "Alta",
+    "medium": "Media",
+    "low": "Baja"
+  },
+  "home": {
+    "title": "Mis Tareas",
+    "welcome": "¡Bienvenido, {{name}}!",
+    "noTasks": "Actualmente no tienes tareas."
+  },
+  "filter": {
+    "all": "Todos",
+    "active": "Activos",
+    "completed": "Completados",
+    "searchPlaceholder": "Buscar tareas..."
+  },
+  "alert": {
+    "error": "Error",
+    "success": "Éxito",
+    "info": "Información",
+    "taskNameRequired": "El nombre de la tarea es obligatorio",
+    "loginRequired": "Debes iniciar sesión",
+    "taskCreated": "Tarea creada con éxito",
+    "taskCreationFailed": "No se pudo crear la tarea",
+    "taskLoadFailed": "No se pudieron cargar las tareas",
+    "taskUpdateFailed": "No se pudo actualizar el estado de la tarea",
+    "taskDeleted": "Tarea eliminada con éxito",
+    "taskDeletionFailed": "No se pudo eliminar la tarea",
+    "editComingSoon": "La función de edición estará disponible pronto",
+    "attachmentsUnavailable": "La función de archivos adjuntos está disponible solo para usuarios premium"
+  },
+  "form": {
+    "titleLabel": "Título (hasta 100 caracteres)",
+    "categoryLabel": "Categoría",
+    "categoryPlaceholder": "Selecciona o crea una categoría",
+    "newCategoryPlaceholder": "Crear nueva categoría",
+    "descriptionLabel": "Descripción (hasta 500 caracteres)",
+    "descriptionPlaceholder": "Agrega una descripción para la tarea",
+    "priorityLabel": "Prioridad",
+    "deadlineLabel": "Fecha límite",
+    "executionTimeLabel": "Hora de ejecución",
+    "colorMarkingLabel": "Marcado de color",
+    "reminderLabel": "Recordatorio",
+    "iconSelected": "Icono seleccionado",
+    "selectIcon": "Seleccionar un icono",
+    "icons": "Iconos",
+    "addAttachment": "Agregar archivo adjunto"
+  },
+  "reminder": {
+    "atDeadline": "En la fecha límite",
+    "minutesBefore": "{{minutes}} minutos antes",
+    "hoursBefore": "{{hours}} hora(s) antes",
+    "daysBefore": "{{days}} día(s) antes",
+    "weeksBefore": "{{weeks}} semana(s) antes"
+  },
+  "sort": {
+    "byPriority": "Ordenar por prioridad",
+    "byDate": "Ordenar por fecha",
+    "byCategory": "Ordenar por categoría",
+    "reset": "Restablecer orden"
+  },
+  "fab": {
+    "addTask": "Agregar Tarea"
+  },
+  "dates": {
+    "today": "Hoy",
+    "tomorrow": "Mañana",
+    "noDeadline": "Sin fecha límite"
+  },
+  "categories": {
+    "work": "Trabajo",
+    "study": "Estudio",
+    "personal": "Personal",
+    "shopping": "Compras",
+    "health": "Salud"
+  },
+  "icons": {
+    "calendar": "Calendario",
+    "book": "Libro",
+    "computer": "Ordenador",
+    "notes": "Notas",
+    "goal": "Meta",
+    "star": "Estrella",
+    "run": "Correr",
+    "art": "Arte",
+    "shopping": "Compras",
+    "home": "Casa",
+    "sport": "Deporte",
+    "music": "Música",
+    "alarm": "Alarma",
+    "pencil": "Lápiz",
+    "heart": "Corazón",
+    "check": "Marca",
+    "bell": "Campana",
+    "briefcase": "Portafolio",
+    "flag": "Bandera"
+  },
+  "colors": {
+    "red": "Rojo",
+    "turquoise": "Turquesa",
+    "skyblue": "Azul cielo",
+    "mint": "Menta",
+    "yellow": "Amarillo",
+    "pink": "Rosa",
+    "purple": "Morado",
+    "blue": "Azul",
+    "orange": "Naranja",
+    "emerald": "Esmeralda",
+    "green": "Verde",
+    "lightblue": "Azul claro"
+  }
   }
   

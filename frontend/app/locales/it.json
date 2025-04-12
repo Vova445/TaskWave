@@ -61,6 +61,148 @@
     "languageDialog": {
       "title": "Seleziona la lingua",
       "close": "Chiudi"
-    }
+    },
+    "filters": {
+    "all": "Tutti",
+    "active": "Attivi",
+    "completed": "Completati",
+    "searchPlaceholder": "Cerca per titolo o descrizione..."
+  },
+  "modal": {
+    "cancel": "Annulla",
+    "back": "Indietro",
+    "next": "Avanti",
+    "create": "Crea"
+  },
+  "taskModal": {
+    "newTask": "Nuova Attività"
+  },
+  "taskDetails": {
+    "completed": "Completato",
+    "inProgress": "In corso",
+    "description": "Descrizione dell’attività",
+    "mainInfo": "Informazioni principali",
+    "category": "Categoria",
+    "priority": "Priorità",
+    "timeSettings": "Impostazioni orarie",
+    "deadline": "Scadenza",
+    "executionTime": "Ora di esecuzione",
+    "reminder": "Promemoria"
+  },
+  "buttonsHome": {
+    "edit": "Modifica",
+    "delete": "Elimina"
+  },
+  "priority": {
+    "high": "Alta",
+    "medium": "Media",
+    "low": "Bassa"
+  },
+  "home": {
+    "title": "Le mie attività",
+    "welcome": "Benvenuto, {{name}}!",
+    "noTasks": "Non hai ancora attività."
+  },
+  "filter": {
+    "all": "Tutti",
+    "active": "Attivi",
+    "completed": "Completati",
+    "searchPlaceholder": "Cerca attività..."
+  },
+  "alert": {
+    "error": "Errore",
+    "success": "Successo",
+    "info": "Informazione",
+    "taskNameRequired": "Il nome dell’attività è obbligatorio",
+    "loginRequired": "Devi effettuare l’accesso",
+    "taskCreated": "Attività creata con successo",
+    "taskCreationFailed": "Creazione dell’attività non riuscita",
+    "taskLoadFailed": "Impossibile caricare le attività",
+    "taskUpdateFailed": "Aggiornamento dello stato dell’attività non riuscito",
+    "taskDeleted": "Attività eliminata con successo",
+    "taskDeletionFailed": "Eliminazione dell’attività non riuscita",
+    "editComingSoon": "La funzione di modifica sarà presto disponibile",
+    "attachmentsUnavailable": "La funzione allegati è disponibile solo per utenti premium"
+  },
+  "form": {
+    "titleLabel": "Titolo (fino a 100 caratteri)",
+    "categoryLabel": "Categoria",
+    "categoryPlaceholder": "Seleziona o crea una categoria",
+    "newCategoryPlaceholder": "Crea una nuova categoria",
+    "descriptionLabel": "Descrizione (fino a 500 caratteri)",
+    "descriptionPlaceholder": "Aggiungi una descrizione per l’attività",
+    "priorityLabel": "Priorità",
+    "deadlineLabel": "Data di scadenza",
+    "executionTimeLabel": "Ora di esecuzione",
+    "colorMarkingLabel": "Etichetta colore",
+    "reminderLabel": "Promemoria",
+    "iconSelected": "Icona selezionata",
+    "selectIcon": "Seleziona un’icona",
+    "icons": "Icone",
+    "addAttachment": "Aggiungi allegato"
+  },
+  "reminder": {
+    "atDeadline": "Alla scadenza",
+    "minutesBefore": "{{minutes}} minuti prima",
+    "hoursBefore": "{{hours}} ore prima",
+    "daysBefore": "{{days}} giorni prima",
+    "weeksBefore": "{{weeks}} settimane prima"
+  },
+  "sort": {
+    "byPriority": "Ordina per priorità",
+    "byDate": "Ordina per data",
+    "byCategory": "Ordina per categoria",
+    "reset": "Ripristina ordinamento"
+  },
+  "fab": {
+    "addTask": "Aggiungi Attività"
+  },
+  "dates": {
+    "today": "Oggi",
+    "tomorrow": "Domani",
+    "noDeadline": "Nessuna scadenza"
+  },
+  "categories": {
+    "work": "Lavoro",
+    "study": "Studio",
+    "personal": "Personale",
+    "shopping": "Acquisti",
+    "health": "Salute"
+  },
+  "icons": {
+    "calendar": "Calendario",
+    "book": "Libro",
+    "computer": "Computer",
+    "notes": "Note",
+    "goal": "Obiettivo",
+    "star": "Stella",
+    "run": "Corsa",
+    "art": "Arte",
+    "shopping": "Acquisti",
+    "home": "Casa",
+    "sport": "Sport",
+    "music": "Musica",
+    "alarm": "Sveglia",
+    "pencil": "Matita",
+    "heart": "Cuore",
+    "check": "Spunta",
+    "bell": "Campanella",
+    "briefcase": "Valigetta",
+    "flag": "Bandiera"
+  },
+  "colors": {
+    "red": "Rosso",
+    "turquoise": "Turchese",
+    "skyblue": "Azzurro",
+    "mint": "Menta",
+    "yellow": "Giallo",
+    "pink": "Rosa",
+    "purple": "Viola",
+    "blue": "Blu",
+    "orange": "Arancione",
+    "emerald": "Smeraldo",
+    "green": "Verde",
+    "lightblue": "Blu chiaro"
+  }
   }
   
